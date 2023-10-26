@@ -21,7 +21,7 @@ public interface Grid<E> {
 
   /**
    * Repaint the grid with a two-dimensional array of elements. The array's dimensions should match
-   * the row and column count of the grid.
+   * the x and y count of the grid.
    *
    * @param elements A two-dimensional array of elements to be displayed on the grid.
    */

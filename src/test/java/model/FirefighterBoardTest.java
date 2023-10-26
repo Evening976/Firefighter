@@ -10,17 +10,17 @@ import static org.assertj.core.api.Assertions.*;
 public class FirefighterBoardTest {
   @Test
   void testColumnCount(){
-    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3);
+    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3, 5);
     assertThat(board.columnCount()).isEqualTo(20);
   }
   @Test
   void testRowCount(){
-    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3);
+    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3, 5);
     assertThat(board.rowCount()).isEqualTo(10);
   }
   @Test
   void testStepNumber(){
-    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3);
+    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 1, 3, 5);
     for(int index = 0; index < 10; index++){
       assertThat(board.stepNumber()).isEqualTo(index);
       board.updateToNextGeneration();
@@ -29,7 +29,7 @@ public class FirefighterBoardTest {
   }
   @Test
   void testGetState_afterSet(){
-    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 0, 0);
+    Board<List<ModelElement>> board = new FirefighterBoard(20, 10, 0, 0, 5);
     Position position = new Position(1,2);
     assertThat(board.getState(position)).isEmpty();
     board.setState(List.of(ModelElement.FIRE), position);

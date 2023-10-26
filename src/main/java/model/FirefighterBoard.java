@@ -16,7 +16,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final GameElement firefighterUpdater;
   private final GameElement fireUpdater;
 
-  public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount) {
+  public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount) {
     this.columnCount = columnCount;
     this.rowCount = rowCount;
     this.initialFireCount = initialFireCount;
