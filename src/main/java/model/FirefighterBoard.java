@@ -1,5 +1,9 @@
 package model;
 
+import model.elements.BoardElement;
+import model.elements.Fire;
+import model.elements.FireFighter;
+import model.elements.ModelElement;
 import util.Position;
 
 import java.util.*;
@@ -12,9 +16,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
   private int step = 0;
-  private final Random randomGenerator = new Random();
-  private final FirefighterUpdater firefighterUpdater;
-  private final FireUpdater fireUpdater;
+  private FireFighter firefighter;
+  private Fire fire;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount) {
     this.columnCount = columnCount;
@@ -22,33 +25,15 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     this.initialFireCount = initialFireCount;
     this.initialFirefighterCount = initialFirefighterCount;
     initializeElements();
-    firefighterUpdater = new FirefighterUpdater(firefighterPositions, firePositions, rowCount, columnCount);
-    fireUpdater = new FireUpdater(firePositions, step, rowCount, columnCount);
   }
 
   public void initializeElements() {
-    firefighterPositions = new ArrayList<>();
-    firePositions = new HashSet<>();
-    for (int index = 0; index < initialFireCount; index++)
-      firePositions.add(randomPosition());
-    for (int index = 0; index < initialFirefighterCount; index++)
-      firefighterPositions.add(randomPosition());
+    fire = new Fire(initialFireCount, step, rowCount, columnCount);
+    firefighter = new FireFighter(fire.getPositions(), initialFirefighterCount, rowCount, columnCount);
+    firefighterPositions = firefighter.getPositions();
+    firePositions = fire.getPositions();
   }
 
-  private Position randomPosition() {
-    return new Position(randomGenerator.nextInt(rowCount), randomGenerator.nextInt(columnCount));
-  }
-
-  @Override
-  public List<ModelElement> getState(Position position) {
-    List<ModelElement> result = new ArrayList<>();
-    for (Position firefighterPosition : firefighterPositions)
-      if (firefighterPosition.equals(position))
-        result.add(ModelElement.FIREFIGHTER);
-    if (firePositions.contains(position))
-      result.add(ModelElement.FIRE);
-    return result;
-  }
 
   @Override
   public int rowCount() {
@@ -61,12 +46,17 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = new ArrayList<>();
-    firefighterUpdater.updatePositions(firePositions);
-    result.addAll(firefighterUpdater.update());
-    result.addAll(fireUpdater.update());
+    List<Position> result = fire.update();
+    result.addAll(firefighter.update(firePositions));
     step++;
     return result;
+  }
+
+  public List<BoardElement> getBoardElements(){
+    List<BoardElement> elements = new ArrayList<>();
+    elements.add(firefighter);
+    elements.add(fire);
+    return elements;
   }
 
   @Override
@@ -80,17 +70,20 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     initializeElements();
   }
 
+
+  @Override
+  public List<ModelElement> getState(Position position) {
+    List<ModelElement> result = new ArrayList<>();
+    for(BoardElement element : getBoardElements()) {
+        result.addAll(element.getState(position));
+    }
+    return result;
+  }
+
   @Override
   public void setState(List<ModelElement> state, Position position) {
-    firePositions.remove(position);
-    for (;;) {
-      if (!firefighterPositions.remove(position)) break;
-    }
-    for (ModelElement element : state) {
-      switch (element) {
-        case FIRE -> firePositions.add(position);
-        case FIREFIGHTER -> firefighterPositions.add(position);
-      }
+    for(BoardElement element : getBoardElements()) {
+        element.setState(state, position);
     }
   }
 }

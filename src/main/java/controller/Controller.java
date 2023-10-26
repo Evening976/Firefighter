@@ -13,7 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import model.Board;
-import model.ModelElement;
+import model.elements.ModelElement;
 import model.FirefighterBoard;
 import util.Position;
 import view.Grid;
@@ -82,14 +82,14 @@ public class Controller {
   }
 
   private ViewElement getViewElement(List<ModelElement> squareState) {
+
     if(squareState.contains(ModelElement.FIREFIGHTER)){
       return ViewElement.FIREFIGHTER;
     }
     if (squareState.contains(ModelElement.FIRE)){
       return ViewElement.FIRE;
     }
-    if(squareState.contains(ModelElement.CLOUD))
-    {
+    if(squareState.contains(ModelElement.CLOUD)) {
       return ViewElement.CLOUD;
     }
     return ViewElement.EMPTY;

@@ -1,38 +1,34 @@
-package model;
+package model.elements;
 
 import util.Position;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Queue;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
-public class FirefighterUpdater implements GameElement {
+import static util.RandomGenerator.randomPosition;
+
+public class FireFighter extends BoardElement {
     private List<Position> firefighterPositions;
-    private Set<Position> firePositions;
-    private final int rowCount;
-    private final int columnCount;
+    private final Set<Position> firePositions;
 
-    public FirefighterUpdater(List<Position> firefighterPositions, Set<Position> firePositions, int rowCount, int columnCount) {
+    public FireFighter(List<Position> firefighterPositions, Set<Position> firePositions, int rowCount, int columnCount) {
         this.firefighterPositions = firefighterPositions;
         this.firePositions = firePositions;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
     }
 
-    public void updatePositions(Set<Position> firePositions){
+    public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
         this.firePositions = firePositions;
+        initializeElements(initialCount);
     }
 
-    @Override
-    public List<Position> update() {
+    public List<Position> update(Set<Position> firePositions) {
         List<Position> result = new ArrayList<>();
         List<Position> firefighterNewPositions = new ArrayList<>();
         for (Position firefighterPosition : firefighterPositions) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition);
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, firePositions);
             firefighterNewPositions.add(newFirefighterPosition);
             extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
@@ -48,21 +44,12 @@ public class FirefighterUpdater implements GameElement {
         return result;
     }
 
-    public List<Position> neighbors(Position position) {
-        List<Position> list = new ArrayList<>();
-        if (position.row() > 0) list.add(new Position(position.row() - 1, position.column()));
-        if (position.column() > 0) list.add(new Position(position.row(), position.column() - 1));
-        if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.column()));
-        if (position.column() < columnCount - 1) list.add(new Position(position.row(), position.column() + 1));
-        return list;
-    }
-
 
     private void extinguish(Position position) {
         firePositions.remove(position);
     }
 
-    private Position neighborClosestToFire(Position position) {
+    private Position neighborClosestToFire(Position position, Set<Position> firePositions) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -80,5 +67,40 @@ public class FirefighterUpdater implements GameElement {
             }
         }
         return position;
+    }
+
+    @Override
+    public void initializeElements(int initialCount) {
+        firefighterPositions = new ArrayList<>();
+        for(int index = 0; index < initialCount; index++)
+            firefighterPositions.add(randomPosition(rowCount, columnCount));
+    }
+
+    @Override
+    public List<ModelElement> getState(Position position) {
+        List<ModelElement> result = new ArrayList<>();
+        for (Position firefighterPosition : firefighterPositions) {
+            if (firefighterPosition.equals(position)){
+                result.add(ModelElement.FIREFIGHTER);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void setState(List<ModelElement> state, Position position) {
+        for (;;) {
+            if (!firefighterPositions.remove(position)) break;
+        }
+        for (ModelElement element : state) {
+            if (element.equals(ModelElement.FIREFIGHTER)) {
+                firefighterPositions.add(position);
+            }
+        }
+    }
+
+    @Override
+    public List<Position> getPositions() {
+        return firefighterPositions;
     }
 }

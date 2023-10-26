@@ -1,5 +1,6 @@
 package model;
 
+import model.elements.ModelElement;
 import org.junit.jupiter.api.Test;
 import util.Position;
 
