@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class FirefighterUpdater implements GameElement {
     private List<Position> firefighterPositions;
-    private final Set<Position> firePositions;
+    private Set<Position> firePositions;
     private final int rowCount;
     private final int columnCount;
 
@@ -21,6 +21,10 @@ public class FirefighterUpdater implements GameElement {
         this.firePositions = firePositions;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
+    }
+
+    public void updatePositions(Set<Position> firePositions){
+        this.firePositions = firePositions;
     }
 
     @Override

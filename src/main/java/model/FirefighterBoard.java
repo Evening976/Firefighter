@@ -13,8 +13,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private Set<Position> firePositions;
   private int step = 0;
   private final Random randomGenerator = new Random();
-  private final GameElement firefighterUpdater;
-  private final GameElement fireUpdater;
+  private final FirefighterUpdater firefighterUpdater;
+  private final FireUpdater fireUpdater;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount) {
     this.columnCount = columnCount;
@@ -62,6 +62,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
   public List<Position> updateToNextGeneration() {
     List<Position> result = new ArrayList<>();
+    firefighterUpdater.updatePositions(firePositions);
     result.addAll(firefighterUpdater.update());
     result.addAll(fireUpdater.update());
     step++;

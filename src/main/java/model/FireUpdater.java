@@ -40,7 +40,6 @@ class FireUpdater implements GameElement {
             result.addAll(newFirePositions);
         }
         return result;
-
     }
 
 }
