@@ -2,9 +2,15 @@ package model;
 
 import util.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Set;
 
-class FirefighterUpdater {
+public class FirefighterUpdater implements GameElement {
     private List<Position> firefighterPositions;
     private final Set<Position> firePositions;
     private final int rowCount;
@@ -17,7 +23,28 @@ class FirefighterUpdater {
         this.columnCount = columnCount;
     }
 
-    private List<Position> neighbors(Position position) {
+    @Override
+    public List<Position> update() {
+        List<Position> result = new ArrayList<>();
+        List<Position> firefighterNewPositions = new ArrayList<>();
+        for (Position firefighterPosition : firefighterPositions) {
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition);
+            firefighterNewPositions.add(newFirefighterPosition);
+            extinguish(newFirefighterPosition);
+            result.add(firefighterPosition);
+            result.add(newFirefighterPosition);
+            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
+                    .filter(firePositions::contains)
+                    .toList();
+            for (Position firePosition : neighborFirePositions)
+                extinguish(firePosition);
+            result.addAll(neighborFirePositions);
+        }
+        firefighterPositions = firefighterNewPositions;
+        return result;
+    }
+
+    public List<Position> neighbors(Position position) {
         List<Position> list = new ArrayList<>();
         if (position.row() > 0) list.add(new Position(position.row() - 1, position.column()));
         if (position.column() > 0) list.add(new Position(position.row(), position.column() - 1));
@@ -25,6 +52,7 @@ class FirefighterUpdater {
         if (position.column() < columnCount - 1) list.add(new Position(position.row(), position.column() + 1));
         return list;
     }
+
 
     private void extinguish(Position position) {
         firePositions.remove(position);
@@ -49,26 +77,4 @@ class FirefighterUpdater {
         }
         return position;
     }
-
-
-    public List<Position> update() {
-        List<Position> result = new ArrayList<>();
-        List<Position> firefighterNewPositions = new ArrayList<>();
-        for (Position firefighterPosition : firefighterPositions) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition);
-            firefighterNewPositions.add(newFirefighterPosition);
-            extinguish(newFirefighterPosition);
-            result.add(firefighterPosition);
-            result.add(newFirefighterPosition);
-            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
-                    .filter(firePositions::contains).toList();
-            for(Position firePosition : neighborFirePositions)
-                extinguish(firePosition);
-            result.addAll(neighborFirePositions);
-        }
-        firefighterPositions = firefighterNewPositions;
-        return result;
-    }
-
 }
-

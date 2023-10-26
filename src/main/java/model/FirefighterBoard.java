@@ -13,8 +13,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private Set<Position> firePositions;
   private int step = 0;
   private final Random randomGenerator = new Random();
-  private final FirefighterUpdater firefighterUpdater;
-  private final FireUpdater fireUpdater;
+  private final GameElement firefighterUpdater;
+  private final GameElement fireUpdater;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount) {
     this.columnCount = columnCount;
