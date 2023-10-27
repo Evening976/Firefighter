@@ -49,6 +49,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     List<Position> result = fire.update();
     result.addAll(firefighter.update(firePositions));
     step++;
+    fire.updateStep(step);
     return result;
   }
 
@@ -85,5 +86,26 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     for(BoardElement element : getBoardElements()) {
         element.setState(state, position);
     }
+  }
+
+  public void printBoard(){
+    for(int i = 0; i < rowCount; i++){
+      for(int j = 0; j < columnCount; j++){
+        Position position = new Position(i, j);
+        List<ModelElement> state = getState(position);
+        if(state.contains(ModelElement.FIRE)){
+          System.out.print("[F]");
+        } else if(state.contains(ModelElement.FIREFIGHTER)){
+          System.out.print("[P]");
+        } else {
+          System.out.print("[ ]");
+        }
+      }
+      System.out.println();
+    }
+  }
+
+  public Set<Position> getFirePositions(){
+    return firePositions;
   }
 }

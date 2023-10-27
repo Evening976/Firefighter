@@ -25,6 +25,10 @@ public class Fire extends BoardElement {
         initializeElements(initialCount);
     }
 
+    public void updateStep(int step){
+        this.step = step;
+    }
+
 
     public List<Position> update() {
         List<Position> result = new ArrayList<>();
