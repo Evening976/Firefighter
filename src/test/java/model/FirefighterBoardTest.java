@@ -61,8 +61,25 @@ public class FirefighterBoardTest {
       board.updateToNextGeneration();
       board.updateToNextGeneration();
       assertThat(board.getFirePositions().isEmpty());
-
-
     }
+
+    @Test
+    void testCloud(){
+        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0);
+        Position p1 = new Position(1,2);
+        Position p2 = new Position(3,2);
+        board.setState(List.of(ModelElement.FIRE), p1);
+        board.setState(List.of(ModelElement.CLOUD ), p2);
+        for (int i = 0; i < 5; i++) {
+            board.updateToNextGeneration();
+            board.printBoard();
+            System.out.println("_______");
+            if(i == 2){
+              board.setState(List.of(ModelElement.CLOUD), new Position(0,2));
+            }
+        }
+    }
+
+
 
 }

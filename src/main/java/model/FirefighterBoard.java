@@ -1,9 +1,6 @@
 package model;
 
-import model.elements.BoardElement;
-import model.elements.Fire;
-import model.elements.FireFighter;
-import model.elements.ModelElement;
+import model.elements.*;
 import util.Position;
 
 import java.util.*;
@@ -13,23 +10,28 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final int rowCount;
   private final int initialFireCount;
   private final int initialFirefighterCount;
+  private final int initialCloudCount;
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
   private int step = 0;
   private FireFighter firefighter;
   private Fire fire;
+  private Cloud cloud;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount) {
     this.columnCount = columnCount;
     this.rowCount = rowCount;
     this.initialFireCount = initialFireCount;
     this.initialFirefighterCount = initialFirefighterCount;
+    this.initialCloudCount = initialCloudCount;
+
     initializeElements();
   }
 
   public void initializeElements() {
     fire = new Fire(initialFireCount, step, rowCount, columnCount);
     firefighter = new FireFighter(fire.getPositions(), initialFirefighterCount, rowCount, columnCount);
+    cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
     firefighterPositions = firefighter.getPositions();
     firePositions = fire.getPositions();
   }
@@ -48,6 +50,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   public List<Position> updateToNextGeneration() {
     List<Position> result = fire.update();
     result.addAll(firefighter.update(firePositions));
+    result.addAll(cloud.update(firePositions));
     step++;
     fire.updateStep(step);
     return result;
@@ -57,6 +60,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     List<BoardElement> elements = new ArrayList<>();
     elements.add(firefighter);
     elements.add(fire);
+    elements.add(cloud);
     return elements;
   }
 
@@ -95,8 +99,10 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
         List<ModelElement> state = getState(position);
         if(state.contains(ModelElement.FIRE)){
           System.out.print("[F]");
-        } else if(state.contains(ModelElement.FIREFIGHTER)){
+        } else if(state.contains(ModelElement.FIREFIGHTER)) {
           System.out.print("[P]");
+        } else if(state.contains(ModelElement.CLOUD)) {
+          System.out.print("[C]");
         } else {
           System.out.print("[ ]");
         }
