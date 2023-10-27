@@ -30,5 +30,31 @@ public class FireFighterPerson extends FireFighter{
         return position;
     }
 
+    @Override
+    public List<ModelElement> getState(Position position) {
+        List<ModelElement> result = new ArrayList<>();
+        List<Position> firefighterPositions = getPositions();
+        for (Position firefighterPosition : firefighterPositions) {
+            if (firefighterPosition.equals(position)){
+                result.add(ModelElement.FIREFIGHTERPERSON);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void setState(List<ModelElement> state, Position position) {
+        List<Position> firefighterPositions = getPositions();
+        for (;;) {
+            if (!firefighterPositions.remove(position)) break;
+        }
+        for (ModelElement element : state) {
+            if (element.equals(ModelElement.FIREFIGHTERPERSON)) {
+                firefighterPositions.add(position);
+            }
+        }
+    }
+
+
 
 }

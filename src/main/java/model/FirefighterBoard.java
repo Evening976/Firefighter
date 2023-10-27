@@ -106,7 +106,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
         List<ModelElement> state = getState(position);
         if(state.contains(ModelElement.FIRE)){
           System.out.print("[F]");
-        } else if(state.contains(ModelElement.FIREFIGHTER)) {
+        } else if(state.contains(ModelElement.FIREFIGHTERPERSON)) {
           System.out.print("[P]");
         } else if(state.contains(ModelElement.CLOUD)) {
           System.out.print("[C]");

@@ -56,28 +56,9 @@ public abstract class FireFighter extends BoardElement {
             firefighterPositions.add(randomPosition(rowCount, columnCount));
     }
 
-    @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
-        for (Position firefighterPosition : firefighterPositions) {
-            if (firefighterPosition.equals(position)){
-                result.add(ModelElement.FIREFIGHTER);
-            }
-        }
-        return result;
-    }
 
-    @Override
-    public void setState(List<ModelElement> state, Position position) {
-        for (;;) {
-            if (!firefighterPositions.remove(position)) break;
-        }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.FIREFIGHTER)) {
-                firefighterPositions.add(position);
-            }
-        }
-    }
+    public abstract List<ModelElement> getState(Position position);
+    public abstract void setState(List<ModelElement> state, Position position);
 
     @Override
     public List<Position> getPositions() {

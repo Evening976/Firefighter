@@ -35,6 +35,7 @@ public class FireTruck extends FireFighter{
                     return current;
                 }
 
+                assert current != null;
                 for (Position adjacent : neighbors(current)) {
                     if (seen.contains(adjacent)) continue;
                     toVisit.add(adjacent);
@@ -46,6 +47,31 @@ public class FireTruck extends FireFighter{
         }
 
         return firstMove.get(toVisit.poll());
+    }
+
+    @Override
+    public List<ModelElement> getState(Position position) {
+        List<ModelElement> result = new ArrayList<>();
+        List<Position> firefighterPositions = getPositions();
+        for (Position firefighterPosition : firefighterPositions) {
+            if (firefighterPosition.equals(position)){
+                result.add(ModelElement.FIRETRUCK);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void setState(List<ModelElement> state, Position position) {
+        List<Position> firefighterPositions = getPositions();
+        for (;;) {
+            if (!firefighterPositions.remove(position)) break;
+        }
+        for (ModelElement element : state) {
+            if (element.equals(ModelElement.FIRETRUCK)) {
+                firefighterPositions.add(position);
+            }
+        }
     }
 
 }

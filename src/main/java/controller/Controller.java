@@ -83,8 +83,11 @@ public class Controller {
 
   private ViewElement getViewElement(List<ModelElement> squareState) {
 
-    if(squareState.contains(ModelElement.FIREFIGHTER)){
-      return ViewElement.FIREFIGHTER;
+    if(squareState.contains(ModelElement.FIREFIGHTERPERSON)){
+      return ViewElement.FIREFIGHTERPERSON;
+    }
+    if(squareState.contains(ModelElement.FIRETRUCK)){
+      return ViewElement.FIRETRUCK;
     }
     if (squareState.contains(ModelElement.FIRE)){
       return ViewElement.FIRE;

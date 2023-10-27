@@ -43,10 +43,10 @@ public class FirefighterBoardTest {
       Position p1 = new Position(1,2);
       Position p2 = new Position(5,2);
       board.setState(List.of(ModelElement.FIRE), p1);
-      board.setState(List.of(ModelElement.FIREFIGHTER), p2);
+      board.setState(List.of(ModelElement.FIREFIGHTERPERSON), p2);
       board.updateToNextGeneration();
       assertThat(board.getState(p1)).containsExactly(ModelElement.FIRE);
-      assertThat(board.getState(new Position(4,2))).containsExactly(ModelElement.FIREFIGHTER);
+      assertThat(board.getState(new Position(4,2))).containsExactly(ModelElement.FIREFIGHTERPERSON);
       board.updateToNextGeneration();
       assertThat(board.getState(new Position(3,2))).containsExactly(ModelElement.FIRE);
   }
@@ -57,7 +57,7 @@ public class FirefighterBoardTest {
       Position p1 = new Position(1,2);
       Position p2 = new Position(3,2);
       board.setState(List.of(ModelElement.FIRE), p1);
-      board.setState(List.of(ModelElement.FIREFIGHTER), p2);
+      board.setState(List.of(ModelElement.FIREFIGHTERPERSON), p2);
       board.updateToNextGeneration();
       board.updateToNextGeneration();
       assertThat(board.getFirePositions().isEmpty());
@@ -93,6 +93,15 @@ public class FirefighterBoardTest {
             System.out.println("_______");
 
         }
+    }
+
+    @Test
+    void testFireTruckInit(){
+        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
+        Position position = new Position(1,2);
+        assertThat(board.getState(position)).isEmpty();
+        board.setState(List.of(ModelElement.FIRETRUCK), position);
+        assertThat(board.getState(position)).containsExactly(ModelElement.FIRETRUCK);
     }
 
 
