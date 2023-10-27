@@ -6,7 +6,7 @@ import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public class FireFighter extends BoardElement {
+public abstract class FireFighter extends BoardElement {
     private List<Position> firefighterPositions;
     private final Set<Position> firePositions;
 
@@ -43,31 +43,11 @@ public class FireFighter extends BoardElement {
         firefighterPositions = firefighterNewPositions;
         return result;
     }
-
-
     private void extinguish(Position position) {
         firePositions.remove(position);
     }
 
-    private Position neighborClosestToFire(Position position, Set<Position> firePositions) {
-        Set<Position> seen = new HashSet<>();
-        HashMap<Position, Position> firstMove = new HashMap<>();
-        Queue<Position> toVisit = new LinkedList<>(neighbors(position));
-        for (Position initialMove : toVisit)
-            firstMove.put(initialMove, initialMove);
-        while (!toVisit.isEmpty()) {
-            Position current = toVisit.poll();
-            if (firePositions.contains(current))
-                return firstMove.get(current);
-            for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent)) continue;
-                toVisit.add(adjacent);
-                seen.add(adjacent);
-                firstMove.put(adjacent, firstMove.get(current));
-            }
-        }
-        return position;
-    }
+    public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions);
 
     @Override
     public void initializeElements(int initialCount) {
@@ -103,4 +83,5 @@ public class FireFighter extends BoardElement {
     public List<Position> getPositions() {
         return firefighterPositions;
     }
+
 }

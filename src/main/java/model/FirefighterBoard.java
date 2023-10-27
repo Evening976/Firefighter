@@ -9,20 +9,24 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final int columnCount;
   private final int rowCount;
   private final int initialFireCount;
-  private final int initialFirefighterCount;
+  private final int initialFireFighterPerson;
+  private final int initialFireTruckCount;
+
   private final int initialCloudCount;
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
   private int step = 0;
   private FireFighter firefighter;
+  private FireTruck fireTruck;
   private Fire fire;
   private Cloud cloud;
 
-  public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount) {
+  public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFireFighterPerson, int initialCloudCount, int initialFireTruckCount) {
     this.columnCount = columnCount;
     this.rowCount = rowCount;
     this.initialFireCount = initialFireCount;
-    this.initialFirefighterCount = initialFirefighterCount;
+    this.initialFireFighterPerson = initialFireFighterPerson;
+    this.initialFireTruckCount = initialFireTruckCount;
     this.initialCloudCount = initialCloudCount;
 
     initializeElements();
@@ -30,7 +34,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
   public void initializeElements() {
     fire = new Fire(initialFireCount, step, rowCount, columnCount);
-    firefighter = new FireFighter(fire.getPositions(), initialFirefighterCount, rowCount, columnCount);
+    firefighter = new FireFighterPerson(fire.getPositions(), initialFireFighterPerson, rowCount, columnCount);
+    fireTruck = new FireTruck(fire.getPositions(), initialFireTruckCount, rowCount, columnCount);
     cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
     firefighterPositions = firefighter.getPositions();
     firePositions = fire.getPositions();
@@ -49,6 +54,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
   public List<Position> updateToNextGeneration() {
     List<Position> result = fire.update();
+    result.addAll(fireTruck.update(firePositions));
     result.addAll(firefighter.update(firePositions));
     result.addAll(cloud.update(firePositions));
     step++;
@@ -59,6 +65,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   public List<BoardElement> getBoardElements(){
     List<BoardElement> elements = new ArrayList<>();
     elements.add(firefighter);
+    elements.add(fireTruck);
     elements.add(fire);
     elements.add(cloud);
     return elements;
@@ -103,6 +110,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
           System.out.print("[P]");
         } else if(state.contains(ModelElement.CLOUD)) {
           System.out.print("[C]");
+        } else if(state.contains(ModelElement.FIRETRUCK)){
+            System.out.print("[T]");
         } else {
           System.out.print("[ ]");
         }

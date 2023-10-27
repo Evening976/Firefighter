@@ -1,5 +1,5 @@
 package model.elements;
 
 public enum ModelElement {
-  FIREFIGHTER, CLOUD, FIRE
+  FIREFIGHTER, CLOUD, FIRE, FIRETRUCK
 }
