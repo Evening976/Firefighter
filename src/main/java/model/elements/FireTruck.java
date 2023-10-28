@@ -12,42 +12,31 @@ public class FireTruck extends FireFighter{
 
     @Override
     public Position neighborClosestToFire(Position position, Set<Position> firePositions) {
+        Position step1 = Steps(position, firePositions);
+        return Steps(step1, firePositions);
+    }
+
+    public Position Steps(Position position, Set<Position> firePositions) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
         for (Position initialMove : toVisit)
             firstMove.put(initialMove, initialMove);
-
-        int stepsRemaining = 2;
-
         while (!toVisit.isEmpty()) {
-            int firstToVisist = toVisit.size();
-
-            if (stepsRemaining == 0) {
-                return firstMove.get(toVisit.poll());
+            Position current = toVisit.poll();
+            if (firePositions.contains(current))
+                return firstMove.get(current);
+            for (Position adjacent : neighbors(current)) {
+                if (seen.contains(adjacent)) continue;
+                toVisit.add(adjacent);
+                seen.add(adjacent);
+                firstMove.put(adjacent, firstMove.get(current));
             }
-
-            for (int i = 0; i < firstToVisist; i++) {
-                Position current = toVisit.poll();
-
-                if (firePositions.contains(current)) {
-                    stepsRemaining = 0;
-                    return current;
-                }
-
-                assert current != null;
-                for (Position adjacent : neighbors(current)) {
-                    if (seen.contains(adjacent)) continue;
-                    toVisit.add(adjacent);
-                    seen.add(adjacent);
-                    firstMove.put(adjacent, firstMove.get(current));
-                }
-            }
-            stepsRemaining--;
         }
-
-        return firstMove.get(toVisit.poll());
+        return position;
     }
+
+
 
     @Override
     public List<ModelElement> getState(Position position) {
