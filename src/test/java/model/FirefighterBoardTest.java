@@ -104,6 +104,14 @@ public class FirefighterBoardTest {
         assertThat(board.getState(position)).containsExactly(ModelElement.FIRETRUCK);
     }
 
+    @Test
+    void testTerrainGen(){
+        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
+        board.printBoard();
+        board.printTerrain();
+
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package model;
 
 import model.elements.*;
+import model.terrain.Terrain;
 import util.Position;
 
 import java.util.*;
@@ -15,6 +16,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final int initialCloudCount;
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
+  private Terrain terrain;
   private int step = 0;
   private FireFighter firefighter;
   private FireTruck fireTruck;
@@ -31,6 +33,9 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
     initializeElements();
   }
+  public void printTerrain(){
+    System.out.println(terrain.toString());
+  }
 
   public void initializeElements() {
     fire = new Fire(initialFireCount, step, rowCount, columnCount);
@@ -39,6 +44,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
     firefighterPositions = firefighter.getPositions();
     firePositions = fire.getPositions();
+    terrain = new Terrain(rowCount, columnCount);
   }
 
 
