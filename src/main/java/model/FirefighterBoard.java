@@ -1,6 +1,7 @@
 package model;
 
 import model.elements.*;
+import model.terrain.ModelTerrain;
 import model.terrain.Terrain;
 import util.Position;
 
@@ -98,6 +99,10 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     return result;
   }
 
+  public ModelTerrain getTerrain(Position position) {
+    return terrain.getTerrainType(position);
+  }
+
   @Override
   public void setState(List<ModelElement> state, Position position) {
     for(BoardElement element : getBoardElements()) {
@@ -124,6 +129,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
       }
       System.out.println();
     }
+    System.out.println(terrain.toString());
   }
 
   public Set<Position> getFirePositions(){

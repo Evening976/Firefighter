@@ -1,5 +1,7 @@
 package model.terrain;
 
+import util.Position;
+
 import java.util.Random;
 
 public class Terrain {
@@ -32,9 +34,10 @@ public class Terrain {
         terrainGrid[row][col] = terrainType;
     }
 
-    public ModelTerrain getTerrainType(int row, int col) {
-        return terrainGrid[row][col];
+    public ModelTerrain getTerrainType(Position position) {
+        return terrainGrid[position.row()][position.column()];
     }
+
 
     private void initializeTerrain() {
         Random random = new Random();
