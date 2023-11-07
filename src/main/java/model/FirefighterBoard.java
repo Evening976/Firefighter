@@ -17,12 +17,13 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final int initialCloudCount;
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
-  private Terrain terrain;
   private int step = 0;
   private FireFighter firefighter;
   private FireTruck fireTruck;
   private Fire fire;
   private Cloud cloud;
+  private Road road;
+  private Mountain mountain;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFireFighterPerson, int initialCloudCount, int initialFireTruckCount) {
     this.columnCount = columnCount;
@@ -34,9 +35,6 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
     initializeElements();
   }
-  public void printTerrain(){
-    System.out.println(terrain.toString());
-  }
 
   public void initializeElements() {
     fire = new Fire(initialFireCount, step, rowCount, columnCount);
@@ -45,7 +43,9 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
     firefighterPositions = firefighter.getPositions();
     firePositions = fire.getPositions();
-    terrain = new Terrain(rowCount, columnCount);
+    road = new Road(new ArrayList<>(), rowCount, columnCount);
+    mountain = new Mountain(new ArrayList<>(), rowCount, columnCount);
+
   }
 
 
@@ -75,6 +75,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     elements.add(fireTruck);
     elements.add(fire);
     elements.add(cloud);
+    elements.add(road);
+    elements.add(mountain);
     return elements;
   }
 
@@ -99,10 +101,6 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     return result;
   }
 
-  public ModelTerrain getTerrain(Position position) {
-    return terrain.getTerrainType(position);
-  }
-
   @Override
   public void setState(List<ModelElement> state, Position position) {
     for(BoardElement element : getBoardElements()) {
@@ -123,13 +121,16 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
           System.out.print("[C]");
         } else if(state.contains(ModelElement.FIRETRUCK)){
             System.out.print("[T]");
+        } else if(state.contains(ModelElement.MOUNTAIN)){
+            System.out.print("[M]");
+        } else if(state.contains(ModelElement.ROAD)){
+            System.out.print("[R]");
         } else {
           System.out.print("[ ]");
         }
       }
       System.out.println();
     }
-    System.out.println(terrain.toString());
   }
 
   public Set<Position> getFirePositions(){
