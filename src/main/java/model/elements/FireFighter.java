@@ -24,11 +24,11 @@ public abstract class FireFighter extends BoardElement {
         initializeElements(initialCount);
     }
 
-    public List<Position> update(Set<Position> firePositions) {
+    public List<Position> update(Set<Position> firePositions, Road road, Mountain mountain) {
         List<Position> result = new ArrayList<>();
         List<Position> firefighterNewPositions = new ArrayList<>();
         for (Position firefighterPosition : firefighterPositions) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, firePositions);
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, firePositions, road, mountain);
             firefighterNewPositions.add(newFirefighterPosition);
             extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
@@ -47,7 +47,7 @@ public abstract class FireFighter extends BoardElement {
         firePositions.remove(position);
     }
 
-    public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions);
+    public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain);
 
     @Override
     public void initializeElements(int initialCount) {

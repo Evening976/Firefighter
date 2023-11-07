@@ -11,12 +11,12 @@ public class FireTruck extends FireFighter{
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions) {
-        Position step1 = Steps(position, firePositions);
-        return Steps(step1, firePositions);
+    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
+        Position step1 = Steps(position, firePositions, road, mountain);
+        return Steps(step1, firePositions, road, mountain);
     }
 
-    public Position Steps(Position position, Set<Position> firePositions) {
+    public Position Steps(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -27,7 +27,7 @@ public class FireTruck extends FireFighter{
             if (firePositions.contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent)) continue;
+                if (seen.contains(adjacent) || (!road.isCrossable(adjacent) && !mountain.isCrossable(adjacent))) continue;
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));
@@ -35,6 +35,7 @@ public class FireTruck extends FireFighter{
         }
         return position;
     }
+
 
 
 

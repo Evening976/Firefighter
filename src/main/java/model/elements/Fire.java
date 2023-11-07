@@ -30,18 +30,24 @@ public class Fire extends BoardElement {
     }
 
 
-    public List<Position> update() {
+    public List<Position> update(Road road, Mountain mountain) {
         List<Position> result = new ArrayList<>();
         if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : firePositions) {
-                newFirePositions.addAll(neighbors(fire));
+                List<Position> fireNeighbors = neighbors(fire);
+                for (Position neighbor : fireNeighbors) {
+                    if (road.fireCanSpread(neighbor) || mountain.fireCanSpread(neighbor)) {
+                        newFirePositions.add(neighbor);
+                    }
+                }
             }
             firePositions.addAll(newFirePositions);
             result.addAll(newFirePositions);
         }
         return result;
     }
+
 
     @Override
     public Set<Position> getPositions() {

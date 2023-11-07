@@ -60,9 +60,9 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fire.update();
-    result.addAll(fireTruck.update(firePositions));
-    result.addAll(firefighter.update(firePositions));
+    List<Position> result = fire.update(road, mountain);
+    result.addAll(fireTruck.update(firePositions, road, mountain));
+    result.addAll(firefighter.update(firePositions, road, mountain));
     result.addAll(cloud.update(firePositions));
     step++;
     fire.updateStep(step);
