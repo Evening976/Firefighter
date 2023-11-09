@@ -11,15 +11,14 @@ public class Mountain extends BoardElement{
 
 
     public Mountain(List<Position> mountainPositions, int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         this.mountainPositions = mountainPositions;
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
         initializeElements(getInitCount());
     }
 
     public int getInitCount(){
         int totalCells = rowCount * columnCount;
-        return (int) (totalCells * 0.3);
+        return (int) (totalCells * 0.2);
     }
 
 

@@ -131,6 +131,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
       }
       System.out.println();
     }
+    System.out.println("___________________");
   }
 
   public Set<Position> getFirePositions(){

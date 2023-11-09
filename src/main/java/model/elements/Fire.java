@@ -11,16 +11,14 @@ public class Fire extends BoardElement {
     private int step;
 
     public Fire(Set<Position> firePositions, int step, int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         this.firePositions = firePositions;
         this.step = step;
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
 
     }
 
     public Fire(int initialCount, int step, int rowCount, int columnCount){
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
+        super(rowCount, columnCount);
         this.step = step;
         initializeElements(initialCount);
     }
@@ -37,7 +35,7 @@ public class Fire extends BoardElement {
             for (Position fire : firePositions) {
                 List<Position> fireNeighbors = neighbors(fire);
                 for (Position neighbor : fireNeighbors) {
-                    if (road.fireCanSpread(neighbor) || mountain.fireCanSpread(neighbor)) {
+                    if (road.fireCanSpread(neighbor) && mountain.fireCanSpread(neighbor)) {
                         newFirePositions.add(neighbor);
                     }
                 }

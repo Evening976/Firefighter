@@ -15,9 +15,8 @@ public class Cloud extends BoardElement{
     private final Set<Position> firePositions;
 
     public Cloud(Set<Position> firePositions, int initialCount,  int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         this.firePositions = firePositions;
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
         initializeElements(initialCount);
     }
 

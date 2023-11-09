@@ -10,29 +10,38 @@ public class FireFighterPerson extends FireFighter{
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions,Road road, Mountain mountain) {
-        Set<Position> seen = new HashSet<>();
-        HashMap<Position, Position> firstMove = new HashMap<>();
-        Queue<Position> toVisit = new LinkedList<>(neighbors(position));
+    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
+        if (position == null) {
+            System.out.println("Error: Null position passed to neighborClosestToFire");
+            return position;
+        }
 
-        for (Position initialMove : toVisit)
-            firstMove.put(initialMove, initialMove);
+        Set<Position> seen = new HashSet<>();
+        Queue<Position> toVisit = new LinkedList<>();
+        HashMap<Position, Position> firstMove = new HashMap<>();
+
+        toVisit.add(position);
+        firstMove.put(position, position);
 
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (firePositions.contains(current))
+
+            if (firePositions.contains(current)) {
                 return firstMove.get(current);
+            }
 
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || !mountain.isCrossable(adjacent)) continue;
-                toVisit.add(adjacent);
-                seen.add(adjacent);
-                firstMove.put(adjacent, firstMove.get(current));
+                if (!seen.contains(adjacent) && mountain.isCrossable(adjacent) && road.isCrossable(adjacent)) {
+                    toVisit.add(adjacent);
+                    seen.add(adjacent);
+                    firstMove.put(adjacent, firstMove.get(current));
+                }
             }
         }
 
         return position;
     }
+
 
     @Override
     public List<ModelElement> getState(Position position) {
@@ -58,7 +67,4 @@ public class FireFighterPerson extends FireFighter{
             }
         }
     }
-
-
-
 }

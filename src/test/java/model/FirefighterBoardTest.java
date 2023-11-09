@@ -105,10 +105,27 @@ public class FirefighterBoardTest {
     }
 
     @Test
-    void testTerrainGen(){
+    void testFireSpread(){
         FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
         board.printBoard();
+        board.setState(List.of(ModelElement.MOUNTAIN), new Position(1,1));
+        board.setState(List.of(ModelElement.FIRE), new Position(1,2));
+        board.printBoard();
+        board.updateToNextGeneration();
+        board.printBoard();
+    }
 
+    @Test
+    void testFireFighterSpread(){
+        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
+        board.printBoard();
+        board.setState(List.of(ModelElement.MOUNTAIN), new Position(1,1));
+        board.setState(List.of(ModelElement.FIRE), new Position(1,2));
+        board.setState(List.of(ModelElement.MOUNTAIN), new Position(2,2));
+        board.setState(List.of(ModelElement.FIREFIGHTERPERSON), new Position(3,2));
+        board.printBoard();
+        board.updateToNextGeneration();
+        board.printBoard();
     }
 
 

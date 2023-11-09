@@ -10,15 +10,14 @@ public class Road extends BoardElement{
     private final List<Position> roadPositions;
 
     public Road(List<Position> roadPositions, int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         this.roadPositions = roadPositions;
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
         initializeElements(getInitCount());
     }
 
     public int getInitCount(){
         int totalCells = rowCount * columnCount;
-        return (int) (totalCells * 0.3);
+        return (int) (totalCells * 0.2);
     }
 
 

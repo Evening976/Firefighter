@@ -11,15 +11,13 @@ public abstract class FireFighter extends BoardElement {
     private final Set<Position> firePositions;
 
     public FireFighter(List<Position> firefighterPositions, Set<Position> firePositions, int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         this.firefighterPositions = firefighterPositions;
         this.firePositions = firePositions;
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
     }
 
     public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
+        super(rowCount, columnCount);
         this.firePositions = firePositions;
         initializeElements(initialCount);
     }
