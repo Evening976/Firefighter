@@ -101,6 +101,9 @@ public class Controller {
     if(squareState.contains(ModelElement.MOUNTAIN)) {
       return ViewElement.MOUNTAIN;
     }
+    if(squareState.contains(ModelElement.ROCK)) {
+      return ViewElement.ROCK;
+    }
     return ViewElement.EMPTY;
   }
 

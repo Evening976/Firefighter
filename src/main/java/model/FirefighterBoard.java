@@ -1,8 +1,6 @@
 package model;
 
 import model.elements.*;
-import model.terrain.ModelTerrain;
-import model.terrain.Terrain;
 import util.Position;
 
 import java.util.*;
@@ -24,6 +22,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private Cloud cloud;
   private Road road;
   private Mountain mountain;
+  private Rock rock;
 
   public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFireFighterPerson, int initialCloudCount, int initialFireTruckCount) {
     this.columnCount = columnCount;
@@ -45,6 +44,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     firePositions = fire.getPositions();
     road = new Road(new ArrayList<>(), rowCount, columnCount);
     mountain = new Mountain(new ArrayList<>(), rowCount, columnCount);
+    rock = new Rock(new ArrayList<>(), rowCount, columnCount);
 
   }
 
@@ -77,6 +77,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     elements.add(cloud);
     elements.add(road);
     elements.add(mountain);
+    elements.add(rock);
     return elements;
   }
 
@@ -125,7 +126,10 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
             System.out.print("[M]");
         } else if(state.contains(ModelElement.ROAD)){
             System.out.print("[R]");
-        } else {
+        } else if (state.contains(ModelElement.ROCK)){
+            System.out.print("[X]");
+        }
+        else {
           System.out.print("[ ]");
         }
       }

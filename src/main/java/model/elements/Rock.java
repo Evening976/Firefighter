@@ -6,32 +6,32 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Mountain extends BoardElement{
-    private final List<Position> mountainPositions;
+public class Rock extends BoardElement{
+    private final List<Position> rockPositions;
 
 
-    public Mountain(List<Position> mountainPositions, int rowCount, int columnCount) {
+    public Rock(List<Position> rockPositions, int rowCount, int columnCount) {
         super(rowCount, columnCount);
-        this.mountainPositions = mountainPositions;
+        this.rockPositions = rockPositions;
         initializeElements(getInitCount());
     }
 
     public int getInitCount(){
         int totalCells = rowCount * columnCount;
-        return (int) (totalCells * 0.2);
+        return (int) (totalCells * 0.05);
     }
 
 
     @Override
     public Collection<Position> getPositions() {
-        return mountainPositions;
+        return rockPositions;
     }
 
     @Override
     public void initializeElements(int initialCount) {
-        mountainPositions.clear();
+        rockPositions.clear();
         for(int index = 0; index < initialCount; index++)
-            mountainPositions.add(new Position((int) (Math.random() * rowCount), (int) (Math.random() * columnCount)));
+            rockPositions.add(new Position((int) (Math.random() * rowCount), (int) (Math.random() * columnCount)));
     }
 
 
@@ -41,7 +41,7 @@ public class Mountain extends BoardElement{
         List<Position> mountainPositions = (List<Position>) getPositions();
         for (Position mountainPosition : mountainPositions) {
             if (mountainPosition.equals(position)){
-                result.add(ModelElement.MOUNTAIN);
+                result.add(ModelElement.ROCK);
             }
         }
         return result;
@@ -49,25 +49,19 @@ public class Mountain extends BoardElement{
 
     @Override
     public void setState(List<ModelElement> state, Position position) {
-        List<Position> mountainPositions = (List<Position>) getPositions();
+        List<Position> rockPositions = (List<Position>) getPositions();
         for (;;) {
-            if (!mountainPositions.remove(position)) break;
+            if (!rockPositions.remove(position)) break;
         }
         for (ModelElement element : state) {
-            if (element.equals(ModelElement.MOUNTAIN)) {
-                mountainPositions.add(position);
+            if (element.equals(ModelElement.ROCK)) {
+                rockPositions.add(position);
             }
         }
     }
 
-    public boolean isMountain(Position position){
-        return mountainPositions.contains(position);
-    }
-    public boolean fireCanSpread(Position position){
-        return !mountainPositions.contains(position);
+    public boolean isRock(Position position){
+        return rockPositions.contains(position);
     }
 
-    public boolean isCrossable(Position position){
-        return !mountainPositions.contains(position);
-    }
 }

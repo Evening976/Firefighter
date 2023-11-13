@@ -2,21 +2,22 @@ package model.elements;
 
 import util.Position;
 
+import java.time.Month;
 import java.util.*;
 
-public class FireTruck extends FireFighter{
+public class FireTruck extends FireFighter {
 
-    public FireTruck(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
-        super( firePositions, initialCount, rowCount, columnCount);
+    public FireTruck(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
+        super(firePositions, initialCount, rowCount, columnCount);
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
-        Position step1 = Steps(position, firePositions, road, mountain);
-        return Steps(step1, firePositions, road, mountain);
+    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road,  Mountain mountain) {
+        Position step1 = steps(position, firePositions, road, mountain);
+        return steps(step1, firePositions, road, mountain);
     }
 
-    public Position Steps(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
+    private Position steps(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -27,7 +28,9 @@ public class FireTruck extends FireFighter{
             if (firePositions.contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || (!road.isCrossable(adjacent) && !mountain.isCrossable(adjacent))) continue;
+                if (seen.contains(adjacent) || mountain.isMountain(position)) {
+                    continue;
+                }
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));
@@ -35,9 +38,6 @@ public class FireTruck extends FireFighter{
         }
         return position;
     }
-
-
-
 
     @Override
     public List<ModelElement> getState(Position position) {
@@ -51,6 +51,7 @@ public class FireTruck extends FireFighter{
         return result;
     }
 
+
     @Override
     public void setState(List<ModelElement> state, Position position) {
         List<Position> firefighterPositions = getPositions();
@@ -63,5 +64,4 @@ public class FireTruck extends FireFighter{
             }
         }
     }
-
 }

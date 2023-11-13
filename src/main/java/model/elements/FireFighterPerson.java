@@ -10,35 +10,23 @@ public class FireFighterPerson extends FireFighter{
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
-        if (position == null) {
-            System.out.println("Error: Null position passed to neighborClosestToFire");
-            return position;
-        }
-
+    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road,Mountain mountain) {
         Set<Position> seen = new HashSet<>();
-        Queue<Position> toVisit = new LinkedList<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
-
-        toVisit.add(position);
-        firstMove.put(position, position);
-
+        Queue<Position> toVisit = new LinkedList<>(neighbors(position));
+        for (Position initialMove : toVisit)
+            firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-
-            if (firePositions.contains(current)) {
+            if (firePositions.contains(current))
                 return firstMove.get(current);
-            }
-
             for (Position adjacent : neighbors(current)) {
-                if (!seen.contains(adjacent) && mountain.isCrossable(adjacent) && road.isCrossable(adjacent)) {
-                    toVisit.add(adjacent);
-                    seen.add(adjacent);
-                    firstMove.put(adjacent, firstMove.get(current));
-                }
+                if (seen.contains(adjacent) || mountain.isMountain(position)) continue;
+                toVisit.add(adjacent);
+                seen.add(adjacent);
+                firstMove.put(adjacent, firstMove.get(current));
             }
         }
-
         return position;
     }
 
