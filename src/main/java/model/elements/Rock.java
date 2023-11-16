@@ -6,41 +6,42 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Rock extends BoardElement{
+public class Rock extends BoardElement {
     private final List<Position> rockPositions;
-
+    private final int fireResistanceSteps;
+    private int stepsRemaining;
 
     public Rock(List<Position> rockPositions, int rowCount, int columnCount) {
         super(rowCount, columnCount);
         this.rockPositions = rockPositions;
+        this.fireResistanceSteps = 4; // Adjust this value as needed
         initializeElements(getInitCount());
     }
 
-    public int getInitCount(){
+    public int getInitCount() {
         int totalCells = rowCount * columnCount;
         return (int) (totalCells * 0.05);
     }
 
-
     @Override
-    public Collection<Position> getPositions() {
+    public List<Position> getPositions() {
         return rockPositions;
     }
 
     @Override
     public void initializeElements(int initialCount) {
         rockPositions.clear();
-        for(int index = 0; index < initialCount; index++)
+        for (int index = 0; index < initialCount; index++)
             rockPositions.add(new Position((int) (Math.random() * rowCount), (int) (Math.random() * columnCount)));
+        resetStepsRemaining();
     }
-
 
     @Override
     public List<ModelElement> getState(Position position) {
         List<ModelElement> result = new ArrayList<>();
-        List<Position> mountainPositions = (List<Position>) getPositions();
-        for (Position mountainPosition : mountainPositions) {
-            if (mountainPosition.equals(position)){
+        List<Position> rockPositions = getPositions();
+        for (Position rockPosition : rockPositions) {
+            if (rockPosition.equals(position)) {
                 result.add(ModelElement.ROCK);
             }
         }
@@ -49,8 +50,8 @@ public class Rock extends BoardElement{
 
     @Override
     public void setState(List<ModelElement> state, Position position) {
-        List<Position> rockPositions = (List<Position>) getPositions();
-        for (;;) {
+        List<Position> rockPositions = getPositions();
+        for (; ; ) {
             if (!rockPositions.remove(position)) break;
         }
         for (ModelElement element : state) {
@@ -58,10 +59,22 @@ public class Rock extends BoardElement{
                 rockPositions.add(position);
             }
         }
+        resetStepsRemaining();
     }
 
-    public boolean isRock(Position position){
+    public boolean isRock(Position position) {
         return rockPositions.contains(position);
     }
 
+    public boolean isFireResistant() {
+        return stepsRemaining > 0;
+    }
+
+    public void decrementStepsRemaining() {
+        stepsRemaining = Math.max(0, stepsRemaining - 1);
+    }
+
+    public void resetStepsRemaining() {
+        stepsRemaining = fireResistanceSteps;
+    }
 }

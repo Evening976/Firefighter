@@ -28,7 +28,7 @@ public class Fire extends BoardElement {
     }
 
 
-    public List<Position> update(Road road, Mountain mountain) {
+    public List<Position> update(Road road, Mountain mountain, Rock rock) {
         List<Position> result = new ArrayList<>();
         if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
@@ -36,7 +36,13 @@ public class Fire extends BoardElement {
                 List<Position> fireNeighbors = neighbors(fire);
                 for (Position neighbor : fireNeighbors) {
                     if (road.fireCanSpread(neighbor) && mountain.fireCanSpread(neighbor)) {
-                        newFirePositions.add(neighbor);
+                        if (rock.isRock(neighbor)) {
+                            if (!firePositions.contains(neighbor) && step % 4 == 0 && step != 0) {
+                                newFirePositions.add(neighbor);
+                            }
+                        } else {
+                            newFirePositions.add(neighbor);
+                        }
                     }
                 }
             }

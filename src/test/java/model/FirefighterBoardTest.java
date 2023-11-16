@@ -128,6 +128,21 @@ public class FirefighterBoardTest {
         board.printBoard();
     }
 
+    @Test
+    void testFireSpreadRock(){
+        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
+        board.clearBoard();
+        board.setState(List.of(ModelElement.FIRE), new Position(3,3));
+        board.setState(List.of(ModelElement.ROCK), new Position(3,2));
+        for (int i =0 ; i < 5; i++) {
+            board.updateToNextGeneration();
+            board.printBoard();
+            System.out.println("_______");
+        }
+    }
 
-
+    @Test
+    void mathTest(){
+        System.out.println(0%4);
+    }
 }

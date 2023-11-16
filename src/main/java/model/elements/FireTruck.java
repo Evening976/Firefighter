@@ -25,7 +25,7 @@ public class FireTruck extends FireFighter {
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (firePositions.contains(current))
+            if (firePositions.contains(current) && !mountain.isMountain(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
                 if (seen.contains(adjacent) || mountain.isMountain(position)) {

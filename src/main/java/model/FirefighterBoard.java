@@ -60,7 +60,7 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fire.update(road, mountain);
+    List<Position> result = fire.update(road, mountain, rock);
     result.addAll(fireTruck.update(firePositions, road, mountain));
     result.addAll(firefighter.update(firePositions, road, mountain));
     result.addAll(cloud.update(firePositions));
@@ -140,5 +140,20 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
   public Set<Position> getFirePositions(){
     return firePositions;
+  }
+
+  public void clearBoard(){
+    firePositions.clear();
+    firefighterPositions.clear();
+    step = 0;
+
+    // Clear other elements
+    fire.initializeElements(initialFireCount);
+    firefighter.initializeElements(initialFireFighterPerson);
+    fireTruck.initializeElements(initialFireTruckCount);
+    cloud.initializeElements(initialCloudCount);
+    road.initializeElements(0);
+    mountain.initializeElements(0);
+    rock.initializeElements(0);
   }
 }
