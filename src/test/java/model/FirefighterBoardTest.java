@@ -118,20 +118,22 @@ public class FirefighterBoardTest {
     @Test
     void testFireFighterSpread(){
         FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
-        board.printBoard();
-        board.setState(List.of(ModelElement.MOUNTAIN), new Position(1,1));
-        board.setState(List.of(ModelElement.FIRE), new Position(1,2));
-        board.setState(List.of(ModelElement.MOUNTAIN), new Position(2,2));
+        board.clearBoard();
+        board.setState(List.of(ModelElement.FIRE), new Position(0,2));
+        board.setState(List.of(ModelElement.FIRE), new Position(3,4));
+
         board.setState(List.of(ModelElement.FIREFIGHTERPERSON), new Position(3,2));
-        board.printBoard();
-        board.updateToNextGeneration();
-        board.printBoard();
+        board.setState(List.of(ModelElement.MOUNTAIN), new Position(1,2));
+        for (int i =0 ; i < 5; i++) {
+            board.updateToNextGeneration();
+            board.printBoard();
+            System.out.println("_______");
+        }
     }
 
     @Test
     void testFireSpreadRock(){
-        FirefighterBoard board = new FirefighterBoard(5, 5, 0, 0, 0, 0);
-        board.clearBoard();
+        FirefighterBoard board = new FirefighterBoard(5, 5, 2, 1, 0, 0);
         board.setState(List.of(ModelElement.FIRE), new Position(3,3));
         board.setState(List.of(ModelElement.ROCK), new Position(3,2));
         for (int i =0 ; i < 5; i++) {

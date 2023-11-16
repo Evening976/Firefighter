@@ -41,6 +41,7 @@ public abstract class FireFighter extends BoardElement {
         firefighterPositions = firefighterNewPositions;
         return result;
     }
+
     private void extinguish(Position position) {
         firePositions.remove(position);
     }

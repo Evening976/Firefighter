@@ -63,7 +63,4 @@ public class Road extends BoardElement{
         return !roadPositions.contains(position);
     }
 
-    public boolean isCrossable(Position position){
-        return roadPositions.contains(position);
-    }
 }
