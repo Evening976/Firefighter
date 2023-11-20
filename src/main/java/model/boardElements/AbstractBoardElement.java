@@ -1,4 +1,4 @@
-package model.elements;
+package model.boardElements;
 
 import util.Position;
 
@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public abstract class BoardElement {
+public abstract class AbstractBoardElement implements ModelElement {
     protected int rowCount;
     protected int columnCount;
 
-    public BoardElement(int rowCount, int columnCount) {
+    public AbstractBoardElement(int rowCount, int columnCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
     }
@@ -25,8 +25,15 @@ public abstract class BoardElement {
         return list;
     }
 
+
     public abstract Collection<Position> getPositions();
+
     public abstract void initializeElements(int initialCount);
-    public abstract List<ModelElement> getState(Position position);
-    public abstract void setState(List<ModelElement> state, Position position);
+
+    public abstract ModelElement getState(Position position);
+
+    public abstract void setState(ModelElement state, Position position);
+
+
 }
+

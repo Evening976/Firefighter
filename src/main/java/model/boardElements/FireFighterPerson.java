@@ -1,10 +1,13 @@
-package model.elements;
+package model.boardElements;
 
+import model.elements.FireFighter;
+import model.elements.ModelElement;
+import model.elements.Mountain;
+import model.elements.Road;
 import util.Position;
 
 import java.util.*;
-
-public class FireFighterPerson extends FireFighter{
+public class FireFighterPerson extends FireFighter {
     public FireFighterPerson(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
         super(firePositions, initialCount, rowCount, columnCount);
     }
@@ -21,7 +24,7 @@ public class FireFighterPerson extends FireFighter{
             if (firePositions.contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || mountain.isMountain(current)) continue;
+                if (seen.contains(adjacent)) continue;
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));
@@ -36,24 +39,24 @@ public class FireFighterPerson extends FireFighter{
 
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<model.elements.ModelElement> getState(Position position) {
+        List<model.elements.ModelElement> result = new ArrayList<>();
         List<Position> firefighterPositions = getPositions();
         for (Position firefighterPosition : firefighterPositions) {
             if (firefighterPosition.equals(position)){
-                result.add(ModelElement.FIREFIGHTERPERSON);
+                result.add(model.elements.ModelElement.FIREFIGHTERPERSON);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<model.elements.ModelElement> state, Position position) {
         List<Position> firefighterPositions = getPositions();
         for (;;) {
             if (!firefighterPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
+        for (model.elements.ModelElement element : state) {
             if (element.equals(ModelElement.FIREFIGHTERPERSON)) {
                 firefighterPositions.add(position);
             }
