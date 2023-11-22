@@ -25,6 +25,21 @@ public abstract class BoardElement {
         return list;
     }
 
+    protected boolean isClear(Position position, Collection<Position> firePositions,
+                              Collection<Position> firefighterPositions,
+                              Collection<Position> cloudPositions,
+                              Collection<Position> mountainPositions,
+                              Collection<Position> roadPositions,
+                                Collection<Position> rockPositions
+    ) {
+        return !firePositions.contains(position)
+                && !firefighterPositions.contains(position)
+                && !cloudPositions.contains(position)
+                && !mountainPositions.contains(position)
+                && !roadPositions.contains(position)
+                && !rockPositions.contains(position);
+    }
+
     public abstract Collection<Position> getPositions();
     public abstract void initializeElements(int initialCount);
     public abstract List<ModelElement> getState(Position position);

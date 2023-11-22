@@ -27,10 +27,6 @@ public class FireFighterPerson extends FireFighter{
                 firstMove.put(adjacent, firstMove.get(current));
             }
         }
-        for(Position position1 : firstMove.keySet()){
-            if(mountain.getPositions().contains(position1))
-                firstMove.remove(position1);
-        }
         return position;
     }
 

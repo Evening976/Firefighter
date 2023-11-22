@@ -19,8 +19,7 @@ public class Rock extends BoardElement {
     }
 
     public int getInitCount() {
-        int totalCells = rowCount * columnCount;
-        return (int) (totalCells * 0.05);
+        return (int) (rowCount * 0.5);
     }
 
     @Override

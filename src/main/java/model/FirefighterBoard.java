@@ -11,7 +11,6 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   private final int initialFireCount;
   private final int initialFireFighterPerson;
   private final int initialFireTruckCount;
-
   private final int initialCloudCount;
   private List<Position> firefighterPositions;
   private Set<Position> firePositions;
@@ -61,13 +60,17 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
   public List<Position> updateToNextGeneration() {
     List<Position> result = fire.update(road, mountain, rock);
+
     result.addAll(fireTruck.update(firePositions, road, mountain));
     result.addAll(firefighter.update(firePositions, road, mountain));
     result.addAll(cloud.update(firePositions));
+
     step++;
     fire.updateStep(step);
+
     return result;
   }
+
 
   public List<BoardElement> getBoardElements(){
     List<BoardElement> elements = new ArrayList<>();
