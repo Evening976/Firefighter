@@ -1,4 +1,4 @@
-package model.plagueelement;
+package model.plagueelements;
 import util.Position;
 
 import java.util.ArrayList;

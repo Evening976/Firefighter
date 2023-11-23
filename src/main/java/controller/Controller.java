@@ -13,6 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import model.Board;
+import model.PlagueBoard;
 import model.firefighterelements.FFModelElement;
 import model.FirefighterBoard;
 import util.Position;
@@ -56,6 +57,9 @@ public class Controller {
 
   private void setModel(FirefighterBoard firefighterBoard) {
     this.board = requireNonNull(firefighterBoard, "firefighter.model is null");
+  }
+  private void setModel(PlagueBoard plagueBoard) {
+    this.board = requireNonNull(plagueBoard, "plague.model is null");
   }
 
   private void updateBoard(){

@@ -1,4 +1,4 @@
-package model.plagueelement;
+package model.plagueelements;
 
 import model.firefighterelements.Mountain;
 import model.firefighterelements.Road;
