@@ -33,7 +33,7 @@
                   mnemonicParsing="false" onAction="#pauseToggleButtonAction" prefHeight="24.0"
                   prefWidth="200.0" styleClass="button" text="Pause"/>
   </VBox>
-  <FirefighterGrid fx:id="grid" width="1000.0" height="1000.0"
+  <FirefighterGrid fx:id="grid" width="801" height="800.0"
                    xmlns="http://javafx.com/javafx"
                    xmlns:fx="http://javafx.com/fxml">
   </FirefighterGrid>

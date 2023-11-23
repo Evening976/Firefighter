@@ -59,7 +59,7 @@ public class Controller {
     this.board = requireNonNull(firefighterBoard, "firefighter.model is null");
   }
   private void setModel(PlagueBoard plagueBoard) {
-    this.board = requireNonNull(plagueBoard, "plague.model is null");
+    //this.board = requireNonNull(plagueBoard, "plague.model is null");
   }
 
   private void updateBoard(){

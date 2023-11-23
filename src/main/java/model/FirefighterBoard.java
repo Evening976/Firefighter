@@ -35,7 +35,7 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public void initializeElements() {
-    fire = new Fire(initialFireCount, step, rowCount, columnCount);
+    fire = new Fire(initialFireCount, rowCount, columnCount);
     firefighter = new FireFighterPerson(fire.getPositions(), initialFireFighterPerson, rowCount, columnCount);
     fireTruck = new FireTruck(fire.getPositions(), initialFireTruckCount, rowCount, columnCount);
     cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
@@ -59,14 +59,14 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fire.update(road, mountain, rock);
+    List<Position> result = fire.update(step, road, mountain, rock);
+    //if(!result.isEmpty()) System.out.println(result);
 
     result.addAll(fireTruck.update(firePositions, road, mountain));
     result.addAll(firefighter.update(firePositions, road, mountain));
     result.addAll(cloud.update(firePositions));
 
     step++;
-    fire.updateStep(step);
 
     return result;
   }

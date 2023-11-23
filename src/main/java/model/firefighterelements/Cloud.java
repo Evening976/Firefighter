@@ -24,6 +24,7 @@ public class Cloud extends FFBoardElement {
     }
 
     public List<Position> update(Set<Position> firePositions){
+        if(firePositions.isEmpty()) return new ArrayList<>();
         List<Position> result = new ArrayList<>();
         List<Position> cloudNewPosition = new ArrayList<>();
         for (Position cloudPosition : cloudPositions) {
@@ -83,18 +84,22 @@ public class Cloud extends FFBoardElement {
         int column = position.column();
         int random = RandomGenerator.randomInt(0, 3);
         switch (random) {
-            case 0:
+            case 0 -> {
                 if (row > 0) return new Position(row - 1, column);
                 else return new Position(row + 1, column);
-            case 1:
+            }
+            case 1 -> {
                 if (column > 0) return new Position(row, column - 1);
                 else return new Position(row, column + 1);
-            case 2:
+            }
+            case 2 -> {
                 if (row < rowCount - 1) return new Position(row + 1, column);
                 else return new Position(row - 1, column);
-            case 3:
+            }
+            case 3 -> {
                 if (column < columnCount - 1) return new Position(row, column + 1);
                 else return new Position(row, column - 1);
+            }
         }
         return position;
     }
