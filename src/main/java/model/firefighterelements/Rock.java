@@ -1,12 +1,11 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class Rock extends BoardElement {
+public class Rock extends FFBoardElement {
     private final List<Position> rockPositions;
     private final int fireResistanceSteps;
     private int stepsRemaining;
@@ -36,25 +35,25 @@ public class Rock extends BoardElement {
     }
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         List<Position> rockPositions = getPositions();
         for (Position rockPosition : rockPositions) {
             if (rockPosition.equals(position)) {
-                result.add(ModelElement.ROCK);
+                result.add(FFModelElement.ROCK);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         List<Position> rockPositions = getPositions();
         for (; ; ) {
             if (!rockPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.ROCK)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.ROCK)) {
                 rockPositions.add(position);
             }
         }

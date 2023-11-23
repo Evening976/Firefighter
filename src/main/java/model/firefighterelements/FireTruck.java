@@ -1,8 +1,7 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
-import java.time.Month;
 import java.util.*;
 
 public class FireTruck extends FireFighter {
@@ -40,12 +39,12 @@ public class FireTruck extends FireFighter {
     }
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         List<Position> firefighterPositions = getPositions();
         for (Position firefighterPosition : firefighterPositions) {
             if (firefighterPosition.equals(position)){
-                result.add(ModelElement.FIRETRUCK);
+                result.add(FFModelElement.FIRETRUCK);
             }
         }
         return result;
@@ -53,13 +52,13 @@ public class FireTruck extends FireFighter {
 
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         List<Position> firefighterPositions = getPositions();
         for (;;) {
             if (!firefighterPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.FIRETRUCK)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.FIRETRUCK)) {
                 firefighterPositions.add(position);
             }
         }

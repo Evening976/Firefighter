@@ -1,6 +1,5 @@
-package model.elements;
+package model.firefighterelements;
 
-import javafx.geometry.Pos;
 import util.Position;
 import util.RandomGenerator;
 
@@ -10,7 +9,7 @@ import java.util.Set;
 
 import static util.RandomGenerator.randomPosition;
 
-public class Cloud extends BoardElement{
+public class Cloud extends FFBoardElement {
     private List<Position> cloudPositions;
     private final Set<Position> firePositions;
 
@@ -25,6 +24,7 @@ public class Cloud extends BoardElement{
     }
 
     public List<Position> update(Set<Position> firePositions){
+        if(firePositions.isEmpty()) return new ArrayList<>();
         List<Position> result = new ArrayList<>();
         if (firePositions.isEmpty()) return result;
         List<Position> cloudNewPosition = new ArrayList<>();
@@ -53,23 +53,23 @@ public class Cloud extends BoardElement{
     }
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         for (Position cloud : cloudPositions) {
             if (cloud.equals(position)){
-                result.add(ModelElement.CLOUD);
+                result.add(FFModelElement.CLOUD);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         for (;;) {
             if (!cloudPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.CLOUD)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.CLOUD)) {
                 cloudPositions.add(position);
             }
         }
@@ -85,18 +85,22 @@ public class Cloud extends BoardElement{
         int column = position.column();
         int random = RandomGenerator.randomInt(0, 3);
         switch (random) {
-            case 0:
+            case 0 -> {
                 if (row > 0) return new Position(row - 1, column);
                 else return new Position(row + 1, column);
-            case 1:
+            }
+            case 1 -> {
                 if (column > 0) return new Position(row, column - 1);
                 else return new Position(row, column + 1);
-            case 2:
+            }
+            case 2 -> {
                 if (row < rowCount - 1) return new Position(row + 1, column);
                 else return new Position(row - 1, column);
-            case 3:
+            }
+            case 3 -> {
                 if (column < columnCount - 1) return new Position(row, column + 1);
                 else return new Position(row, column - 1);
+            }
         }
         return position;
     }

@@ -1,4 +1,4 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
@@ -14,6 +14,7 @@ public class FireFighterPerson extends FireFighter{
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
+
         for (Position initialMove : toVisit)
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
@@ -32,25 +33,25 @@ public class FireFighterPerson extends FireFighter{
 
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         List<Position> firefighterPositions = getPositions();
         for (Position firefighterPosition : firefighterPositions) {
             if (firefighterPosition.equals(position)){
-                result.add(ModelElement.FIREFIGHTERPERSON);
+                result.add(FFModelElement.FIREFIGHTERPERSON);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         List<Position> firefighterPositions = getPositions();
         for (;;) {
             if (!firefighterPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.FIREFIGHTERPERSON)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.FIREFIGHTERPERSON)) {
                 firefighterPositions.add(position);
             }
         }
