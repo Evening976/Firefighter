@@ -9,6 +9,7 @@ public class RandomGenerator {
         return randomInt(0,max);
     }
 
+
     public static Position randomPosition(int rowCount, int columnCount) {
         return new Position(randomInt(rowCount - 1), randomInt(columnCount - 1));
     }

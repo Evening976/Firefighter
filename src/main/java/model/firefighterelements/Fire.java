@@ -1,5 +1,6 @@
 package model.firefighterelements;
 
+import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
@@ -20,16 +21,16 @@ public class Fire extends FFBoardElement {
     }
 
 
-    public List<Position> update(int step, Road road, Mountain mountain, Rock rock) {
+    public List<Position> update(FirefighterBoard board) {
+        int step = board.getStep();
         List<Position> result = new ArrayList<>();
         if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : firePositions) {
-                List<Position> fireNeighbors = neighbors(fire);
+                List<Position> fireNeighbors = board.neighbors(fire);
                 for (Position neighbor : fireNeighbors) {
-                    //System.out.println(fireNeighbors);
-                    if (road.fireCanSpread(neighbor) && mountain.fireCanSpread(neighbor)) {
-                        if (rock.isRock(neighbor)) {
+                    if (board.fireCanSpread(neighbor)) {
+                        if (board.isRock(neighbor)) {
                             if (!firePositions.contains(neighbor) && step % 4 == 0 && step != 0) {
                                 newFirePositions.add(neighbor);
                             }

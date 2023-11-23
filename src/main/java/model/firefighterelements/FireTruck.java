@@ -1,5 +1,7 @@
 package model.firefighterelements;
 
+import model.Board;
+import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
@@ -11,32 +13,15 @@ public class FireTruck extends FireFighter {
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road,  Mountain mountain) {
-        Position step1 = steps(position, firePositions, road, mountain);
-        return steps(step1, firePositions, road, mountain);
+    public Position neighborClosestToFire(Position position, FirefighterBoard board) {
+        Position step1 = steps(position, board);
+        return steps(step1, board);
     }
 
-    private Position steps(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
-        Set<Position> seen = new HashSet<>();
-        HashMap<Position, Position> firstMove = new HashMap<>();
-        Queue<Position> toVisit = new LinkedList<>(neighbors(position));
-        for (Position initialMove : toVisit)
-            firstMove.put(initialMove, initialMove);
-        while (!toVisit.isEmpty()) {
-            Position current = toVisit.poll();
-            if (firePositions.contains(current) && !mountain.isMountain(current))
-                return firstMove.get(current);
-            for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || mountain.isMountain(current)) {
-                    continue;
-                }
-                toVisit.add(adjacent);
-                seen.add(adjacent);
-                firstMove.put(adjacent, firstMove.get(current));
-            }
-        }
-        return position;
+    private Position steps(Position position, FirefighterBoard board) {
+        return getPosition(position, board);
     }
+
 
     @Override
     public List<FFModelElement> getState(Position position) {

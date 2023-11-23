@@ -1,5 +1,6 @@
 package model.firefighterelements;
 
+import model.FirefighterBoard;
 import util.Position;
 import util.RandomGenerator;
 
@@ -23,7 +24,7 @@ public class Cloud extends FFBoardElement {
         firePositions.remove(position);
     }
 
-    public List<Position> update(Set<Position> firePositions){
+    public List<Position> update(FirefighterBoard board){
         if(firePositions.isEmpty()) return new ArrayList<>();
         List<Position> result = new ArrayList<>();
         if (firePositions.isEmpty()) return result;
@@ -34,7 +35,7 @@ public class Cloud extends FFBoardElement {
             extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
-            List<Position> neighborFirePositions = neighbors(newCloudPosition).stream()
+            List<Position> neighborFirePositions = board.neighbors(newCloudPosition).stream()
                     .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions)

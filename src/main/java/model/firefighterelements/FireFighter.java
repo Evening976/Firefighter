@@ -1,5 +1,7 @@
 package model.firefighterelements;
 
+import model.Board;
+import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
@@ -22,16 +24,37 @@ public abstract class FireFighter extends FFBoardElement {
         initializeElements(initialCount);
     }
 
-    public List<Position> update(Set<Position> firePositions, Road road, Mountain mountain) {
+    static Position getPosition(Position position, FirefighterBoard board) {
+        Set<Position> seen = new HashSet<>();
+        HashMap<Position, Position> firstMove = new HashMap<>();
+        Queue<Position> toVisit = new LinkedList<>(board.neighbors(position));
+
+        for (Position initialMove : toVisit)
+            firstMove.put(initialMove, initialMove);
+        while (!toVisit.isEmpty()) {
+            Position current = toVisit.poll();
+            if (board.isFire(current))
+                return firstMove.get(current);
+            for (Position adjacent : board.neighbors(current)) {
+                if (seen.contains(adjacent) || !board.fireFighterCanMove(current)) continue;
+                toVisit.add(adjacent);
+                seen.add(adjacent);
+                firstMove.put(adjacent, firstMove.get(current));
+            }
+        }
+        return position;
+    }
+
+    public List<Position> update(FirefighterBoard board) {
         List<Position> result = new ArrayList<>();
         List<Position> firefighterNewPositions = new ArrayList<>();
         for (Position firefighterPosition : firefighterPositions) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, firePositions, road, mountain);
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(newFirefighterPosition);
             extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
-            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
+            List<Position> neighborFirePositions = board.neighbors(newFirefighterPosition).stream()
                     .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions)
@@ -42,11 +65,12 @@ public abstract class FireFighter extends FFBoardElement {
         return result;
     }
 
+
     private void extinguish(Position position) {
         firePositions.remove(position);
     }
 
-    public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain);
+    public abstract Position neighborClosestToFire(Position position, FirefighterBoard bord);
 
     @Override
     public void initializeElements(int initialCount) {

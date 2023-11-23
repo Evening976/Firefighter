@@ -40,4 +40,9 @@ public class PlagueBoard implements Board<List<DModelElement>>{
     public int stepNumber() {
         return 0;
     }
+
+    @Override
+    public List<Position> neighbors(Position position) {
+        return null;
+    }
 }

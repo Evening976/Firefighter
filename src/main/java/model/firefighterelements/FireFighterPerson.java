@@ -1,5 +1,6 @@
 package model.firefighterelements;
 
+import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
@@ -10,25 +11,8 @@ public class FireFighterPerson extends FireFighter{
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
-        Set<Position> seen = new HashSet<>();
-        HashMap<Position, Position> firstMove = new HashMap<>();
-        Queue<Position> toVisit = new LinkedList<>(neighbors(position));
-
-        for (Position initialMove : toVisit)
-            firstMove.put(initialMove, initialMove);
-        while (!toVisit.isEmpty()) {
-            Position current = toVisit.poll();
-            if (firePositions.contains(current))
-                return firstMove.get(current);
-            for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || mountain.isMountain(current)) continue;
-                toVisit.add(adjacent);
-                seen.add(adjacent);
-                firstMove.put(adjacent, firstMove.get(current));
-            }
-        }
-        return position;
+    public Position neighborClosestToFire(Position position, FirefighterBoard board) {
+        return getPosition(position, board);
     }
 
 

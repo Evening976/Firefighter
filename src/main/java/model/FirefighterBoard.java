@@ -59,16 +59,19 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fire.update(step, road, mountain, rock);
-    //if(!result.isEmpty()) System.out.println(result);
+    List<Position> result = fire.update(this);
 
-    result.addAll(fireTruck.update(firePositions, road, mountain));
-    result.addAll(firefighter.update(firePositions, road, mountain));
-    result.addAll(cloud.update(firePositions));
+    result.addAll(fireTruck.update(this));
+    result.addAll(firefighter.update(this));
+    result.addAll(cloud.update(this));
 
     step++;
 
     return result;
+  }
+
+  public int getStep(){
+    return step;
   }
 
 
@@ -112,6 +115,22 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     }
   }
 
+  public boolean fireCanSpread(Position position){
+    return (mountain.fireCanSpread(position) && road.fireCanSpread(position));
+  }
+
+  public boolean fireFighterCanMove(Position position){
+    return (mountain.isCrossable(position));
+  }
+
+  public boolean isFire(Position position){
+    return firePositions.contains(position);
+  }
+
+  public boolean isRock(Position position){
+    return rock.isRock(position);
+  }
+
   public void printBoard(){
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
@@ -140,6 +159,16 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     }
     System.out.println("___________________");
   }
+
+  public List<Position> neighbors(Position position){
+    List<Position> list = new ArrayList<>();
+    if (position.row() > 0) list.add(new Position(position.row() - 1, position.column()));
+    if (position.column() > 0) list.add(new Position(position.row(), position.column() - 1));
+    if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.column()));
+    if (position.column() < columnCount - 1) list.add(new Position(position.row(), position.column() + 1));
+    return list;
+  }
+
 
   public Set<Position> getFirePositions(){
     return firePositions;
