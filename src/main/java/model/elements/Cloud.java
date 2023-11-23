@@ -26,6 +26,7 @@ public class Cloud extends BoardElement{
 
     public List<Position> update(Set<Position> firePositions){
         List<Position> result = new ArrayList<>();
+        if (firePositions.isEmpty()) return result;
         List<Position> cloudNewPosition = new ArrayList<>();
         for (Position cloudPosition : cloudPositions) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);

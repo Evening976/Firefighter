@@ -18,7 +18,7 @@ public class Fire extends BoardElement {
     }
 
     public Fire(int initialCount, int step, int rowCount, int columnCount){
-        super(rowCount, columnCount);
+        super(rowCount-1, columnCount-1);
         this.step = step;
         initializeElements(initialCount);
     }
