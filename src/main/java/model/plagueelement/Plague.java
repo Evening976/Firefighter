@@ -1,23 +1,26 @@
-package model.elements;
+package model.plagueelement;
 
+import model.firefighterelements.Mountain;
+import model.firefighterelements.Road;
+import model.firefighterelements.Rock;
 import util.Position;
 
 import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public class Fire extends BoardElement {
-    private Set<Position> firePositions;
+public class Plague extends DBoardElement{
+    private Set<Position> plaguePositions;
     private int step;
 
-    public Fire(Set<Position> firePositions, int step, int rowCount, int columnCount) {
+    public Plague(Set<Position> plaguePositions, int step, int rowCount, int columnCount) {
         super(rowCount, columnCount);
-        this.firePositions = firePositions;
+        this.plaguePositions = plaguePositions;
         this.step = step;
 
     }
 
-    public Fire(int initialCount, int step, int rowCount, int columnCount){
+    public Plague(int initialCount, int step, int rowCount, int columnCount){
         super(rowCount, columnCount);
         this.step = step;
         initializeElements(initialCount);
@@ -32,12 +35,12 @@ public class Fire extends BoardElement {
         List<Position> result = new ArrayList<>();
         if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
-            for (Position fire : firePositions) {
+            for (Position fire : plaguePositions) {
                 List<Position> fireNeighbors = neighbors(fire);
                 for (Position neighbor : fireNeighbors) {
                     if (road.fireCanSpread(neighbor) && mountain.fireCanSpread(neighbor)) {
                         if (rock.isRock(neighbor)) {
-                            if (!firePositions.contains(neighbor) && step % 4 == 0 && step != 0) {
+                            if (!plaguePositions.contains(neighbor) && step % 4 == 0 && step != 0) {
                                 newFirePositions.add(neighbor);
                             }
                         } else {
@@ -46,7 +49,7 @@ public class Fire extends BoardElement {
                     }
                 }
             }
-            firePositions.addAll(newFirePositions);
+            plaguePositions.addAll(newFirePositions);
             result.addAll(newFirePositions);
         }
         return result;
@@ -55,34 +58,32 @@ public class Fire extends BoardElement {
 
     @Override
     public Set<Position> getPositions() {
-        return firePositions;
+        return plaguePositions;
     }
 
     @Override
     public void initializeElements(int initialCount) {
-        firePositions = new HashSet<>();
+        plaguePositions = new HashSet<>();
         for (int index = 0; index < initialCount; index++) {
-            firePositions.add(randomPosition(rowCount, columnCount));
+            plaguePositions.add(randomPosition(rowCount, columnCount));
         }
     }
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
-        if (firePositions.contains(position))
-            result.add(ModelElement.FIRE);
+    public List<DModelElement> getState(Position position) {
+        List<DModelElement> result = new ArrayList<>();
+        if (plaguePositions.contains(position))
+            result.add(DModelElement.PLAGUE);
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
-        firePositions.remove(position);
-        for(ModelElement element : state) {
-            if (element.equals(ModelElement.FIRE)) {
-                firePositions.add(position);
+    public void setState(List<DModelElement> state, Position position) {
+        plaguePositions.remove(position);
+        for(DModelElement element : state) {
+            if (element.equals(DModelElement.PLAGUE)) {
+                plaguePositions.add(position);
             }
         }
     }
 }
-
-

@@ -1,11 +1,11 @@
 package model;
 
-import model.elements.*;
+import model.firefighterelements.*;
 import util.Position;
 
 import java.util.*;
 
-public class FirefighterBoard implements Board<List<ModelElement>> {
+public class FirefighterBoard implements Board<List<FFModelElement>> {
   private final int columnCount;
   private final int rowCount;
   private final int initialFireCount;
@@ -72,8 +72,8 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
   }
 
 
-  public List<BoardElement> getBoardElements(){
-    List<BoardElement> elements = new ArrayList<>();
+  public List<FFBoardElement> getBoardElements(){
+    List<FFBoardElement> elements = new ArrayList<>();
     elements.add(firefighter);
     elements.add(fireTruck);
     elements.add(fire);
@@ -97,17 +97,17 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
 
 
   @Override
-  public List<ModelElement> getState(Position position) {
-    List<ModelElement> result = new ArrayList<>();
-    for(BoardElement element : getBoardElements()) {
+  public List<FFModelElement> getState(Position position) {
+    List<FFModelElement> result = new ArrayList<>();
+    for(FFBoardElement element : getBoardElements()) {
         result.addAll(element.getState(position));
     }
     return result;
   }
 
   @Override
-  public void setState(List<ModelElement> state, Position position) {
-    for(BoardElement element : getBoardElements()) {
+  public void setState(List<FFModelElement> state, Position position) {
+    for(FFBoardElement element : getBoardElements()) {
         element.setState(state, position);
     }
   }
@@ -116,20 +116,20 @@ public class FirefighterBoard implements Board<List<ModelElement>> {
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
         Position position = new Position(i, j);
-        List<ModelElement> state = getState(position);
-        if(state.contains(ModelElement.FIRE)){
+        List<FFModelElement> state = getState(position);
+        if(state.contains(FFModelElement.FIRE)){
           System.out.print("[F]");
-        } else if(state.contains(ModelElement.FIREFIGHTERPERSON)) {
+        } else if(state.contains(FFModelElement.FIREFIGHTERPERSON)) {
           System.out.print("[P]");
-        } else if(state.contains(ModelElement.CLOUD)) {
+        } else if(state.contains(FFModelElement.CLOUD)) {
           System.out.print("[C]");
-        } else if(state.contains(ModelElement.FIRETRUCK)){
+        } else if(state.contains(FFModelElement.FIRETRUCK)){
             System.out.print("[T]");
-        } else if(state.contains(ModelElement.MOUNTAIN)){
+        } else if(state.contains(FFModelElement.MOUNTAIN)){
             System.out.print("[M]");
-        } else if(state.contains(ModelElement.ROAD)){
+        } else if(state.contains(FFModelElement.ROAD)){
             System.out.print("[R]");
-        } else if (state.contains(ModelElement.ROCK)){
+        } else if (state.contains(FFModelElement.ROCK)){
             System.out.print("[X]");
         }
         else {

@@ -1,17 +1,15 @@
-package model.elements;
-
+package model.plagueelement;
 import util.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-public abstract class BoardElement {
+public abstract class DBoardElement {
     protected int rowCount;
     protected int columnCount;
 
-    public BoardElement(int rowCount, int columnCount) {
+    public DBoardElement(int rowCount, int columnCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
     }
@@ -30,7 +28,7 @@ public abstract class BoardElement {
                               Collection<Position> cloudPositions,
                               Collection<Position> mountainPositions,
                               Collection<Position> roadPositions,
-                                Collection<Position> rockPositions
+                              Collection<Position> rockPositions
     ) {
         return !firePositions.contains(position)
                 && !firefighterPositions.contains(position)
@@ -42,6 +40,6 @@ public abstract class BoardElement {
 
     public abstract Collection<Position> getPositions();
     public abstract void initializeElements(int initialCount);
-    public abstract List<ModelElement> getState(Position position);
-    public abstract void setState(List<ModelElement> state, Position position);
+    public abstract List<DModelElement> getState(Position position);
+    public abstract void setState(List<DModelElement> state, Position position);
 }

@@ -1,4 +1,4 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Mountain extends BoardElement{
+public class Mountain extends FFBoardElement {
     private final List<Position> mountainPositions;
 
 
@@ -36,25 +36,25 @@ public class Mountain extends BoardElement{
 
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         List<Position> mountainPositions = (List<Position>) getPositions();
         for (Position mountainPosition : mountainPositions) {
             if (mountainPosition.equals(position)){
-                result.add(ModelElement.MOUNTAIN);
+                result.add(FFModelElement.MOUNTAIN);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         List<Position> mountainPositions = (List<Position>) getPositions();
         for (;;) {
             if (!mountainPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.MOUNTAIN)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.MOUNTAIN)) {
                 mountainPositions.add(position);
             }
         }

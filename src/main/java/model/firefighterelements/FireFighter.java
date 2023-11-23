@@ -1,4 +1,4 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
@@ -6,7 +6,7 @@ import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public abstract class FireFighter extends BoardElement {
+public abstract class FireFighter extends FFBoardElement {
     private List<Position> firefighterPositions;
     private final Set<Position> firePositions;
 
@@ -56,8 +56,8 @@ public abstract class FireFighter extends BoardElement {
     }
 
 
-    public abstract List<ModelElement> getState(Position position);
-    public abstract void setState(List<ModelElement> state, Position position);
+    public abstract List<FFModelElement> getState(Position position);
+    public abstract void setState(List<FFModelElement> state, Position position);
 
     @Override
     public List<Position> getPositions() {

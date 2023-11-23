@@ -1,6 +1,5 @@
-package model.elements;
+package model.firefighterelements;
 
-import javafx.geometry.Pos;
 import util.Position;
 import util.RandomGenerator;
 
@@ -10,7 +9,7 @@ import java.util.Set;
 
 import static util.RandomGenerator.randomPosition;
 
-public class Cloud extends BoardElement{
+public class Cloud extends FFBoardElement {
     private List<Position> cloudPositions;
     private final Set<Position> firePositions;
 
@@ -52,23 +51,23 @@ public class Cloud extends BoardElement{
     }
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         for (Position cloud : cloudPositions) {
             if (cloud.equals(position)){
-                result.add(ModelElement.CLOUD);
+                result.add(FFModelElement.CLOUD);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         for (;;) {
             if (!cloudPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.CLOUD)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.CLOUD)) {
                 cloudPositions.add(position);
             }
         }

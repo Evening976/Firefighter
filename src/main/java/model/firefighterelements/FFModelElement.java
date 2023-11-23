@@ -1,5 +1,5 @@
-package model.elements;
+package model.firefighterelements;
 
-public enum ModelElement {
+public enum FFModelElement {
   FIREFIGHTERPERSON, CLOUD, FIRE, FIRETRUCK, MOUNTAIN, ROAD,ROCK
 }

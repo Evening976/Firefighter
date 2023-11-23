@@ -1,4 +1,4 @@
-package model.elements;
+package model.firefighterelements;
 
 import util.Position;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Road extends BoardElement{
+public class Road extends FFBoardElement {
     private final List<Position> roadPositions;
 
     public Road(List<Position> roadPositions, int rowCount, int columnCount) {
@@ -35,25 +35,25 @@ public class Road extends BoardElement{
 
 
     @Override
-    public List<ModelElement> getState(Position position) {
-        List<ModelElement> result = new ArrayList<>();
+    public List<FFModelElement> getState(Position position) {
+        List<FFModelElement> result = new ArrayList<>();
         List<Position> roadPositions = (List<Position>) getPositions();
         for (Position roadPosition : roadPositions) {
             if (roadPosition.equals(position)){
-                result.add(ModelElement.ROAD);
+                result.add(FFModelElement.ROAD);
             }
         }
         return result;
     }
 
     @Override
-    public void setState(List<ModelElement> state, Position position) {
+    public void setState(List<FFModelElement> state, Position position) {
         List<Position> roadPositions = (List<Position>) getPositions();
         for (;;) {
             if (!roadPositions.remove(position)) break;
         }
-        for (ModelElement element : state) {
-            if (element.equals(ModelElement.ROAD)) {
+        for (FFModelElement element : state) {
+            if (element.equals(FFModelElement.ROAD)) {
                 roadPositions.add(position);
             }
         }
