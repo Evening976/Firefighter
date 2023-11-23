@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static util.RandomGenerator.randomPosition;
 
-public class Cloud extends FFBoardElement {
+public class Cloud extends FFBoardElement implements entity {
     private List<Position> cloudPositions;
     private final Set<Position> firePositions;
 

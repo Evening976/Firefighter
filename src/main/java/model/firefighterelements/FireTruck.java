@@ -6,7 +6,7 @@ import util.Position;
 
 import java.util.*;
 
-public class FireTruck extends FireFighter {
+public class FireTruck extends FireFighter implements entity {
 
     public FireTruck(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
         super(firePositions, initialCount, rowCount, columnCount);

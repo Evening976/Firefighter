@@ -7,7 +7,7 @@ import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public class Fire extends FFBoardElement {
+public class Fire extends FFBoardElement implements entity {
     private Set<Position> firePositions;
 
     public Fire(Set<Position> firePositions, int rowCount, int columnCount) {

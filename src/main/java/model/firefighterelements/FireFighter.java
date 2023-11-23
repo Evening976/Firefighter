@@ -8,7 +8,7 @@ import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public abstract class FireFighter extends FFBoardElement {
+public abstract class FireFighter extends FFBoardElement implements entity {
     private List<Position> firefighterPositions;
     private final Set<Position> firePositions;
 

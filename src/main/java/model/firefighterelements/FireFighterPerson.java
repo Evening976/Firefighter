@@ -5,7 +5,7 @@ import util.Position;
 
 import java.util.*;
 
-public class FireFighterPerson extends FireFighter{
+public class FireFighterPerson extends FireFighter implements entity{
     public FireFighterPerson(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
         super(firePositions, initialCount, rowCount, columnCount);
     }
