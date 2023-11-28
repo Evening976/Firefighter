@@ -1,7 +1,6 @@
 package model.firefighterelements;
 
 import general.model.entity.ModelElement;
-import javafx.scene.paint.Color;
 import util.Position;
 
 import java.util.Collection;
@@ -12,16 +11,17 @@ public abstract class Entity {
     protected FFModelElement tag;
     protected int rowCount;
     protected int columnCount;
-
-    public Entity(int rowCount, int columnCount) {
+    protected int initialCount;
+    public Entity(int rowCount, int columnCount, int initialCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
+        this.initialCount = initialCount;
     }
 
     public Collection<Position> getPositions(){
         return positions;
     }
-    public void initializeElements(int initialCount){
+    public void initializeElements(){
         positions.clear();
         for(int index = 0; index < initialCount; index++)
             positions.add(Position.randomPosition(rowCount, columnCount));

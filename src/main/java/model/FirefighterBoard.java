@@ -1,7 +1,10 @@
 package model;
 
+import app.SimulatorApplication;
 import general.model.entity.ModelElement;
-import model.firefighterelements.*;
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
+import model.firefighterelements.FireFighter;
 import model.firefighterelements.entities.Cloud;
 import model.firefighterelements.entities.Fire;
 import model.firefighterelements.entities.FireFighterPerson;
@@ -11,17 +14,13 @@ import model.firefighterelements.obstacle.Road;
 import model.firefighterelements.obstacle.Rock;
 import util.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class FirefighterBoard implements Board<List<FFModelElement>> {
   private final int columnCount;
   private final int rowCount;
-  private final int initialFireCount;
-  private final int initialFireFighterPerson;
-  private final int initialFireTruckCount;
-  private final int initialCloudCount;
-  private List<Position> firefighterPositions;
-  private Set<Position> firePositions;
   private int step = 0;
   private FireFighter firefighter;
   private FireTruck fireTruck;
@@ -31,28 +30,21 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   private Mountain mountain;
   private Rock rock;
 
-  public FirefighterBoard(int columnCount, int rowCount, int initialFireCount, int initialFireFighterPerson, int initialCloudCount, int initialFireTruckCount) {
+  public FirefighterBoard(int columnCount, int rowCount) {
     this.columnCount = columnCount;
     this.rowCount = rowCount;
-    this.initialFireCount = initialFireCount;
-    this.initialFireFighterPerson = initialFireFighterPerson;
-    this.initialFireTruckCount = initialFireTruckCount;
-    this.initialCloudCount = initialCloudCount;
 
     initializeElements();
   }
 
   public void initializeElements() {
-    fire = new Fire(initialFireCount, rowCount, columnCount);
-    firefighter = new FireFighterPerson((Set<Position>) fire.getPositions(), initialFireFighterPerson, rowCount, columnCount);
-    fireTruck = new FireTruck((Set<Position>) fire.getPositions(), initialFireTruckCount, rowCount, columnCount);
-    cloud = new Cloud((Set<Position>) fire.getPositions(), initialCloudCount, rowCount, columnCount);
-    firefighterPositions = (List<Position>) firefighter.getPositions();
-    firePositions = (Set<Position>) fire.getPositions();
+    fire = new Fire(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount);
+    firefighter = new FireFighterPerson((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount);
+    fireTruck = new FireTruck((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount);
+    cloud = new Cloud((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
     road = new Road(rowCount, columnCount);
     mountain = new Mountain(rowCount, columnCount);
     rock = new Rock(rowCount, columnCount);
-
   }
 
 
@@ -111,12 +103,8 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     List<FFModelElement> result = new ArrayList<>();
     for(Entity element : getBoardElements()) {
       ModelElement e = element.getState(position);
-      if(e instanceof FFModelElement) {
-        result.add((FFModelElement) element.getState(position));
-      }
-      else{
-        result.add(FFModelElement.EMPTY);
-      }
+      if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
+      else result.add(FFModelElement.EMPTY);
     }
     return result;
   }
@@ -137,7 +125,7 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public boolean isFire(Position position){
-    return firePositions.contains(position);
+    return fire.getPositions().contains(position);
   }
 
   public boolean isRock(Position position){
@@ -184,18 +172,15 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
 
 
   public Set<Position> getFirePositions(){
-    return firePositions;
+    return (Set<Position>) fire.getPositions();
   }
 
   public void clearBoard(){
-    firePositions.clear();
-    firefighterPositions.clear();
     step = 0;
-
-    fire.initializeElements(initialFireCount);
-    firefighter.initializeElements(initialFireFighterPerson);
-    fireTruck.initializeElements(initialFireTruckCount);
-    cloud.initializeElements(initialCloudCount);
+    fire.initializeElements();
+    firefighter.initializeElements();
+    fireTruck.initializeElements();
+    cloud.initializeElements();
     road.initializeElements(0);
     mountain.initializeElements(0);
     rock.initializeElements(0);

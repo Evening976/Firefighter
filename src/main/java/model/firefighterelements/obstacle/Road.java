@@ -5,15 +5,14 @@ import model.firefighterelements.FFModelElement;
 import util.Position;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class Road extends Entity {
     public Road(int rowCount, int columnCount) {
-        super(rowCount, columnCount);
+        super(rowCount, columnCount, (int) (rowCount*columnCount*0.2));
         this.positions = new ArrayList<>();
         tag = FFModelElement.ROAD;
-        initializeElements(getInitCount());
+        initialCount = getInitCount();
+        initializeElements();
     }
 
     public int getInitCount(){

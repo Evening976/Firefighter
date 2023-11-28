@@ -1,23 +1,22 @@
 package model.firefighterelements;
 
+import app.SimulatorApplication;
 import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
 
-import static util.RandomGenerator.randomPosition;
-
 public abstract class FireFighter extends Entity {
     private final Set<Position> firePositions;
 
     public FireFighter(List<Position> firefighterPositions, Set<Position> firePositions, int rowCount, int columnCount) {
-        super(rowCount, columnCount);
+        super(rowCount, columnCount, SimulatorApplication.INITIAL_FIREFIGHTER_COUNT);
         this.positions = firefighterPositions;
         this.firePositions = firePositions;
     }
 
     public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
-        super(rowCount, columnCount);
+        super(rowCount, columnCount, initialCount);
         this.firePositions = firePositions;
         initializeElements(initialCount);
     }

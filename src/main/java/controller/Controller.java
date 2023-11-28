@@ -14,9 +14,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import model.Board;
+import model.FirefighterBoard;
 import model.PlagueBoard;
 import model.firefighterelements.FFModelElement;
-import model.FirefighterBoard;
 import util.Position;
 import view.Grid;
 import view.ViewElement;
@@ -147,7 +147,7 @@ private ViewElement getViewElement(List<? extends ModelElement> squareState) {
   public void initialize(int squareWidth, int squareHeight, int columnCount,
                                 int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount, int initialFireTruckCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
-    this.setModel(new FirefighterBoard(columnCount, rowCount, initialFireCount, initialFirefighterCount, initialCloudCount, initialFireTruckCount));
+    this.setModel(new FirefighterBoard(columnCount, rowCount));
     repaintGrid();
   }
 
