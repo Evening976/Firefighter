@@ -1,5 +1,7 @@
-package model.firefighterelements;
+package model.firefighterelements.obstacle;
 
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 
 import java.util.ArrayList;

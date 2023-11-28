@@ -22,7 +22,7 @@ public abstract class FireFighter extends Entity {
         initializeElements(initialCount);
     }
 
-    static Position getPosition(Position position, FirefighterBoard board) {
+    protected static Position getPosition(Position position, FirefighterBoard board) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(board.neighbors(position));

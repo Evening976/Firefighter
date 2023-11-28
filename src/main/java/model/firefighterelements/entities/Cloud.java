@@ -1,6 +1,8 @@
-package model.firefighterelements;
+package model.firefighterelements.entities;
 
 import model.FirefighterBoard;
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 import util.RandomGenerator;
 
@@ -16,8 +18,8 @@ public class Cloud extends Entity {
         super(rowCount, columnCount);
 
         this.firePositions = firePositions;
-        positions = new ArrayList<>();
-        tag = FFModelElement.CLOUD;
+        this.positions = new ArrayList<>();
+        this.tag = FFModelElement.CLOUD;
 
         initializeElements(initialCount);
     }

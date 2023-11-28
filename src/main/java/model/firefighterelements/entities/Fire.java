@@ -1,11 +1,11 @@
-package model.firefighterelements;
+package model.firefighterelements.entities;
 
 import model.FirefighterBoard;
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 
 import java.util.*;
-
-import static util.RandomGenerator.randomPosition;
 
 public class Fire extends Entity {
 

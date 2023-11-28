@@ -1,6 +1,8 @@
-package model.firefighterelements;
+package model.firefighterelements.entities;
 
 import model.FirefighterBoard;
+import model.firefighterelements.FFModelElement;
+import model.firefighterelements.FireFighter;
 import util.Position;
 
 import java.util.*;

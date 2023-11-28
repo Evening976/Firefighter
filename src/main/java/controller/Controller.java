@@ -1,5 +1,6 @@
 package controller;
 
+import general.model.entity.ModelElement;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -66,7 +67,7 @@ public class Controller {
     List<Position> updatedPositions = board.updateToNextGeneration();
     List<Pair<Position, ViewElement>> updatedSquares = new ArrayList<>();
     for(Position updatedPosition : updatedPositions){
-      List<FFModelElement> squareState = board.getState(updatedPosition);
+      List<? extends ModelElement> squareState = board.getState(updatedPosition);
       ViewElement viewElement = getViewElement(squareState);
       updatedSquares.add(new Pair<>(updatedPosition, viewElement));
     }
@@ -85,30 +86,30 @@ public class Controller {
     updateGenerationLabel(board.stepNumber());
   }
 
-  private ViewElement getViewElement(List<FFModelElement> squareState) {
+private ViewElement getViewElement(List<? extends ModelElement> squareState) {
+  if(squareState.contains(FFModelElement.FIREFIGHTERPERSON)){
+    return new ViewElement(FFModelElement.FIREFIGHTERPERSON.getValue());
+  }
+  if(squareState.contains(FFModelElement.FIRETRUCK)){
+    return new ViewElement(FFModelElement.FIRETRUCK.getValue());
+  }
+  if (squareState.contains(FFModelElement.FIRE)){
+    return new ViewElement(FFModelElement.FIRE.getValue());
+  }
+  if(squareState.contains(FFModelElement.CLOUD)) {
+    return new ViewElement(FFModelElement.CLOUD.getValue());
+  }
+  if(squareState.contains(FFModelElement.ROAD)) {
+    return new ViewElement(FFModelElement.ROAD.getValue());
+  }
+  if(squareState.contains(FFModelElement.MOUNTAIN)) {
+    return new ViewElement(FFModelElement.MOUNTAIN.getValue());
+  }
+  if(squareState.contains(FFModelElement.ROCK)) {
+    return new ViewElement(FFModelElement.ROCK.getValue());
+  }
 
-    if(squareState.contains(FFModelElement.FIREFIGHTERPERSON)){
-      return ViewElement.FIREFIGHTERPERSON;
-    }
-    if(squareState.contains(FFModelElement.FIRETRUCK)){
-      return ViewElement.FIRETRUCK;
-    }
-    if (squareState.contains(FFModelElement.FIRE)){
-      return ViewElement.FIRE;
-    }
-    if(squareState.contains(FFModelElement.CLOUD)) {
-      return ViewElement.CLOUD;
-    }
-      if(squareState.contains(FFModelElement.ROAD)) {
-      return ViewElement.ROAD;
-    }
-    if(squareState.contains(FFModelElement.MOUNTAIN)) {
-      return ViewElement.MOUNTAIN;
-    }
-    if(squareState.contains(FFModelElement.ROCK)) {
-      return ViewElement.ROCK;
-    }
-    return ViewElement.EMPTY;
+  return new ViewElement();
   }
 
   private void initializeTimeline() {

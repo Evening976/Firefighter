@@ -1,15 +1,15 @@
-package model.plagueelements;
+package model.plagueelements.entities;
 
-import model.firefighterelements.Mountain;
-import model.firefighterelements.Road;
-import model.firefighterelements.Rock;
+import model.firefighterelements.obstacle.Mountain;
+import model.firefighterelements.obstacle.Road;
+import model.firefighterelements.obstacle.Rock;
+import model.plagueelements.DBoardElement;
+import model.plagueelements.DModelElement;
 import util.Position;
 
 import java.util.*;
 
-import static util.RandomGenerator.randomPosition;
-
-public class Plague extends DBoardElement{
+public class Plague extends DBoardElement {
     private Set<Position> plaguePositions;
     private int step;
 

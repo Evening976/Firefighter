@@ -1,6 +1,14 @@
 package model;
 
+import general.model.entity.ModelElement;
 import model.firefighterelements.*;
+import model.firefighterelements.entities.Cloud;
+import model.firefighterelements.entities.Fire;
+import model.firefighterelements.entities.FireFighterPerson;
+import model.firefighterelements.entities.FireTruck;
+import model.firefighterelements.obstacle.Mountain;
+import model.firefighterelements.obstacle.Road;
+import model.firefighterelements.obstacle.Rock;
 import util.Position;
 
 import java.util.*;
@@ -42,7 +50,7 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     firefighterPositions = (List<Position>) firefighter.getPositions();
     firePositions = (Set<Position>) fire.getPositions();
     road = new Road(rowCount, columnCount);
-    mountain = new Mountain(new ArrayList<>(), rowCount, columnCount);
+    mountain = new Mountain(rowCount, columnCount);
     rock = new Rock(rowCount, columnCount);
 
   }
@@ -77,13 +85,13 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
 
   public List<Entity> getBoardElements(){
     List<Entity> elements = new ArrayList<>();
-    elements.add(firefighter);
     elements.add(fireTruck);
     elements.add(fire);
     elements.add(cloud);
     elements.add(road);
     elements.add(mountain);
     elements.add(rock);
+    elements.add(firefighter);
     return elements;
   }
 
@@ -102,7 +110,13 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   public List<FFModelElement> getState(Position position) {
     List<FFModelElement> result = new ArrayList<>();
     for(Entity element : getBoardElements()) {
-        result.add(element.getState(position));
+      ModelElement e = element.getState(position);
+      if(e instanceof FFModelElement) {
+        result.add((FFModelElement) element.getState(position));
+      }
+      else{
+        result.add(FFModelElement.EMPTY);
+      }
     }
     return result;
   }

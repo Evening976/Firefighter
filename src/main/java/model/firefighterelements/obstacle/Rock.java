@@ -1,5 +1,8 @@
-package model.firefighterelements;
+package model.firefighterelements.obstacle;
 
+import general.model.entity.ModelElement;
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class Rock extends Entity {
 
 
     @Override
-    public void setState(List<FFModelElement> state, Position position) {
+    public void setState(List<? extends ModelElement> state, Position position) {
         super.setState(state, position);
         resetStepsRemaining();
     }

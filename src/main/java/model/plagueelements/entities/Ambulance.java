@@ -1,7 +1,8 @@
-package model.plagueelements;
+package model.plagueelements.entities;
 
-import model.firefighterelements.Mountain;
-import model.firefighterelements.Road;
+import model.firefighterelements.obstacle.Mountain;
+import model.firefighterelements.obstacle.Road;
+import model.plagueelements.DModelElement;
 import util.Position;
 
 import java.util.*;

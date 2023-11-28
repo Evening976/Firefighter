@@ -1,14 +1,12 @@
 package model.plagueelements;
 
-import model.firefighterelements.Mountain;
-import model.firefighterelements.Road;
+import model.firefighterelements.obstacle.Mountain;
+import model.firefighterelements.obstacle.Road;
 import util.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static util.RandomGenerator.randomPosition;
 
 public abstract class Medical extends DBoardElement {
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class FirefighterGrid extends Canvas implements Grid<ViewElement>{
 
     private void paintElementAtPosition(ViewElement element, Position position) {
-        paintSquare(position.row(), position.column(), element.color);
+        paintSquare(position.row(), position.column(), element.getColor());
     }
     private int squareWidth;
     private int squareHeight;

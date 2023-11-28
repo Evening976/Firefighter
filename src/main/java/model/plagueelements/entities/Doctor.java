@@ -1,12 +1,14 @@
-package model.plagueelements;
+package model.plagueelements.entities;
 
-import model.firefighterelements.Mountain;
-import model.firefighterelements.Road;
+import model.firefighterelements.obstacle.Mountain;
+import model.firefighterelements.obstacle.Road;
+import model.plagueelements.DModelElement;
+import model.plagueelements.Medical;
 import util.Position;
 
 import java.util.*;
 
-public class Doctor extends Medical{
+public class Doctor extends Medical {
 
     public Doctor(Set<Position> plaguePositions, int initialCount, int rowCount, int columnCount){
         super(plaguePositions, initialCount, rowCount, columnCount);

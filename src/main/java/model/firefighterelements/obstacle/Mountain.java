@@ -1,5 +1,7 @@
-package model.firefighterelements;
+package model.firefighterelements.obstacle;
 
+import model.firefighterelements.Entity;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 
 import java.util.ArrayList;
@@ -7,9 +9,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class Mountain extends Entity {
-    public Mountain(List<Position> mountainPositions, int rowCount, int columnCount) {
+    public Mountain(int rowCount, int columnCount) {
         super(rowCount, columnCount);
-        this.positions = mountainPositions;
+        this.positions = new ArrayList<>();
         tag = FFModelElement.MOUNTAIN;
         initializeElements(getInitCount());
     }
