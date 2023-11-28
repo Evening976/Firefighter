@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static util.RandomGenerator.randomPosition;
+public class Cloud extends Entity {
 
-public class Cloud extends FFBoardElement implements entity {
-    private List<Position> cloudPositions;
     private final Set<Position> firePositions;
 
     public Cloud(Set<Position> firePositions, int initialCount,  int rowCount, int columnCount) {
         super(rowCount, columnCount);
+
         this.firePositions = firePositions;
+        positions = new ArrayList<>();
+        tag = FFModelElement.CLOUD;
+
         initializeElements(initialCount);
     }
 
@@ -29,7 +31,7 @@ public class Cloud extends FFBoardElement implements entity {
         List<Position> result = new ArrayList<>();
         if (firePositions.isEmpty()) return result;
         List<Position> cloudNewPosition = new ArrayList<>();
-        for (Position cloudPosition : cloudPositions) {
+        for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
             cloudNewPosition.add(newCloudPosition);
             extinguish(newCloudPosition);
@@ -42,43 +44,8 @@ public class Cloud extends FFBoardElement implements entity {
                 extinguish(firePosition);
             result.addAll(neighborFirePositions);
         }
-        cloudPositions = cloudNewPosition;
+        positions = cloudNewPosition;
         return result;
-    }
-
-    @Override
-    public void initializeElements(int initialCount) {
-        cloudPositions = new ArrayList<>();
-        for(int index = 0; index < initialCount; index++)
-            cloudPositions.add(randomPosition(rowCount, columnCount));
-    }
-
-    @Override
-    public List<FFModelElement> getState(Position position) {
-        List<FFModelElement> result = new ArrayList<>();
-        for (Position cloud : cloudPositions) {
-            if (cloud.equals(position)){
-                result.add(FFModelElement.CLOUD);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public void setState(List<FFModelElement> state, Position position) {
-        for (;;) {
-            if (!cloudPositions.remove(position)) break;
-        }
-        for (FFModelElement element : state) {
-            if (element.equals(FFModelElement.CLOUD)) {
-                cloudPositions.add(position);
-            }
-        }
-    }
-
-    @Override
-    public List<Position> getPositions() {
-        return cloudPositions;
     }
 
     public Position cloudRandomPosition(Position position) {

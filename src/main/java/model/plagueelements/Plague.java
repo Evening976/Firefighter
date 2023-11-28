@@ -65,7 +65,7 @@ public class Plague extends DBoardElement{
     public void initializeElements(int initialCount) {
         plaguePositions = new HashSet<>();
         for (int index = 0; index < initialCount; index++) {
-            plaguePositions.add(randomPosition(rowCount, columnCount));
+            plaguePositions.add(Position.randomPosition(rowCount, columnCount));
         }
     }
 

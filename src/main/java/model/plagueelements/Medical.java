@@ -57,7 +57,7 @@ public abstract class Medical extends DBoardElement {
         public void initializeElements(int initialCount) {
             medPos = new ArrayList<>();
             for(int index = 0; index < initialCount; index++)
-                medPos.add(randomPosition(rowCount, columnCount));
+                medPos.add(Position.randomPosition(rowCount, columnCount));
         }
 
 

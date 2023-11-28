@@ -1,6 +1,5 @@
 package model.firefighterelements;
 
-import model.Board;
 import model.FirefighterBoard;
 import util.Position;
 
@@ -8,13 +7,12 @@ import java.util.*;
 
 import static util.RandomGenerator.randomPosition;
 
-public abstract class FireFighter extends FFBoardElement implements entity {
-    private List<Position> firefighterPositions;
+public abstract class FireFighter extends Entity {
     private final Set<Position> firePositions;
 
     public FireFighter(List<Position> firefighterPositions, Set<Position> firePositions, int rowCount, int columnCount) {
         super(rowCount, columnCount);
-        this.firefighterPositions = firefighterPositions;
+        this.positions = firefighterPositions;
         this.firePositions = firePositions;
     }
 
@@ -48,7 +46,7 @@ public abstract class FireFighter extends FFBoardElement implements entity {
     public List<Position> update(FirefighterBoard board) {
         List<Position> result = new ArrayList<>();
         List<Position> firefighterNewPositions = new ArrayList<>();
-        for (Position firefighterPosition : firefighterPositions) {
+        for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(newFirefighterPosition);
             extinguish(newFirefighterPosition);
@@ -61,7 +59,7 @@ public abstract class FireFighter extends FFBoardElement implements entity {
                 extinguish(firePosition);
             result.addAll(neighborFirePositions);
         }
-        firefighterPositions = firefighterNewPositions;
+        positions = firefighterNewPositions;
         return result;
     }
 
@@ -74,18 +72,8 @@ public abstract class FireFighter extends FFBoardElement implements entity {
 
     @Override
     public void initializeElements(int initialCount) {
-        firefighterPositions = new ArrayList<>();
+        positions = new ArrayList<>();
         for(int index = 0; index < initialCount; index++)
-            firefighterPositions.add(randomPosition(rowCount, columnCount));
+            positions.add(Position.randomPosition(rowCount, columnCount));
     }
-
-
-    public abstract List<FFModelElement> getState(Position position);
-    public abstract void setState(List<FFModelElement> state, Position position);
-
-    @Override
-    public List<Position> getPositions() {
-        return firefighterPositions;
-    }
-
 }

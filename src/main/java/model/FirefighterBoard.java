@@ -36,14 +36,14 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
 
   public void initializeElements() {
     fire = new Fire(initialFireCount, rowCount, columnCount);
-    firefighter = new FireFighterPerson(fire.getPositions(), initialFireFighterPerson, rowCount, columnCount);
-    fireTruck = new FireTruck(fire.getPositions(), initialFireTruckCount, rowCount, columnCount);
-    cloud = new Cloud(fire.getPositions(), initialCloudCount, rowCount, columnCount);
-    firefighterPositions = firefighter.getPositions();
-    firePositions = fire.getPositions();
-    road = new Road(new ArrayList<>(), rowCount, columnCount);
+    firefighter = new FireFighterPerson((Set<Position>) fire.getPositions(), initialFireFighterPerson, rowCount, columnCount);
+    fireTruck = new FireTruck((Set<Position>) fire.getPositions(), initialFireTruckCount, rowCount, columnCount);
+    cloud = new Cloud((Set<Position>) fire.getPositions(), initialCloudCount, rowCount, columnCount);
+    firefighterPositions = (List<Position>) firefighter.getPositions();
+    firePositions = (Set<Position>) fire.getPositions();
+    road = new Road(rowCount, columnCount);
     mountain = new Mountain(new ArrayList<>(), rowCount, columnCount);
-    rock = new Rock(new ArrayList<>(), rowCount, columnCount);
+    rock = new Rock(rowCount, columnCount);
 
   }
 
@@ -75,8 +75,8 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
 
-  public List<FFBoardElement> getBoardElements(){
-    List<FFBoardElement> elements = new ArrayList<>();
+  public List<Entity> getBoardElements(){
+    List<Entity> elements = new ArrayList<>();
     elements.add(firefighter);
     elements.add(fireTruck);
     elements.add(fire);
@@ -98,19 +98,18 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     initializeElements();
   }
 
-
   @Override
   public List<FFModelElement> getState(Position position) {
     List<FFModelElement> result = new ArrayList<>();
-    for(FFBoardElement element : getBoardElements()) {
-        result.addAll(element.getState(position));
+    for(Entity element : getBoardElements()) {
+        result.add(element.getState(position));
     }
     return result;
   }
 
   @Override
   public void setState(List<FFModelElement> state, Position position) {
-    for(FFBoardElement element : getBoardElements()) {
+    for(Entity element : getBoardElements()) {
         element.setState(state, position);
     }
   }
