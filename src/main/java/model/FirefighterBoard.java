@@ -178,7 +178,6 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     firefighterPositions.clear();
     step = 0;
 
-    // Clear other elements
     fire.initializeElements(initialFireCount);
     firefighter.initializeElements(initialFireFighterPerson);
     fireTruck.initializeElements(initialFireTruckCount);
