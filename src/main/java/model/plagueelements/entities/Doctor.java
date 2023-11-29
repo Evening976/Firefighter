@@ -1,7 +1,7 @@
 package model.plagueelements.entities;
 
-import model.firefighterelements.obstacle.Mountain;
-import model.firefighterelements.obstacle.Road;
+import model.firefighterelements.obstacle.MountainManager;
+import model.firefighterelements.obstacle.RoadManager;
 import model.plagueelements.DModelElement;
 import model.plagueelements.Medical;
 import util.Position;
@@ -14,7 +14,7 @@ public class Doctor extends Medical {
         super(plaguePositions, initialCount, rowCount, columnCount);
     }
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain) {
+    public Position neighborClosestToFire(Position position, Set<Position> firePositions, RoadManager roadManager, MountainManager mountainManager) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -25,7 +25,7 @@ public class Doctor extends Medical {
             if (firePositions.contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || mountain.isMountain(current)) continue;
+                //if (seen.contains(adjacent) || mountainManager.isMountain(current)) continue;
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));

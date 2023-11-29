@@ -1,26 +1,22 @@
 package model.firefighterelements.obstacle;
 
-import model.firefighterelements.Entity;
+import general.model.entity.ModelElement;
+import general.model.obstacle.Obstacle;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class Road extends Entity {
-    public Road(int rowCount, int columnCount) {
-        super(rowCount, columnCount, (int) (rowCount*columnCount*0.2));
-        this.positions = new ArrayList<>();
-        tag = FFModelElement.ROAD;
-        initialCount = getInitCount();
-        initializeElements();
+public class Road implements Obstacle {
+    Position position;
+    public Road(Position position) {
+        this.position = position;
     }
-
-    public int getInitCount(){
-        int totalCells = rowCount * columnCount;
-        return (int) (totalCells * 0.2);
+    public Position getPosition() {
+        return position;
     }
-
-    public boolean fireCanSpread(Position position){
-        return !positions.contains(position);
+    @Override
+    public boolean isObstacle(Position position) {
+        return !position.equals(this.position);
     }
 }

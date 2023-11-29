@@ -1,7 +1,7 @@
 package model.plagueelements.entities;
 
-import model.firefighterelements.obstacle.Mountain;
-import model.firefighterelements.obstacle.Road;
+import model.firefighterelements.obstacle.MountainManager;
+import model.firefighterelements.obstacle.RoadManager;
 import model.plagueelements.DModelElement;
 import util.Position;
 
@@ -13,12 +13,12 @@ public class Ambulance extends Doctor{
     }
 
     @Override
-    public Position neighborClosestToFire(Position position, Set<Position> plaguePositions, Road road, Mountain mountain) {
-        Position step1 = steps(position, plaguePositions, road, mountain);
-        return steps(step1, plaguePositions, road, mountain);
+    public Position neighborClosestToFire(Position position, Set<Position> plaguePositions, RoadManager roadManager, MountainManager mountainManager) {
+        Position step1 = steps(position, plaguePositions, roadManager, mountainManager);
+        return steps(step1, plaguePositions, roadManager, mountainManager);
     }
 
-    private Position steps(Position position, Set<Position> plaguePositions, Road road, Mountain mountain) {
+    private Position steps(Position position, Set<Position> plaguePositions, RoadManager roadManager, MountainManager mountainManager) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -26,12 +26,12 @@ public class Ambulance extends Doctor{
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (plaguePositions.contains(current) && !mountain.isMountain(current))
-                return firstMove.get(current);
+/*            if (plaguePositions.contains(current) && !mountainManager.isMountain(current))
+                return firstMove.get(current);*/
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || mountain.isMountain(current)) {
+/*                if (seen.contains(adjacent) || mountainManager.isMountain(current)) {
                     continue;
-                }
+                }*/
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));

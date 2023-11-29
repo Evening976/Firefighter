@@ -1,7 +1,7 @@
 package model.plagueelements;
 
-import model.firefighterelements.obstacle.Mountain;
-import model.firefighterelements.obstacle.Road;
+import model.firefighterelements.obstacle.MountainManager;
+import model.firefighterelements.obstacle.RoadManager;
 import util.Position;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ public abstract class Medical extends DBoardElement {
             initializeElements(initialCount);
         }
 
-        public List<Position> update(Set<Position> plaguePositions, Road road, Mountain mountain) {
+        public List<Position> update(Set<Position> plaguePositions, RoadManager roadManager, MountainManager mountainManager) {
             List<Position> result = new ArrayList<>();
             List<Position> doctorNewPositions = new ArrayList<>();
             for (Position doctorPosition : medPos) {
-                Position newMedPos = neighborClosestToFire(doctorPosition, plaguePositions, road, mountain);
+                Position newMedPos = neighborClosestToFire(doctorPosition, plaguePositions, roadManager, mountainManager);
                 doctorNewPositions.add(newMedPos);
                 extinguish(newMedPos);
                 result.add(doctorPosition);
@@ -49,7 +49,7 @@ public abstract class Medical extends DBoardElement {
             medPos.remove(position);
         }
 
-        public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions, Road road, Mountain mountain);
+        public abstract Position neighborClosestToFire(Position position, Set<Position> firePositions, RoadManager roadManager, MountainManager mountainManager);
 
         @Override
         public void initializeElements(int initialCount) {

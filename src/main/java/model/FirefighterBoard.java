@@ -2,16 +2,18 @@ package model;
 
 import app.SimulatorApplication;
 import general.model.entity.ModelElement;
-import model.firefighterelements.Entity;
+import general.model.entity.EntityManager;
+import general.model.obstacle.Obstacle;
+import general.model.obstacle.ObstacleManager;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.FireFighter;
+import model.firefighterelements.entities.FireFighter.FireFighter;
 import model.firefighterelements.entities.Cloud;
-import model.firefighterelements.entities.Fire;
-import model.firefighterelements.entities.FireFighterPerson;
-import model.firefighterelements.entities.FireTruck;
-import model.firefighterelements.obstacle.Mountain;
-import model.firefighterelements.obstacle.Road;
-import model.firefighterelements.obstacle.Rock;
+import model.firefighterelements.entities.FireManager;
+import model.firefighterelements.entities.FireFighter.FireFighterPerson;
+import model.firefighterelements.entities.FireFighter.FireTruck;
+import model.firefighterelements.obstacle.MountainManager;
+import model.firefighterelements.obstacle.RoadManager;
+import model.firefighterelements.obstacle.RockManager;
 import util.Position;
 
 import java.util.ArrayList;
@@ -24,11 +26,9 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   private int step = 0;
   private FireFighter firefighter;
   private FireTruck fireTruck;
-  private Fire fire;
+  private FireManager fireManager;
   private Cloud cloud;
-  private Road road;
-  private Mountain mountain;
-  private Rock rock;
+  List<ObstacleManager> ob;
 
   public FirefighterBoard(int columnCount, int rowCount) {
     this.columnCount = columnCount;
@@ -38,13 +38,13 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public void initializeElements() {
-    fire = new Fire(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount);
-    firefighter = new FireFighterPerson((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount);
-    fireTruck = new FireTruck((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount);
-    cloud = new Cloud((Set<Position>) fire.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
-    road = new Road(rowCount, columnCount);
-    mountain = new Mountain(rowCount, columnCount);
-    rock = new Rock(rowCount, columnCount);
+    fireManager = new FireManager(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount);
+    firefighter = new FireFighterPerson((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount);
+    fireTruck = new FireTruck((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount);
+    cloud = new Cloud((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
+    ob.add(new RoadManager(rowCount, columnCount));
+    ob.add(new MountainManager(rowCount, columnCount));
+    ob.add(new RockManager(rowCount, columnCount));
   }
 
 
@@ -59,11 +59,17 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fire.update(this);
+    List<Position> result = fireManager.update(this);
 
     result.addAll(fireTruck.update(this));
     result.addAll(firefighter.update(this));
     result.addAll(cloud.update(this));
+
+    for(ObstacleManager obstacle : ob){
+      if(obstacle instanceof RockManager){
+        ((RockManager) obstacle).updateStep(step);
+      }
+    }
 
     step++;
 
@@ -75,14 +81,11 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
 
-  public List<Entity> getBoardElements(){
-    List<Entity> elements = new ArrayList<>();
+  public List<EntityManager> getBoardElements(){
+    List<EntityManager> elements = new ArrayList<>();
     elements.add(fireTruck);
-    elements.add(fire);
+    elements.add(fireManager);
     elements.add(cloud);
-    elements.add(road);
-    elements.add(mountain);
-    elements.add(rock);
     elements.add(firefighter);
     return elements;
   }
@@ -101,35 +104,52 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   @Override
   public List<FFModelElement> getState(Position position) {
     List<FFModelElement> result = new ArrayList<>();
-    for(Entity element : getBoardElements()) {
+
+    for(EntityManager element : getBoardElements()) {
       ModelElement e = element.getState(position);
       if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
       else result.add(FFModelElement.EMPTY);
     }
+
+    for(ObstacleManager om : ob){
+        ModelElement e = om.getState(position);
+        if(e instanceof FFModelElement) result.add((FFModelElement) om.getState(position));
+        else result.add(FFModelElement.EMPTY);
+    }
+
     return result;
   }
 
   @Override
   public void setState(List<FFModelElement> state, Position position) {
-    for(Entity element : getBoardElements()) {
+    for(EntityManager element : getBoardElements()) {
         element.setState(state, position);
+    }
+    for(ObstacleManager obstacle : ob){
+        obstacle.setState(state, position);
     }
   }
 
   public boolean fireCanSpread(Position position){
-    return (mountain.fireCanSpread(position) && road.fireCanSpread(position));
+    for(ObstacleManager obstacle : ob){
+      for(Obstacle o : obstacle.getObstacles()){
+        if(o.isObstacle(position)) return false;
+      }
+    }
+    return true;
   }
 
   public boolean fireFighterCanMove(Position position){
-    return (mountain.isCrossable(position));
+    for(ObstacleManager obstacle : ob){
+      if(obstacle instanceof MountainManager){
+        return ((MountainManager) obstacle).isCrossable(position);
+      }
+    }
+    return true;
   }
 
   public boolean isFire(Position position){
-    return fire.getPositions().contains(position);
-  }
-
-  public boolean isRock(Position position){
-    return rock.isRock(position);
+    return fireManager.getPositions().contains(position);
   }
 
   public void printBoard(){
@@ -161,28 +181,15 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     System.out.println("___________________");
   }
 
-  public List<Position> neighbors(Position position){
-    List<Position> list = new ArrayList<>();
-    if (position.row() > 0) list.add(new Position(position.row() - 1, position.column()));
-    if (position.column() > 0) list.add(new Position(position.row(), position.column() - 1));
-    if (position.row() < rowCount - 1) list.add(new Position(position.row() + 1, position.column()));
-    if (position.column() < columnCount - 1) list.add(new Position(position.row(), position.column() + 1));
-    return list;
-  }
-
-
-  public Set<Position> getFirePositions(){
-    return (Set<Position>) fire.getPositions();
-  }
-
   public void clearBoard(){
     step = 0;
-    fire.initializeElements();
+    fireManager.initializeElements();
     firefighter.initializeElements();
     fireTruck.initializeElements();
     cloud.initializeElements();
-    road.initializeElements(0);
-    mountain.initializeElements(0);
-    rock.initializeElements(0);
+
+    for(ObstacleManager obstacle : ob){
+      obstacle.initializeElements(rowCount, columnCount);
+    }
   }
 }

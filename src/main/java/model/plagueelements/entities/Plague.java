@@ -1,8 +1,8 @@
 package model.plagueelements.entities;
 
-import model.firefighterelements.obstacle.Mountain;
-import model.firefighterelements.obstacle.Road;
-import model.firefighterelements.obstacle.Rock;
+import model.firefighterelements.obstacle.MountainManager;
+import model.firefighterelements.obstacle.RoadManager;
+import model.firefighterelements.obstacle.RockManager;
 import model.plagueelements.DBoardElement;
 import model.plagueelements.DModelElement;
 import util.Position;
@@ -31,15 +31,15 @@ public class Plague extends DBoardElement {
     }
 
 
-    public List<Position> update(Road road, Mountain mountain, Rock rock) {
+    public List<Position> update(RoadManager roadManager, MountainManager mountainManager, RockManager rockManager) {
         List<Position> result = new ArrayList<>();
-        if (step % 2 == 0) {
+        /*if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : plaguePositions) {
                 List<Position> fireNeighbors = neighbors(fire);
                 for (Position neighbor : fireNeighbors) {
-                    if (road.fireCanSpread(neighbor) && mountain.fireCanSpread(neighbor)) {
-                        if (rock.isRock(neighbor)) {
+                    if (roadManager.isObstacle(neighbor) && mountainManager.isObstacle(neighbor)) {
+                        if (rockManager.isRock(neighbor)) {
                             if (!plaguePositions.contains(neighbor) && step % 4 == 0 && step != 0) {
                                 newFirePositions.add(neighbor);
                             }
@@ -51,7 +51,7 @@ public class Plague extends DBoardElement {
             }
             plaguePositions.addAll(newFirePositions);
             result.addAll(newFirePositions);
-        }
+        }*/
         return result;
     }
 

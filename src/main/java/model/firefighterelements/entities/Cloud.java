@@ -1,37 +1,29 @@
 package model.firefighterelements.entities;
 
 import model.FirefighterBoard;
-import model.firefighterelements.Entity;
 import model.firefighterelements.FFModelElement;
+import model.firefighterelements.entities.FireFighter.FireExtinguisher;
 import util.Position;
 import util.RandomGenerator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class Cloud extends Entity {
-
-    private final Set<Position> firePositions;
+public class Cloud extends FireExtinguisher {
 
     public Cloud(Set<Position> firePositions, int initialCount,  int rowCount, int columnCount) {
-        super(rowCount, columnCount);
-
-        this.firePositions = firePositions;
-        this.positions = new ArrayList<>();
+        super(firePositions, rowCount, columnCount, initialCount);
         this.tag = FFModelElement.CLOUD;
-
-        initializeElements(initialCount);
-    }
-
-    private void extinguish(Position position) {
-        firePositions.remove(position);
+        initializeElements();
     }
 
     public List<Position> update(FirefighterBoard board){
-        if(firePositions.isEmpty()) return new ArrayList<>();
+
         List<Position> result = new ArrayList<>();
         if (firePositions.isEmpty()) return result;
+
         List<Position> cloudNewPosition = new ArrayList<>();
         for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
@@ -39,13 +31,14 @@ public class Cloud extends Entity {
             extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
-            List<Position> neighborFirePositions = board.neighbors(newCloudPosition).stream()
+            List<Position> neighborFirePositions = neighbors(newCloudPosition).stream()
                     .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions)
                 extinguish(firePosition);
             result.addAll(neighborFirePositions);
         }
+
         positions = cloudNewPosition;
         return result;
     }
@@ -75,4 +68,13 @@ public class Cloud extends Entity {
         return position;
     }
 
+    @Override
+    public Collection<Position> getPositions() {
+        return null;
+    }
+
+    @Override
+    public void initializeElements() {
+
+    }
 }

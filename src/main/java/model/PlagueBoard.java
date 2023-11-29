@@ -41,7 +41,6 @@ public class PlagueBoard implements Board<List<DModelElement>>{
         return 0;
     }
 
-    @Override
     public List<Position> neighbors(Position position) {
         return null;
     }

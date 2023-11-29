@@ -61,8 +61,5 @@ public interface Board<S> {
    * @return The current step number or generation.
    */
   int stepNumber();
-
-  List<Position> neighbors(Position position);
-
 }
 
