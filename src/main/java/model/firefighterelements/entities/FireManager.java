@@ -14,6 +14,7 @@ public class FireManager extends EntityManager {
     List<ObstacleManager> obstacleManagers;
     public FireManager(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
         super(rowCount, columnCount, initialCount);
+        fires = new HashSet<>();
         tag = FFModelElement.FIRE;
         this.obstacleManagers = Arrays.asList(obstacleManagers);
         initializeElements();
@@ -22,42 +23,43 @@ public class FireManager extends EntityManager {
     @Override
     public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
-            List<Position> nextPositions = new ArrayList<>();
-            Position randomPosition = Position.randomPosition(rowCount, columnCount);
-            Position sidePosition = new Position(randomPosition.row() - 1, randomPosition.column());
-            for (int current = 1; current < 10; current++) {
-                nextPositions.add(new Position (randomPosition.row(), randomPosition.column() - current));
-                nextPositions.add(new Position(sidePosition.row(), sidePosition.column() - current));
-            }
-            for (Position position : nextPositions) {
-                if (!getPositions().contains(position)) fires.add(new Fire(position));
-            }
+            fires.add(new Fire(Position.randomPosition(rowCount, columnCount)));
         }
     }
 
     public List<Position> update(FirefighterBoard board) {
-        int step = board.getStep();
         List<Position> result = new ArrayList<>();
-        if (step % 2 == 0) {
-            Set<Fire> newFirePositions = new HashSet<>();
+        if (board.getStep() % 2 == 0) {
+            List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : getPositions()) {
                 for (Position nextPosition : neighbors(fire)) {
-                    for (ObstacleManager obstacleManager : obstacleManagers) {
-                        if (obstacleManager.accept(nextPosition)) {
-                            newFirePositions.add(new Fire(nextPosition));
-                            result.add(nextPosition);
-                        }
-                    }
+                    if(fires.contains(new Fire(nextPosition))) break;
+                    if(!obstacleManagers.stream().allMatch(obstacleManager -> obstacleManager.accept(nextPosition))) continue;
+                        newFirePositions.add(nextPosition);
                 }
             }
-            fires.addAll(newFirePositions);
+            fires.clear();
+            for (Position position : newFirePositions) {
+                fires.add(new Fire(position));
+            }
+            result.addAll(newFirePositions);
         }
         return result;
     }
 
+    public void extinguish(Position position){
+        for(Fire fire: fires){
+            if(fire.getPosition().equals(position)){
+                fires.remove(fire);
+                System.out.println("Fire extinguished at " + position);
+                break;
+            }
+        }
+    }
+
     @Override
     public Collection<Position> getPositions() {
-        Collection<Position> positions = new ArrayList<>();
+        Collection<Position> positions = new HashSet<>();
         for(Fire fire: fires)
             positions.add(fire.getPosition());
         return positions;

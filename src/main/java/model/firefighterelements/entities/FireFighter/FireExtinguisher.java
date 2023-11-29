@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class FireExtinguisher extends EntityManager {
-    protected final Set<Position> firePositions;
+    protected Set<Position> firePositions;
     public FireExtinguisher(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
         super(rowCount, columnCount, initialCount);
         this.firePositions = firePositions;
-        initializeElements();
     }
 
     protected void extinguish(Position position) {

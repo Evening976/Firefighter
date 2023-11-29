@@ -1,34 +1,24 @@
 package model.firefighterelements.entities.FireFighter;
 
+import general.model.entity.EntityManager;
+import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
 import util.Position;
 
 import java.util.*;
 
-public abstract class FireFighter extends FireExtinguisher{
+public abstract class FireFighter extends FireExtinguisher {
 
-    public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount){
+    List<ObstacleManager> obstacleManagers;
+
+    public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
         super(firePositions, initialCount, rowCount, columnCount);
+        this.obstacleManagers = Arrays.asList(obstacleManagers);
     }
 
     public List<Position> update(FirefighterBoard board) {
-        List<Position> result = new ArrayList<>();
-        List<Position> firefighterNewPositions = new ArrayList<>();
-        for (Position firefighterPosition : getPositions()) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
-            firefighterNewPositions.add(newFirefighterPosition);
-            extinguish(newFirefighterPosition);
-            result.add(firefighterPosition);
-            result.add(newFirefighterPosition);
-            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
-                    .filter(firePositions::contains)
-                    .toList();
-            for (Position firePosition : neighborFirePositions)
-                extinguish(firePosition);
-            result.addAll(neighborFirePositions);
-        }
-        positions = firefighterNewPositions;
-        return result;
+        System.out.println("FireFighter update");
+        return new ArrayList<>();
     }
 
     protected Position neighborClosestToFire(Position position, FirefighterBoard board) {
@@ -43,7 +33,7 @@ public abstract class FireFighter extends FireExtinguisher{
             if (board.isFire(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
-                if (seen.contains(adjacent) || !board.fireFighterCanMove(current)) continue;
+                if (seen.contains(adjacent) || !obstacleManagers.stream().allMatch(obstacleManager -> obstacleManager.accept(current))) continue;
                 toVisit.add(adjacent);
                 seen.add(adjacent);
                 firstMove.put(adjacent, firstMove.get(current));

@@ -7,16 +7,14 @@ import general.model.obstacle.ObstacleManager;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RoadManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> roads;
     public RoadManager(int rowCount, int columnCount) {
-        initialCount = (int) (rowCount*columnCount*0.2);
+        initialCount = (int) (rowCount*columnCount*0.1);
+        roads = new HashSet<>();
         initializeElements(rowCount, columnCount);
     }
 
@@ -30,22 +28,18 @@ public class RoadManager extends ObstacleManager {
     @Override
     public void initializeElements(int rowCount, int columnCount) {
         for (int index = 0; index < initialCount; index++) {
-            List<Position> nextPositions = new ArrayList<>();
-            Position randomPosition = Position.randomPosition(rowCount, columnCount);
-            Position sidePosition = new Position(randomPosition.row() - 1, randomPosition.column());
-            for (int current = 1; current < 10; current++) {
-                nextPositions.add(new Position (randomPosition.row(), randomPosition.column() - current));
-                nextPositions.add(new Position(sidePosition.row(), sidePosition.column() - current));
-            }
-            for (Position position : nextPositions) {
-                if (!isObstacle(position)) roads.add(new Road(position));
-            }
+            roads.add(new Road(Position.randomPosition(rowCount, columnCount)));
         }
     }
 
     @Override
     public Set<Obstacle> getObstacles() {
         return roads;
+    }
+
+    @Override
+    public boolean accept(Position position) {
+        return !contains(position);
     }
 
     @Override
@@ -76,9 +70,9 @@ public class RoadManager extends ObstacleManager {
 
     @Override
     public boolean contains(Position position) {
-        for(Obstacle road: roads)
-            if(road.getPosition().equals(position))
-                return true;
+        for(Obstacle road: roads) {
+            if (road.getPosition().equals(position)) return true;
+        }
         return false;
     }
 }

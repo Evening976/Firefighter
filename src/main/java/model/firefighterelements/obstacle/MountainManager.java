@@ -7,16 +7,14 @@ import general.model.obstacle.ObstacleManager;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MountainManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> mountains;
     public MountainManager(int rowCount, int columnCount) {
-        initialCount = (int) (rowCount * columnCount * 0.2);
+        initialCount = (int) (rowCount * columnCount * 0.1);
+        mountains = new HashSet<>();
         initializeElements(rowCount, columnCount);
     }
 
@@ -29,16 +27,7 @@ public class MountainManager extends ObstacleManager {
 
     public void initializeElements(int rowCount, int columnCount) {
         for (int index = 0; index < initialCount; index++) {
-            List<Position> nextPositions = new ArrayList<>();
-            Position randomPosition = Position.randomPosition(rowCount, columnCount);
-            Position sidePosition = new Position(randomPosition.row() - 1, randomPosition.column());
-            for (int current = 1; current < 10; current++) {
-                nextPositions.add(new Position (randomPosition.row(), randomPosition.column() - current));
-                nextPositions.add(new Position(sidePosition.row(), sidePosition.column() - current));
-            }
-            for (Position position : nextPositions) {
-                if (!contains(position)) mountains.add(new Mountain(position));
-            }
+            mountains.add(new Mountain(Position.randomPosition(rowCount, columnCount)));
         }
     }
 
@@ -49,10 +38,7 @@ public class MountainManager extends ObstacleManager {
 
     @Override
     public boolean accept(Position position) {
-        for(Obstacle mountain: mountains)
-            if(mountain.isObstacle(position))
-                return false;
-        return true;
+        return !contains(position);
     }
 
 
@@ -77,12 +63,10 @@ public class MountainManager extends ObstacleManager {
 
     @Override
     public boolean contains(Position position) {
-        for(Obstacle mountain: mountains)
-            if(mountain.getPosition().equals(position))
+        for(Obstacle mountain: mountains) {
+            if (mountain.getPosition().equals(position))
                 return true;
+        }
         return false;
-    }
-    public boolean isCrossable(Position position){
-        return !contains(position);
     }
 }

@@ -20,7 +20,7 @@ public class SimulatorApplication extends javafx.application.Application {
   public static final int INITIAL_FIRE_COUNT = 6;
   public static final int INITIAL_FIREFIGHTER_COUNT = 5;
   public static final int INITIAL_CLOUD_COUNT = 4;
-  public static final int INITIAL_FIRETRUCK_COUNT = 2;
+  public static final int INITIAL_FIRETRUCK_COUNT = 5;
 
   private Stage primaryStage;
   private Parent view;

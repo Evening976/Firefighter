@@ -1,13 +1,10 @@
 package model.firefighterelements.entities.FireFighter;
 
-import model.firefighterelements.FFModelElement;
+import general.model.entity.Entity;
 import util.Position;
 
-import java.util.*;
-
-public class FireFighterPerson extends FireFighter {
-    public FireFighterPerson(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
-        super(firePositions, initialCount, rowCount, columnCount);
-        tag = FFModelElement.FIREFIGHTERPERSON;
+public class FireFighterPerson extends Entity {
+    public FireFighterPerson(Position position) {
+        super(position);
     }
 }
