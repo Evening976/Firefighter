@@ -42,7 +42,7 @@ public class Controller {
   @FXML
   private Grid<ViewElement> grid;
   private Timeline timeline;
-  private Board<List<FFModelElement>> board;
+  private Board<?> board;
 
   @FXML
   private void initialize() {
@@ -64,12 +64,10 @@ public class Controller {
   }
 
   private void updateBoard(){
-    List<Position> updatedPositions = board.updateToNextGeneration();
     List<Pair<Position, ViewElement>> updatedSquares = new ArrayList<>();
-    for(Position updatedPosition : updatedPositions){
-      List<? extends ModelElement> squareState = board.getState(updatedPosition);
-      ViewElement viewElement = getViewElement(squareState);
-      updatedSquares.add(new Pair<>(updatedPosition, viewElement));
+
+    for(Position updatedPosition : board.updateToNextGeneration()){
+      updatedSquares.add(board.getState(updatedPosition));
     }
 
     grid.repaint(updatedSquares);
@@ -82,36 +80,11 @@ public class Controller {
     ViewElement[][] viewElements = new ViewElement[rowCount][columnCount];
     for(int column = 0; column < columnCount; column++)
       for(int row = 0; row < rowCount; row++)
-        viewElements[row][column] = getViewElement(board.getState(new Position(row, column)));
+        viewElements[row][column] = board.getState(new Position(row, column)).getValue();
     grid.repaint(viewElements);
     updateGenerationLabel(board.stepNumber());
   }
 
-private ViewElement getViewElement(List<? extends ModelElement> squareState) {
-  if(squareState.contains(FFModelElement.FIREFIGHTERPERSON)){
-    return new ViewElement(FFModelElement.FIREFIGHTERPERSON.getValue());
-  }
-  if(squareState.contains(FFModelElement.FIRETRUCK)){
-    return new ViewElement(FFModelElement.FIRETRUCK.getValue());
-  }
-  if (squareState.contains(FFModelElement.FIRE)){
-    return new ViewElement(FFModelElement.FIRE.getValue());
-  }
-  if(squareState.contains(FFModelElement.CLOUD)) {
-    return new ViewElement(FFModelElement.CLOUD.getValue());
-  }
-  if(squareState.contains(FFModelElement.ROAD)) {
-    return new ViewElement(FFModelElement.ROAD.getValue());
-  }
-  if(squareState.contains(FFModelElement.MOUNTAIN)) {
-    return new ViewElement(FFModelElement.MOUNTAIN.getValue());
-  }
-  if(squareState.contains(FFModelElement.ROCK)) {
-    return new ViewElement(FFModelElement.ROCK.getValue());
-  }
-
-  return new ViewElement();
-  }
 
   private void initializeTimeline() {
     Duration duration = new Duration(Controller.PERIOD_IN_MILLISECONDS);
@@ -145,8 +118,7 @@ private ViewElement getViewElement(List<? extends ModelElement> squareState) {
     repaintGrid();
   }
 
-  public void initialize(int squareWidth, int squareHeight, int columnCount,
-                                int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount, int initialFireTruckCount) {
+  public void initialize(int squareWidth, int squareHeight, int columnCount, int rowCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
     this.setModel(new FirefighterBoard(columnCount, rowCount));
     repaintGrid();

@@ -3,6 +3,7 @@ package model;
 import app.SimulatorApplication;
 import general.model.GameElement;
 import general.model.entity.ModelElement;
+import javafx.util.Pair;
 import model.firefighterelements.FFModelElement;
 import model.firefighterelements.entities.CloudManager;
 import model.firefighterelements.entities.FireFighter.FireFighter;
@@ -13,11 +14,16 @@ import model.firefighterelements.obstacle.MountainManager;
 import model.firefighterelements.obstacle.RoadManager;
 import model.firefighterelements.obstacle.RockManager;
 import util.Position;
+import view.ViewElement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirefighterBoard implements Board<List<FFModelElement>> {
+  public static final int INITIAL_FIRE_COUNT = 3;
+  public static final int INITIAL_FIREFIGHTER_COUNT = 3;
+  public static final int INITIAL_CLOUD_COUNT = 3;
+  public static final int INITIAL_FIRETRUCK_COUNT = 2;
   private final int columnCount;
   private final int rowCount;
   private int step = 0;
@@ -41,10 +47,10 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     mountainManager = new MountainManager(rowCount, columnCount);
     rockManager = new RockManager(rowCount, columnCount);
 
-    fireManager = new FireManager(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
-    fireFighterManager = new FireFighterPersonManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
-    fireTruckManager = new FireTruckManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
-    cloudManager = new CloudManager(fireManager.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
+    fireManager = new FireManager(INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
+    fireFighterManager = new FireFighterPersonManager(INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
+    fireTruckManager = new FireTruckManager(INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
+    cloudManager = new CloudManager(INITIAL_CLOUD_COUNT, rowCount, columnCount);
   }
 
 
@@ -59,13 +65,14 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    rockManager.updateStep(step);
-    List<Position> result = fireManager.update(this);
-    result.addAll(fireTruckManager.update(this));
-    result.addAll(fireFighterManager.update(this));
-    result.addAll(cloudManager.update(this));
+    List<Position> result = fireManager.update(stepNumber());
+    result.addAll(fireTruckManager.update(fireManager));
+    result.addAll(fireFighterManager.update(fireManager));
+    result.addAll(cloudManager.update(fireManager));
 
-    step++;
+    if(!fireManager.getPositions().isEmpty()) {
+      step++;
+    }
 
     return result;
   }
@@ -82,28 +89,27 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   @Override
-  public List<FFModelElement> getState(Position position) {
-    List<FFModelElement> result = new ArrayList<>();
+  public Pair<Position, ViewElement> getState(Position position) {
+    Pair<Position, ViewElement> result = new Pair<>(position, new ViewElement());
 
     for(GameElement element: getGameElements()){
         ModelElement e = element.getState(position);
-        if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
-        else result.add(FFModelElement.EMPTY);
+        if(e instanceof FFModelElement) result = (new Pair<>(position, new ViewElement(e.getValue(), e.getTag())));
     }
 
     return result;
   }
 
   List<GameElement> getGameElements(){
-    List<GameElement> result = new ArrayList<>();
-    result.add(mountainManager);
-    result.add(rockManager);
-    result.add(roadManager);
-    result.add(fireManager);
-    result.add(fireFighterManager);
-    result.add(fireTruckManager);
-    result.add(cloudManager);
-    return result;
+    List<GameElement> gameElements = new ArrayList<>();
+    gameElements.add(mountainManager);
+    gameElements.add(rockManager);
+    gameElements.add(roadManager);
+    gameElements.add(fireManager);
+    gameElements.add(fireFighterManager);
+    gameElements.add(fireTruckManager);
+    gameElements.add(cloudManager);
+    return gameElements;
   }
 
   @Override
@@ -116,41 +122,10 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   public void printBoard(){
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
-        Position position = new Position(i, j);
-        List<FFModelElement> state = getState(position);
-        if(state.contains(FFModelElement.FIRE)){
-          System.out.print("[F]");
-        } else if(state.contains(FFModelElement.FIREFIGHTERPERSON)) {
-          System.out.print("[P]");
-        } else if(state.contains(FFModelElement.CLOUD)) {
-          System.out.print("[C]");
-        } else if(state.contains(FFModelElement.FIRETRUCK)){
-            System.out.print("[T]");
-        } else if(state.contains(FFModelElement.MOUNTAIN)){
-            System.out.print("[M]");
-        } else if(state.contains(FFModelElement.ROAD)){
-            System.out.print("[R]");
-        } else if (state.contains(FFModelElement.ROCK)){
-            System.out.print("[X]");
-        }
-        else {
-          System.out.print("[ ]");
-        }
+        System.out.print(getState(new Position(i, j)).getValue().tag());
       }
       System.out.println();
     }
     System.out.println("___________________");
-  }
-
-  public void clearBoard(){
-    step = 0;
-
-    fireManager.initializeElements();
-    fireFighterManager.initializeElements();
-    fireTruckManager.initializeElements();
-    cloudManager.initializeElements();
-    roadManager.initializeElements(rowCount, columnCount);
-    mountainManager.initializeElements(rowCount, columnCount);
-    rockManager.initializeElements(rowCount, columnCount);
   }
 }

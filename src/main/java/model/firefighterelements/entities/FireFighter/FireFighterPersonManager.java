@@ -2,8 +2,10 @@ package model.firefighterelements.entities.FireFighter;
 
 import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
+import model.firefighterelements.entities.FireManager;
 import util.Position;
 
 import java.util.ArrayList;
@@ -13,10 +15,10 @@ import java.util.Set;
 
 public class FireFighterPersonManager extends FireFighter {
     Set<FireFighterPerson> fireFighterPerson;
-    public FireFighterPersonManager(Set<Position> firePositions, int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers) {
-        super(firePositions, initialCount, rowCount, columnCount, obstacleManagers);
+    public FireFighterPersonManager(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers) {
+        super(initialCount, rowCount, columnCount, obstacleManagers);
         fireFighterPerson = new HashSet<>();
-        tag = FFModelElement.FIREFIGHTERPERSON;
+        tag = new FFModelElement(Color.BLUE, "[P]");
         initializeElements();
     }
 
@@ -30,21 +32,18 @@ public class FireFighterPersonManager extends FireFighter {
     }
 
     @Override
-    public List<Position> update(FirefighterBoard board) {
-        this.firePositions = board.fireManager.getPositions();
-
+    public List<Position> update(FireManager fireManager) {
         List<Position> result = new ArrayList<>();
         Set<FireFighterPerson> firefighterNewPositions = new HashSet<>();
-
         for (Position firefighterPosition : getPositions()) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, fireManager);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));
-            board.fireManager.extinguish(newFirefighterPosition);
+            fireManager.extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
             List<Position> neighborFirePositions = neighbors(newFirefighterPosition);
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
+                fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
 
@@ -74,7 +73,7 @@ public class FireFighterPersonManager extends FireFighter {
     public void setState(List<? extends ModelElement> state, Position position) {
         fireFighterPerson.removeIf(fireFighterPerson -> fireFighterPerson.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.FIREFIGHTERPERSON)){
+            if(element.equals(tag)){
                 fireFighterPerson.add(new FireFighterPerson(position));
             }
         }

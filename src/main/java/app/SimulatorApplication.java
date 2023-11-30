@@ -17,10 +17,6 @@ public class SimulatorApplication extends javafx.application.Application {
   private static final int COLUMN_COUNT = 20;
   private static final int SQUARE_WIDTH = 40;
   private static final int SQUARE_HEIGHT = 40;
-  public static final int INITIAL_FIRE_COUNT = 3;
-  public static final int INITIAL_FIREFIGHTER_COUNT = 0;
-  public static final int INITIAL_CLOUD_COUNT = 0;
-  public static final int INITIAL_FIRETRUCK_COUNT = 0;
 
   private Stage primaryStage;
   private Parent view;
@@ -45,8 +41,7 @@ public class SimulatorApplication extends javafx.application.Application {
     loader.setLocation(location);
     view = loader.load();
     Controller controller = loader.getController();
-    controller.initialize(SQUARE_WIDTH, SQUARE_HEIGHT, COLUMN_COUNT, ROW_COUNT,
-            INITIAL_FIRE_COUNT, INITIAL_FIREFIGHTER_COUNT, INITIAL_CLOUD_COUNT, INITIAL_FIRETRUCK_COUNT);
+    controller.initialize(SQUARE_WIDTH, SQUARE_HEIGHT, COLUMN_COUNT, ROW_COUNT);
   }
 
   private void showScene() {

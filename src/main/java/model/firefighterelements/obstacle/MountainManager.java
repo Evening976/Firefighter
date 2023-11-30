@@ -1,9 +1,9 @@
 package model.firefighterelements.obstacle;
 
-import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import general.model.obstacle.Obstacle;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
@@ -13,9 +13,11 @@ public class MountainManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> mountains;
     public MountainManager(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         initialCount = (int) (rowCount * columnCount * 0.2);
         mountains = new HashSet<>();
-        initializeElements(rowCount, columnCount);
+        tag = new FFModelElement(Color.BLACK,"[M]");
+        initializeElements();
     }
 
     public List<Position> getPositions(){
@@ -25,7 +27,7 @@ public class MountainManager extends ObstacleManager {
         return positions;
     }
 
-    public void initializeElements(int rowCount, int columnCount) {
+    public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             mountains.add(new Mountain(Position.randomPosition(rowCount, columnCount)));
         }
@@ -43,7 +45,7 @@ public class MountainManager extends ObstacleManager {
 
     @Override
     public ModelElement getState(Position position) {
-        if(contains(position)) {return FFModelElement.MOUNTAIN;}
+        if(contains(position)) {return tag;}
         return ModelElement.EMPTY;
     }
 
@@ -51,7 +53,7 @@ public class MountainManager extends ObstacleManager {
     public void setState(List<? extends ModelElement> state, Position position) {
         mountains.removeIf(mountain -> mountain.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.MOUNTAIN)){
+            if(element.equals(tag)){
                 mountains.add(new Mountain(position));
             }
         }

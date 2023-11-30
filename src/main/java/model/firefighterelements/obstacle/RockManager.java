@@ -3,6 +3,7 @@ package model.firefighterelements.obstacle;
 import general.model.entity.ModelElement;
 import general.model.obstacle.Obstacle;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
@@ -13,13 +14,15 @@ public class RockManager extends ObstacleManager {
     Set<Obstacle> rocks;
 
     public RockManager(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         initialCount = (int) (rowCount * 0.5);
         rocks = new HashSet<>();
-        initializeElements(rowCount, columnCount);
+        tag = new FFModelElement(Color.PURPLE, "[X]");
+        initializeElements();
     }
 
     @Override
-    public void initializeElements(int rowCount, int columnCount) {
+    public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             rocks.add(new Rock(Position.randomPosition(rowCount, columnCount)));
         }
@@ -39,7 +42,7 @@ public class RockManager extends ObstacleManager {
 
     @Override
     public ModelElement getState(Position position) {
-        if(contains(position)) return FFModelElement.ROCK;
+        if(contains(position)) return tag;
         return ModelElement.EMPTY;
     }
 
@@ -54,15 +57,9 @@ public class RockManager extends ObstacleManager {
     public void setState(List<? extends ModelElement> state, Position position) {
         rocks.removeIf(rock -> rock.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.ROCK)){
+            if(element.equals(tag)){
                 rocks.add(new Rock(position));
             }
-        }
-    }
-
-    public void updateStep(int step) {
-        for(Obstacle rock: rocks) {
-            ((Rock)rock).setStep(step);
         }
     }
 }

@@ -1,39 +1,39 @@
 package model.firefighterelements.entities;
 
+import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
+import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.entities.FireFighter.FireExtinguisher;
 import util.Position;
 import util.RandomGenerator;
 
 import java.util.*;
 
-public class CloudManager extends FireExtinguisher {
+public class CloudManager extends EntityManager {
     Set<Cloud> clouds;
 
-    public CloudManager(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
-        super(firePositions, initialCount, rowCount, columnCount);
-        this.tag = FFModelElement.CLOUD;
+    public CloudManager(int initialCount, int rowCount, int columnCount) {
+        super(rowCount, columnCount, initialCount);
+        this.tag = new FFModelElement(Color.CYAN, "[C]");
         clouds = new HashSet<>();
         initializeElements();
     }
 
-    public List<Position> update(FirefighterBoard board){
-        this.firePositions = board.fireManager.getPositions();
+    public List<Position> update(FireManager fireManager){
         List<Position> result = new ArrayList<>();
-        if (firePositions.isEmpty()) return result;
+        if(fireManager.getPositions().isEmpty()) return result;
 
         Set<Cloud> cloudNewPosition = new HashSet<>();
         for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
             cloudNewPosition.add(new Cloud(newCloudPosition));
-            board.fireManager.extinguish(newCloudPosition);
+            fireManager.extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
             List<Position> neighborFirePositions = neighbors(newCloudPosition);
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
+                fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
@@ -95,7 +95,7 @@ public class CloudManager extends FireExtinguisher {
     public void setState(List<? extends ModelElement> state, Position position) {
         clouds.removeIf(cloud -> cloud.getPosition().equals(position));
         for(ModelElement element: state) {
-            if (element.equals(FFModelElement.CLOUD)) {
+            if (element.equals(tag)) {
                 clouds.add(new Cloud(position));
             }
         }
