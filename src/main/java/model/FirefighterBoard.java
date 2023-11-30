@@ -44,9 +44,9 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     rockManager = new RockManager(rowCount, columnCount);
 
     fireManager = new FireManager(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
-    fireFighterManager = new FireFighterPersonManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
-    fireTruckManager = new FireTruckManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
-    cloudManager = new CloudManager(fireManager.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
+    fireFighterManager = new FireFighterPersonManager(SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
+    fireTruckManager = new FireTruckManager(SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
+    cloudManager = new CloudManager(SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
   }
 
 
@@ -117,27 +117,8 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
         Position position = new Position(i, j);
-        String cell = "[ ]";
-        if(fireManager.getState(position)
-        List<FFModelElement> state = getState(position).getValue();
-        if(state.contains(FFModelElement.FIRE)){
-          System.out.print("[F]");
-        } else if(state.contains(FFModelElement.FIREFIGHTERPERSON)) {
-          System.out.print("[P]");
-        } else if(state.contains(FFModelElement.CLOUD)) {
-          System.out.print("[C]");
-        } else if(state.contains(FFModelElement.FIRETRUCK)){
-            System.out.print("[T]");
-        } else if(state.contains(FFModelElement.MOUNTAIN)){
-            System.out.print("[M]");
-        } else if(state.contains(FFModelElement.ROAD)){
-            System.out.print("[R]");
-        } else if (state.contains(FFModelElement.ROCK)){
-            System.out.print("[X]");
-        }
-        else {
-          System.out.print("[ ]");
-        }
+        String cell = getState(position).getValue().tag();
+        System.out.print(cell);
       }
       System.out.println();
     }

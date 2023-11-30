@@ -13,17 +13,16 @@ import java.util.*;
 public class CloudManager extends FireExtinguisher {
     Set<Cloud> clouds;
 
-    public CloudManager(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
-        super(firePositions, initialCount, rowCount, columnCount);
+    public CloudManager(int initialCount, int rowCount, int columnCount) {
+        super(initialCount, rowCount, columnCount);
         this.tag = new FFModelElement(Color.CYAN, "[C]");
         clouds = new HashSet<>();
         initializeElements();
     }
 
     public List<Position> update(FirefighterBoard board){
-        this.firePositions = board.fireManager.getPositions();
         List<Position> result = new ArrayList<>();
-        if (firePositions.isEmpty()) return result;
+        if(board.fireManager.getPositions().isEmpty()) return result;
 
         Set<Cloud> cloudNewPosition = new HashSet<>();
         for (Position cloudPosition : getPositions()) {

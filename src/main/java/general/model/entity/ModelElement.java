@@ -11,7 +11,7 @@ public interface ModelElement {
 
         @Override
         public String getTag() {
-            return "EMPTY";
+            return "[ ]";
         }
     };
 

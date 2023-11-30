@@ -32,7 +32,6 @@ public class FireFighterPersonManager extends FireFighter {
 
     @Override
     public List<Position> update(FirefighterBoard board) {
-        this.firePositions = board.fireManager.getPositions();
 
         List<Position> result = new ArrayList<>();
         Set<FireFighterPerson> firefighterNewPositions = new HashSet<>();

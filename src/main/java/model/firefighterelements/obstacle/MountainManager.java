@@ -15,7 +15,7 @@ public class MountainManager extends ObstacleManager {
     public MountainManager(int rowCount, int columnCount) {
         initialCount = (int) (rowCount * columnCount * 0.2);
         mountains = new HashSet<>();
-        tag = new FFModelElement(Color.BLACK, tag);
+        tag = new FFModelElement(Color.BLACK,"[M]");
         initializeElements(rowCount, columnCount);
     }
 
