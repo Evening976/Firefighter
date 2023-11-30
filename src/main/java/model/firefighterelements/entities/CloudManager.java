@@ -20,20 +20,20 @@ public class CloudManager extends EntityManager {
         initializeElements();
     }
 
-    public List<Position> update(FirefighterBoard board){
+    public List<Position> update(FireManager fireManager){
         List<Position> result = new ArrayList<>();
-        if(board.fireManager.getPositions().isEmpty()) return result;
+        if(fireManager.getPositions().isEmpty()) return result;
 
         Set<Cloud> cloudNewPosition = new HashSet<>();
         for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
             cloudNewPosition.add(new Cloud(newCloudPosition));
-            board.fireManager.extinguish(newCloudPosition);
+            fireManager.extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
             List<Position> neighborFirePositions = neighbors(newCloudPosition);
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
+                fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }

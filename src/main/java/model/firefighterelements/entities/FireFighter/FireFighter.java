@@ -3,6 +3,7 @@ package model.firefighterelements.entities.FireFighter;
 import general.model.entity.EntityManager;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
+import model.firefighterelements.entities.FireManager;
 import util.Position;
 
 import java.util.*;
@@ -16,12 +17,9 @@ public abstract class FireFighter extends EntityManager {
         this.obstacleManagers = Arrays.asList(obstacleManagers);
     }
 
-    public List<Position> update(FirefighterBoard board) {
-        System.out.println("FireFighter update");
-        return new ArrayList<>();
-    }
+    public abstract List<Position> update(FireManager fireManager);
 
-    protected Position neighborClosestToFire(Position position, FirefighterBoard board) {
+    protected Position neighborClosestToFire(Position position, FireManager fireManager) {
         Set<Position> seen = new HashSet<>();
         HashMap<Position, Position> firstMove = new HashMap<>();
         Queue<Position> toVisit = new LinkedList<>(neighbors(position));
@@ -30,7 +28,7 @@ public abstract class FireFighter extends EntityManager {
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (board.fireManager.getPositions().contains(current))
+            if (fireManager.getPositions().contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
                 if (seen.contains(adjacent) || !obstacleManagers.stream().allMatch(obstacleManager -> obstacleManager.accept(current))) continue;

@@ -10,7 +10,13 @@ import util.Position;
 
 public abstract class ObstacleManager implements GameElement {
     protected FFModelElement tag;
-    public abstract void initializeElements(int rowCount, int colCount);
+    protected int rowCount;
+    protected int columnCount;
+    protected ObstacleManager(int rowCount, int columnCount){
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+    }
+    public abstract void initializeElements();
     public abstract Set<Obstacle> getObstacles();
     public abstract boolean accept(Position position);
     public boolean contains(Position position){

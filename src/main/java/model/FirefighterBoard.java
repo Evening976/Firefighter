@@ -61,10 +61,10 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    List<Position> result = fireManager.update(this);
-    result.addAll(fireTruckManager.update(this));
-    result.addAll(fireFighterManager.update(this));
-    result.addAll(cloudManager.update(this));
+    List<Position> result = fireManager.update(stepNumber());
+    result.addAll(fireTruckManager.update(fireManager));
+    result.addAll(fireFighterManager.update(fireManager));
+    result.addAll(cloudManager.update(fireManager));
 
     if(!fireManager.getPositions().isEmpty()) {
       step++;
@@ -97,15 +97,15 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   List<GameElement> getGameElements(){
-    List<GameElement> result = new ArrayList<>();
-    result.add(mountainManager);
-    result.add(rockManager);
-    result.add(roadManager);
-    result.add(fireManager);
-    result.add(fireFighterManager);
-    result.add(fireTruckManager);
-    result.add(cloudManager);
-    return result;
+    List<GameElement> gameElements = new ArrayList<>();
+    gameElements.add(mountainManager);
+    gameElements.add(rockManager);
+    gameElements.add(roadManager);
+    gameElements.add(fireManager);
+    gameElements.add(fireFighterManager);
+    gameElements.add(fireTruckManager);
+    gameElements.add(cloudManager);
+    return gameElements;
   }
 
   @Override
@@ -123,17 +123,5 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
       System.out.println();
     }
     System.out.println("___________________");
-  }
-
-  public void clearBoard(){
-    step = 0;
-
-    fireManager.initializeElements();
-    fireFighterManager.initializeElements();
-    fireTruckManager.initializeElements();
-    cloudManager.initializeElements();
-    roadManager.initializeElements(rowCount, columnCount);
-    mountainManager.initializeElements(rowCount, columnCount);
-    rockManager.initializeElements(rowCount, columnCount);
   }
 }

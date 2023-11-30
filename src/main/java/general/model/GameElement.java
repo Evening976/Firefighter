@@ -10,4 +10,5 @@ public interface GameElement {
     Collection<Position> getPositions();
     ModelElement getState(Position position);
     void setState(List<? extends ModelElement> state, Position position);
+    void initializeElements();
 }

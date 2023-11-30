@@ -46,9 +46,9 @@ public class FireManager extends EntityManager {
         }
     }
 
-    public List<Position> update(FirefighterBoard board) {
+    public List<Position> update(int step) {
         List<Position> result = new ArrayList<>();
-        if (board.stepNumber() % 2 == 0) {
+        if (step % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : getPositions()) {
                 for (Position nextPosition : neighbors(fire)) {

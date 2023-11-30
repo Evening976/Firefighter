@@ -13,10 +13,11 @@ public class RoadManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> roads;
     public RoadManager(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         initialCount = (int) (rowCount*columnCount*0.2);
         roads = new HashSet<>();
         tag = new FFModelElement(Color.GRAY, "[R]");
-        initializeElements(rowCount, columnCount);
+        initializeElements();
     }
 
     public boolean isObstacle(Position position) {
@@ -27,9 +28,7 @@ public class RoadManager extends ObstacleManager {
         }
         return false;
     }
-
-    @Override
-    public void initializeElements(int rowCount, int columnCount) {
+    public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             roads.add(new Road(Position.randomPosition(rowCount, columnCount)));
         }

@@ -14,14 +14,15 @@ public class RockManager extends ObstacleManager {
     Set<Obstacle> rocks;
 
     public RockManager(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         initialCount = (int) (rowCount * 0.5);
         rocks = new HashSet<>();
         tag = new FFModelElement(Color.PURPLE, "[X]");
-        initializeElements(rowCount, columnCount);
+        initializeElements();
     }
 
     @Override
-    public void initializeElements(int rowCount, int columnCount) {
+    public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             rocks.add(new Rock(Position.randomPosition(rowCount, columnCount)));
         }

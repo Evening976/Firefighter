@@ -13,10 +13,11 @@ public class MountainManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> mountains;
     public MountainManager(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
         initialCount = (int) (rowCount * columnCount * 0.2);
         mountains = new HashSet<>();
         tag = new FFModelElement(Color.BLACK,"[M]");
-        initializeElements(rowCount, columnCount);
+        initializeElements();
     }
 
     public List<Position> getPositions(){
@@ -26,7 +27,7 @@ public class MountainManager extends ObstacleManager {
         return positions;
     }
 
-    public void initializeElements(int rowCount, int columnCount) {
+    public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             mountains.add(new Mountain(Position.randomPosition(rowCount, columnCount)));
         }

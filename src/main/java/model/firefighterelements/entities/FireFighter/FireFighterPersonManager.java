@@ -5,6 +5,7 @@ import general.model.obstacle.ObstacleManager;
 import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
+import model.firefighterelements.entities.FireManager;
 import util.Position;
 
 import java.util.ArrayList;
@@ -31,20 +32,19 @@ public class FireFighterPersonManager extends FireFighter {
     }
 
     @Override
-    public List<Position> update(FirefighterBoard board) {
-
+    public List<Position> update(FireManager fireManager) {
         List<Position> result = new ArrayList<>();
         Set<FireFighterPerson> firefighterNewPositions = new HashSet<>();
 
         for (Position firefighterPosition : getPositions()) {
-            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
+            Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, fireManager);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));
-            board.fireManager.extinguish(newFirefighterPosition);
+            fireManager.extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
             List<Position> neighborFirePositions = neighbors(newFirefighterPosition);
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
+                fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
 
