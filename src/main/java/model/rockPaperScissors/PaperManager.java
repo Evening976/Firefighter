@@ -1,22 +1,21 @@
 package model.rockPaperScissors;
 
-import general.model.entity.EntityManager;
-import general.model.entity.ModelElement;
+import general.model.entities.EntityManager;
+import general.model.entities.ModelElement;
+import general.model.obstacles.Obstacle;
+import general.model.obstacles.ObstacleManager;
+import javafx.scene.paint.Color;
 import util.Position;
 import model.RPSBoard;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class PaperManager extends EntityManager {
+public class PaperManager extends RPSElement {
     Set<Paper> papers;
-
     public PaperManager(int initialCount, int rowCount, int columnCount) {
-        super(rowCount, columnCount, initialCount);
+        super(initialCount, rowCount, columnCount);
         papers = new HashSet<>();
-        tag = RPSModelElement.PAPER;
+        tag = new RPSModelElement(Color.YELLOW, "[P]");
         initializeElements();
     }
 
@@ -27,22 +26,33 @@ public class PaperManager extends EntityManager {
         }
     }
 
+    @Override
+    public Set<Obstacle> getObstacles() {
+        return new HashSet<>(papers);
+    }
+
+    @Override
+    public boolean accept(Position position) {
+        for(Obstacle obstacle: papers) {
+            if(obstacle.getPosition().equals(position)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public List<Position> update(RPSBoard board) {
         List<Position> result = new ArrayList<>();
-        List<Position> papersPosition = new ArrayList<>();
+        Set<Paper> newPapersPosition = new HashSet<>();
         for (Position paper : getPositions()) {
             for (Position nextPosition : neighbors(paper)) {
                 if (papers.contains(new Paper(nextPosition))) continue;
-
-                if (board.paperCanConquer(nextPosition)) {
-                    papersPosition.add(nextPosition);
-                }
+                if (!managers.stream().allMatch(manager -> manager.accept(nextPosition))) continue;
+                newPapersPosition.add(new Paper(nextPosition));
+                result.add(nextPosition);
             }
         }
-        for (Position position : papersPosition) {
-            papers.add(new Paper(position));
-        }
-        result.addAll(papersPosition);
+        papers.addAll(newPapersPosition);
         return result;
     }
 
@@ -53,14 +63,6 @@ public class PaperManager extends EntityManager {
             positions.add(paper.getPosition());
         }
         return positions;
-    }
-
-    @Override
-    public ModelElement getState(Position position) {
-        if (getPositions().contains(position)) {
-            return tag;
-        }
-        return ModelElement.EMPTY;
     }
 
     @Override

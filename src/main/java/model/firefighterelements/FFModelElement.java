@@ -1,6 +1,6 @@
 package model.firefighterelements;
 
-import general.model.entity.ModelElement;
+import general.model.entities.ModelElement;
 import javafx.scene.paint.Color;
 
 

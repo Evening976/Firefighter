@@ -1,8 +1,8 @@
 package model.firefighterelements.obstacle;
 
-import general.model.entity.ModelElement;
-import general.model.obstacle.Obstacle;
-import general.model.obstacle.ObstacleManager;
+import general.model.entities.ModelElement;
+import general.model.obstacles.Obstacle;
+import general.model.obstacles.ObstacleManager;
 import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
 import util.Position;
@@ -41,12 +41,6 @@ public class MountainManager extends ObstacleManager {
     @Override
     public boolean accept(Position position) {
         return !contains(position);
-    }
-
-    @Override
-    public ModelElement getState(Position position) {
-        if(contains(position)) {return tag;}
-        return ModelElement.EMPTY;
     }
 
     @Override

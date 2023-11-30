@@ -1,10 +1,12 @@
 package model;
 
 import general.model.GameElement;
-import general.model.entity.ModelElement;
-import model.Board;
+import general.model.entities.ModelElement;
+import javafx.util.Pair;
+import model.firefighterelements.FFModelElement;
 import model.rockPaperScissors.*;
 import util.Position;
+import view.ViewElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,13 @@ public class RPSBoard implements Board<List<RPSModelElement>> {
     }
 
     public void initializeElements() {
-        rockManager = new RockManager(5, rowCount, columnCount);
         paperManager = new PaperManager(5, rowCount, columnCount);
+        rockManager = new RockManager(5, rowCount, columnCount);
         scissorsManager = new ScissorsManager(5, rowCount, columnCount);
+
+        paperManager.addManager(scissorsManager);
+        rockManager.addManager(paperManager);
+        scissorsManager.addManager(rockManager);
     }
 
     public int rowCount() {
@@ -61,13 +67,12 @@ public class RPSBoard implements Board<List<RPSModelElement>> {
     }
 
 
-    public List<RPSModelElement> getState(Position position) {
-        List<RPSModelElement> result = new ArrayList<>();
+    public Pair<Position, ViewElement> getState(Position position) {
+        Pair<Position, ViewElement> result = new Pair<>(position, new ViewElement());
 
-        for (GameElement element : getGameElements()) {
+        for(GameElement element: getGameElements()){
             ModelElement e = element.getState(position);
-            if (e instanceof RPSModelElement) result.add((RPSModelElement) element.getState(position));
-            else result.add(RPSModelElement.EMPTY);
+            if(e instanceof RPSModelElement) result = (new Pair<>(position, new ViewElement(e.getValue(), e.getTag())));
         }
 
         return result;
@@ -86,7 +91,6 @@ public class RPSBoard implements Board<List<RPSModelElement>> {
             element.setState(state, position);
         }
     }
-
 
     public boolean rockCanConquer(Position nextPosition) {
         return !paperManager.getPositions().contains(nextPosition);

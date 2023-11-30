@@ -1,23 +1,30 @@
 package model.rockPaperScissors;
 
-import general.model.entity.ModelElement;
+import general.model.entities.ModelElement;
 import javafx.scene.paint.Color;
 
-public enum RPSModelElement implements ModelElement {
-        ROCK(Color.BLACK),
-        PAPER(Color.BEIGE),
+public class RPSModelElement implements ModelElement {
+/*        ROCK(Color.BLACK),
+        PAPER(Color.YELLOW),
         SCISSORS(Color.BLUE),
-        EMPTY(Color.WHITE);
+        EMPTY(Color.WHITE);*/
 
         private final Color color;
+        private final String tag;
 
-        RPSModelElement(Color color){
+        RPSModelElement(Color color, String tag){
                 this.color = color;
+                this.tag = tag;
         }
 
         @Override
         public Color getValue() {
-                return null;
+                return color;
+        }
+
+        @Override
+        public String getTag() {
+                return tag;
         }
 
 }

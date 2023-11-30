@@ -1,10 +1,9 @@
-package general.model.entity;
+package general.model.entities;
 
 import general.model.GameElement;
 import util.Position;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public abstract class EntityManager implements GameElement {
@@ -29,7 +28,12 @@ public abstract class EntityManager implements GameElement {
     }
 
     public abstract void initializeElements();
-    public abstract ModelElement getState(Position position);
+    public ModelElement getState(Position position){
+        if(getPositions().contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
+    }
 
     public abstract void setState(List< ? extends ModelElement> state, Position position);
 }

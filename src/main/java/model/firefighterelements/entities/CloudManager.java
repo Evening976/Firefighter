@@ -1,9 +1,8 @@
 package model.firefighterelements.entities;
 
-import general.model.entity.EntityManager;
-import general.model.entity.ModelElement;
+import general.model.entities.EntityManager;
+import general.model.entities.ModelElement;
 import javafx.scene.paint.Color;
-import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 import util.RandomGenerator;
@@ -83,13 +82,6 @@ public class CloudManager extends EntityManager {
         }
     }
 
-    @Override
-    public ModelElement getState(Position position) {
-        if(getPositions().contains(position)) {
-            return tag;
-        }
-        return ModelElement.EMPTY;
-    }
 
     @Override
     public void setState(List<? extends ModelElement> state, Position position) {

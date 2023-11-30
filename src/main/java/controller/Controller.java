@@ -1,6 +1,5 @@
 package controller;
 
-import general.model.entity.ModelElement;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,8 +14,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 import model.Board;
 import model.FirefighterBoard;
-import model.PlagueBoard;
-import model.firefighterelements.FFModelElement;
+import model.RPSBoard;
 import util.Position;
 import view.Grid;
 import view.ViewElement;
@@ -56,12 +54,10 @@ public class Controller {
     pauseToggleButton.setSelected(true);
   }
 
-  private void setModel(FirefighterBoard firefighterBoard) {
-    this.board = requireNonNull(firefighterBoard, "firefighter.model is null");
+  private void setModel(Board<?> board) {
+    this.board = requireNonNull(board);
   }
-  private void setModel(PlagueBoard plagueBoard) {
-    //this.board = requireNonNull(plagueBoard, "plague.model is null");
-  }
+
 
   private void updateBoard(){
     List<Pair<Position, ViewElement>> updatedSquares = new ArrayList<>();
@@ -120,7 +116,7 @@ public class Controller {
 
   public void initialize(int squareWidth, int squareHeight, int columnCount, int rowCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
-    this.setModel(new FirefighterBoard(columnCount, rowCount));
+    this.setModel(new RPSBoard(rowCount, columnCount));
     repaintGrid();
   }
 

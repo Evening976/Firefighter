@@ -1,11 +1,7 @@
 package model.firefighterelements.obstacle;
 
-import general.model.entity.ModelElement;
-import general.model.obstacle.Obstacle;
-import model.firefighterelements.FFModelElement;
+import general.model.obstacles.Obstacle;
 import util.Position;
-
-import java.util.List;
 
 public class Road implements Obstacle {
     Position position;

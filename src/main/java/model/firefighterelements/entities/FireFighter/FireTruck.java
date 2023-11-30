@@ -1,6 +1,6 @@
 package model.firefighterelements.entities.FireFighter;
 
-import general.model.entity.Entity;
+import general.model.entities.Entity;
 import util.Position;
 
 public class FireTruck extends Entity {

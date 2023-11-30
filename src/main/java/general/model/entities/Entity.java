@@ -1,4 +1,4 @@
-package general.model.entity;
+package general.model.entities;
 
 import util.Position;
 

@@ -1,9 +1,6 @@
-package general.model.obstacle;
+package general.model.obstacles;
 
-import general.model.entity.ModelElement;
 import util.Position;
-
-import java.util.List;
 
 public interface Obstacle {
     Position getPosition();

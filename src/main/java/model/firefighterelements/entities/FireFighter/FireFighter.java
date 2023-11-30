@@ -1,9 +1,7 @@
 package model.firefighterelements.entities.FireFighter;
 
-import general.model.entity.EntityManager;
-import general.model.obstacle.ObstacleManager;
-import model.FirefighterBoard;
-import model.firefighterelements.entities.Fire;
+import general.model.entities.EntityManager;
+import general.model.obstacles.ObstacleManager;
 import model.firefighterelements.entities.FireManager;
 import util.Position;
 

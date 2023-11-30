@@ -1,15 +1,14 @@
-package general.model.obstacle;
+package general.model.obstacles;
 
-import java.util.Collection;
 import java.util.Set;
 
 import general.model.GameElement;
-import general.model.entity.ModelElement;
+import general.model.entities.ModelElement;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
 public abstract class ObstacleManager implements GameElement {
-    protected FFModelElement tag;
+    protected ModelElement tag;
     protected int rowCount;
     protected int columnCount;
     protected ObstacleManager(int rowCount, int columnCount){
@@ -19,6 +18,12 @@ public abstract class ObstacleManager implements GameElement {
     public abstract void initializeElements();
     public abstract Set<Obstacle> getObstacles();
     public abstract boolean accept(Position position);
+    public ModelElement getState(Position position){
+        if(contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
+    }
     public boolean contains(Position position){
         for(Obstacle obstacle: getObstacles())
             if(obstacle.getPosition().equals(position)) return true;

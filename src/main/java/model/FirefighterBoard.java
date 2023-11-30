@@ -1,8 +1,7 @@
 package model;
 
-import app.SimulatorApplication;
 import general.model.GameElement;
-import general.model.entity.ModelElement;
+import general.model.entities.ModelElement;
 import javafx.util.Pair;
 import model.firefighterelements.FFModelElement;
 import model.firefighterelements.entities.CloudManager;

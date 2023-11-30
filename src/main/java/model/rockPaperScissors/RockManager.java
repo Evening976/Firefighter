@@ -1,21 +1,23 @@
 package model.rockPaperScissors;
+import general.model.obstacles.Obstacle;
+import general.model.obstacles.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.RPSBoard;
 
 
-import general.model.entity.EntityManager;
-import general.model.entity.ModelElement;
+import general.model.entities.EntityManager;
+import general.model.entities.ModelElement;
 import util.Position;
 
 import java.util.*;
 
 
-public class RockManager extends EntityManager {
+public class RockManager extends RPSElement {
     Set<Rock> rocks;
-
     public RockManager(int initialCount, int rowCount, int columnCount){
-        super(rowCount, columnCount, initialCount);
+        super(initialCount, rowCount, columnCount);
         rocks = new HashSet<>();
-        tag = RPSModelElement.ROCK;
+        tag = new RPSModelElement(Color.BLACK, "[R]");
         initializeElements();
     }
 
@@ -26,23 +28,33 @@ public class RockManager extends EntityManager {
         }
     }
 
+    @Override
+    public Set<Obstacle> getObstacles() {
+        return new HashSet<>(rocks);
+    }
+
+    @Override
+    public boolean accept(Position position) {
+        for(Obstacle obstacle: rocks) {
+            if(obstacle.getPosition().equals(position)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public List<Position> update(RPSBoard board) {
         List<Position> result = new ArrayList<>();
-        List<Position> rocksPosition = new ArrayList<>();
+        Set<Rock> newRocksPosition = new HashSet<>();
         for (Position rock : getPositions()) {
             for (Position nextPosition : neighbors(rock)) {
                 if (rocks.contains(new Rock(nextPosition))) continue;
-
-                if (board.rockCanConquer(nextPosition)) {
-                    rocksPosition.add(nextPosition);
-                }
+                if (!managers.stream().allMatch(manager -> manager.accept(nextPosition))) continue;
+                newRocksPosition.add(new Rock(nextPosition));
+                result.add(nextPosition);
             }
         }
-        for (Position position : rocksPosition) {
-            rocks.add(new Rock(position));
-        }
-        result.addAll(rocksPosition);
+        rocks.addAll(newRocksPosition);
         return result;
     }
 
@@ -56,14 +68,6 @@ public class RockManager extends EntityManager {
     }
 
     @Override
-    public ModelElement getState(Position position) {
-        if(getPositions().contains(position)) {
-            return tag;
-        }
-        return ModelElement.EMPTY;
-    }
-
-    @Override
     public void setState(List<? extends ModelElement> state, Position position) {
         rocks.removeIf(rock -> rock.getPosition().equals(position));
         for(ModelElement modelElement: state){
@@ -72,6 +76,4 @@ public class RockManager extends EntityManager {
             }
         }
     }
-
-
 }

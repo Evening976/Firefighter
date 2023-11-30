@@ -1,6 +1,5 @@
 package model;
 
-import general.model.entity.ModelElement;
 import javafx.util.Pair;
 import util.Position;
 import view.ViewElement;

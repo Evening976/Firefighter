@@ -1,6 +1,6 @@
 package general.model;
 
-import general.model.entity.ModelElement;
+import general.model.entities.ModelElement;
 import util.Position;
 
 import java.util.Collection;

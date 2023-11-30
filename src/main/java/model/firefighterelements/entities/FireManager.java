@@ -1,10 +1,9 @@
 package model.firefighterelements.entities;
 
-import general.model.entity.EntityManager;
-import general.model.entity.ModelElement;
-import general.model.obstacle.ObstacleManager;
+import general.model.entities.EntityManager;
+import general.model.entities.ModelElement;
+import general.model.obstacles.ObstacleManager;
 import javafx.scene.paint.Color;
-import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
@@ -26,14 +25,6 @@ public class FireManager extends EntityManager {
         for (int index = 0; index < initialCount; index++) {
             fires.add(new Fire(Position.randomPosition(rowCount, columnCount)));
         }
-    }
-
-    @Override
-    public ModelElement getState(Position position) {
-        if(getPositions().contains(position)) {
-            return tag;
-        }
-        return ModelElement.EMPTY;
     }
 
     @Override
