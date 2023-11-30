@@ -66,8 +66,9 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     result.addAll(fireFighterManager.update(this));
     result.addAll(cloudManager.update(this));
 
-    printBoard();
-    step++;
+    if(!fireManager.getPositions().isEmpty()) {
+      step++;
+    }
 
     return result;
   }
