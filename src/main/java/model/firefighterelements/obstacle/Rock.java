@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Rock implements Obstacle {
     int step = 0;
+    int spreadStep = 2;
     Position position;
     public Rock(Position position) {
         this.position = position;
@@ -21,7 +22,12 @@ public class Rock implements Obstacle {
     }
     @Override
     public boolean isObstacle(Position position) {
-        return (step != 0 && step % 4 != 0);
+        if(spreadStep == 0){
+            spreadStep = 2;
+            return true;
+        }
+        spreadStep--;
+        return false;
     }
 
 }
