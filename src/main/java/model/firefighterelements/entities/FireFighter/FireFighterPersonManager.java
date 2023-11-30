@@ -35,7 +35,6 @@ public class FireFighterPersonManager extends FireFighter {
     public List<Position> update(FireManager fireManager) {
         List<Position> result = new ArrayList<>();
         Set<FireFighterPerson> firefighterNewPositions = new HashSet<>();
-
         for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, fireManager);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));

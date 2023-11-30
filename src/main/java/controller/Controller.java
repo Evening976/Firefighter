@@ -119,7 +119,7 @@ public class Controller {
   }
 
   public void initialize(int squareWidth, int squareHeight, int columnCount,
-                                int rowCount, int initialFireCount, int initialFirefighterCount, int initialCloudCount, int initialFireTruckCount) {
+                                int rowCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
     this.setModel(new FirefighterBoard(columnCount, rowCount));
     repaintGrid();

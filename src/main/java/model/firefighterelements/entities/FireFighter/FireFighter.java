@@ -3,6 +3,7 @@ package model.firefighterelements.entities.FireFighter;
 import general.model.entity.EntityManager;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
+import model.firefighterelements.entities.Fire;
 import model.firefighterelements.entities.FireManager;
 import util.Position;
 

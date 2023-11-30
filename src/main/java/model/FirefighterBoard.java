@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirefighterBoard implements Board<List<FFModelElement>> {
+  public static final int INITIAL_FIRE_COUNT = 3;
+  public static final int INITIAL_FIREFIGHTER_COUNT = 3;
+  public static final int INITIAL_CLOUD_COUNT = 3;
+  public static final int INITIAL_FIRETRUCK_COUNT = 2;
   private final int columnCount;
   private final int rowCount;
   private int step = 0;
@@ -43,10 +47,10 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     mountainManager = new MountainManager(rowCount, columnCount);
     rockManager = new RockManager(rowCount, columnCount);
 
-    fireManager = new FireManager(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
-    fireFighterManager = new FireFighterPersonManager(SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
-    fireTruckManager = new FireTruckManager(SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
-    cloudManager = new CloudManager(SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
+    fireManager = new FireManager(INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
+    fireFighterManager = new FireFighterPersonManager(INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
+    fireTruckManager = new FireTruckManager(INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
+    cloudManager = new CloudManager(INITIAL_CLOUD_COUNT, rowCount, columnCount);
   }
 
 
