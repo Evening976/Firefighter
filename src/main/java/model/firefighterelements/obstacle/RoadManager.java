@@ -1,9 +1,9 @@
 package model.firefighterelements.obstacle;
 
-import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import general.model.obstacle.Obstacle;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
@@ -15,6 +15,7 @@ public class RoadManager extends ObstacleManager {
     public RoadManager(int rowCount, int columnCount) {
         initialCount = (int) (rowCount*columnCount*0.2);
         roads = new HashSet<>();
+        tag = new FFModelElement(Color.GRAY, "[R]");
         initializeElements(rowCount, columnCount);
     }
 
@@ -46,7 +47,7 @@ public class RoadManager extends ObstacleManager {
 
     @Override
     public ModelElement getState(Position position) {
-        if(isObstacle(position)) {return FFModelElement.ROAD;}
+        if(isObstacle(position)) {return tag;}
         return ModelElement.EMPTY;
     }
 
@@ -54,7 +55,7 @@ public class RoadManager extends ObstacleManager {
     public void setState(List<? extends ModelElement> state, Position position) {
         roads.removeIf(road -> road.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.ROAD)){
+            if(element.equals(tag)){
                 roads.add(new Road(position));
             }
         }

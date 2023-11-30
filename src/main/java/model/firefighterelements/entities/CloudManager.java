@@ -1,6 +1,7 @@
 package model.firefighterelements.entities;
 
 import general.model.entity.ModelElement;
+import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
 import model.firefighterelements.entities.FireFighter.FireExtinguisher;
@@ -14,7 +15,7 @@ public class CloudManager extends FireExtinguisher {
 
     public CloudManager(Set<Position> firePositions, int initialCount, int rowCount, int columnCount) {
         super(firePositions, initialCount, rowCount, columnCount);
-        this.tag = FFModelElement.CLOUD;
+        this.tag = new FFModelElement(Color.CYAN, "[C]");
         clouds = new HashSet<>();
         initializeElements();
     }
@@ -95,7 +96,7 @@ public class CloudManager extends FireExtinguisher {
     public void setState(List<? extends ModelElement> state, Position position) {
         clouds.removeIf(cloud -> cloud.getPosition().equals(position));
         for(ModelElement element: state) {
-            if (element.equals(FFModelElement.CLOUD)) {
+            if (element.equals(tag)) {
                 clouds.add(new Cloud(position));
             }
         }

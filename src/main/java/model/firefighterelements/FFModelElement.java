@@ -4,18 +4,21 @@ import general.model.entity.ModelElement;
 import javafx.scene.paint.Color;
 
 
-public enum FFModelElement implements ModelElement {
-  CLOUD(Color.CYAN), FIREFIGHTERPERSON(Color.BLUE), FIRE(Color.RED),
-  FIRETRUCK(Color.LIGHTSALMON), MOUNTAIN(Color.BLACK), ROAD(Color.GRAY),
-  ROCK(Color.PURPLE), EMPTY(Color.WHITE);
-
+public class FFModelElement implements ModelElement {
 private final Color color;
-FFModelElement(Color color){
+private final String tag;
+public FFModelElement(Color color, String tag){
   this.color = color;
+  this.tag = tag;
 }
 @Override
 public Color getValue(){
   return color;
 }
+
+  @Override
+  public String getTag() {
+    return tag;
+  }
 }
 

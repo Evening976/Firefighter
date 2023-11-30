@@ -2,6 +2,7 @@ package model.firefighterelements.entities.FireFighter;
 
 import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
 import util.Position;
@@ -13,10 +14,10 @@ import java.util.Set;
 
 public class FireFighterPersonManager extends FireFighter {
     Set<FireFighterPerson> fireFighterPerson;
-    public FireFighterPersonManager(Set<Position> firePositions, int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers) {
-        super(firePositions, initialCount, rowCount, columnCount, obstacleManagers);
+    public FireFighterPersonManager(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers) {
+        super(initialCount, rowCount, columnCount, obstacleManagers);
         fireFighterPerson = new HashSet<>();
-        tag = FFModelElement.FIREFIGHTERPERSON;
+        tag = new FFModelElement(Color.BLUE, "[P]");
         initializeElements();
     }
 
@@ -74,7 +75,7 @@ public class FireFighterPersonManager extends FireFighter {
     public void setState(List<? extends ModelElement> state, Position position) {
         fireFighterPerson.removeIf(fireFighterPerson -> fireFighterPerson.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.FIREFIGHTERPERSON)){
+            if(element.equals(tag)){
                 fireFighterPerson.add(new FireFighterPerson(position));
             }
         }

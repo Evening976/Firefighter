@@ -1,6 +1,9 @@
 package model;
 
+import general.model.entity.ModelElement;
+import javafx.util.Pair;
 import util.Position;
+import view.ViewElement;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ public interface Board<S> {
    * @param position The position on the board for which to retrieve the state.
    * @return The state at the specified position.
    */
-  S getState(Position position);
+  Pair<Position, ViewElement> getState(Position position);
 
   /**
    * Set the state of a specific position on the board to the specified state.

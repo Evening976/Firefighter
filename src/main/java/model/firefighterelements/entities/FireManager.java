@@ -3,6 +3,7 @@ package model.firefighterelements.entities;
 import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
 import util.Position;
@@ -15,7 +16,7 @@ public class FireManager extends EntityManager {
     public FireManager(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
         super(rowCount, columnCount, initialCount);
         fires = new HashSet<>();
-        tag = FFModelElement.FIRE;
+        tag = new FFModelElement(Color.RED, "[F]");
         this.obstacleManagers = Arrays.asList(obstacleManagers);
         initializeElements();
     }

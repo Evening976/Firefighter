@@ -1,13 +1,15 @@
 package model;
 
+import javafx.util.Pair;
 import model.plagueelements.DModelElement;
 import util.Position;
+import view.ViewElement;
 
 import java.util.List;
 
 public class PlagueBoard implements Board<List<DModelElement>>{
     @Override
-    public List<DModelElement> getState(Position position) {
+    public Pair<Position, ViewElement> getState(Position position) {
         return null;
     }
 

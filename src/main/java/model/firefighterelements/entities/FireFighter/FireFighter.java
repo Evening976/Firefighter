@@ -11,8 +11,8 @@ public abstract class FireFighter extends FireExtinguisher {
 
     List<ObstacleManager> obstacleManagers;
 
-    public FireFighter(Set<Position> firePositions, int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
-        super(firePositions, initialCount, rowCount, columnCount);
+    public FireFighter(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
+        super(initialCount, rowCount, columnCount);
         this.obstacleManagers = Arrays.asList(obstacleManagers);
     }
 

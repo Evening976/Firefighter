@@ -1,9 +1,9 @@
 package model.firefighterelements.obstacle;
 
-import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import general.model.obstacle.Obstacle;
 import general.model.obstacle.ObstacleManager;
+import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
 import util.Position;
 
@@ -15,6 +15,7 @@ public class MountainManager extends ObstacleManager {
     public MountainManager(int rowCount, int columnCount) {
         initialCount = (int) (rowCount * columnCount * 0.2);
         mountains = new HashSet<>();
+        tag = new FFModelElement(Color.BLACK, tag);
         initializeElements(rowCount, columnCount);
     }
 
@@ -43,7 +44,7 @@ public class MountainManager extends ObstacleManager {
 
     @Override
     public ModelElement getState(Position position) {
-        if(contains(position)) {return FFModelElement.MOUNTAIN;}
+        if(contains(position)) {return tag;}
         return ModelElement.EMPTY;
     }
 
@@ -51,7 +52,7 @@ public class MountainManager extends ObstacleManager {
     public void setState(List<? extends ModelElement> state, Position position) {
         mountains.removeIf(mountain -> mountain.getPosition().equals(position));
         for(ModelElement element: state){
-            if(element.equals(FFModelElement.MOUNTAIN)){
+            if(element.equals(tag)){
                 mountains.add(new Mountain(position));
             }
         }

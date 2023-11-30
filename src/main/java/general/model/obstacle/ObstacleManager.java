@@ -5,9 +5,11 @@ import java.util.Set;
 
 import general.model.GameElement;
 import general.model.entity.ModelElement;
+import model.firefighterelements.FFModelElement;
 import util.Position;
 
 public abstract class ObstacleManager implements GameElement {
+    protected FFModelElement tag;
     public abstract void initializeElements(int rowCount, int colCount);
     public abstract Set<Obstacle> getObstacles();
     public abstract boolean accept(Position position);

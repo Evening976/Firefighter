@@ -3,6 +3,7 @@ package model;
 import app.SimulatorApplication;
 import general.model.GameElement;
 import general.model.entity.ModelElement;
+import javafx.util.Pair;
 import model.firefighterelements.FFModelElement;
 import model.firefighterelements.entities.CloudManager;
 import model.firefighterelements.entities.FireFighter.FireFighter;
@@ -13,6 +14,7 @@ import model.firefighterelements.obstacle.MountainManager;
 import model.firefighterelements.obstacle.RoadManager;
 import model.firefighterelements.obstacle.RockManager;
 import util.Position;
+import view.ViewElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,6 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
-    rockManager.updateStep(step);
     List<Position> result = fireManager.update(this);
     result.addAll(fireTruckManager.update(this));
     result.addAll(fireFighterManager.update(this));
@@ -82,13 +83,12 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   @Override
-  public List<FFModelElement> getState(Position position) {
-    List<FFModelElement> result = new ArrayList<>();
+  public Pair<Position, ViewElement> getState(Position position) {
+    Pair<Position, ViewElement> result = new Pair<>(position, new ViewElement());
 
     for(GameElement element: getGameElements()){
         ModelElement e = element.getState(position);
-        if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
-        else result.add(FFModelElement.EMPTY);
+        if(e instanceof FFModelElement) result = (new Pair<>(position, new ViewElement(e.getValue(), e.getTag())));
     }
 
     return result;
@@ -117,7 +117,9 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
         Position position = new Position(i, j);
-        List<FFModelElement> state = getState(position);
+        String cell = "[ ]";
+        if(fireManager.getState(position)
+        List<FFModelElement> state = getState(position).getValue();
         if(state.contains(FFModelElement.FIRE)){
           System.out.print("[F]");
         } else if(state.contains(FFModelElement.FIREFIGHTERPERSON)) {
