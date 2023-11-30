@@ -32,7 +32,9 @@ public class RockManager extends ObstacleManager {
 
     @Override
     public boolean accept(Position position) {
-        return !contains(position);
+        for (Obstacle rock : rocks)
+            if (rock.getPosition().equals(position)) return rock.isObstacle(position);
+        return true;
     }
 
     @Override

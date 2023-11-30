@@ -51,12 +51,11 @@ public class FireManager extends EntityManager {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : getPositions()) {
                 for (Position nextPosition : neighbors(fire)) {
-                    if(fires.contains(new Fire(nextPosition))) break;
+                    if(fires.contains(new Fire(nextPosition))) continue;
                     if(!obstacleManagers.stream().allMatch(obstacleManager -> obstacleManager.accept(nextPosition))) continue;
-                        newFirePositions.add(nextPosition);
+                    newFirePositions.add(nextPosition);
                 }
             }
-            fires.clear();
             for (Position position : newFirePositions) {
                 fires.add(new Fire(position));
             }

@@ -113,10 +113,6 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     }
   }
 
-  public boolean isFire(Position position){
-    return fireManager.getPositions().contains(position);
-  }
-
   public void printBoard(){
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){

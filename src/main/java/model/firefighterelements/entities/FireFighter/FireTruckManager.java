@@ -28,25 +28,22 @@ public class FireTruckManager extends FireFighter {
     public List<Position> update(FirefighterBoard board) {
         this.firePositions = board.fireManager.getPositions();
         List<Position> result = new ArrayList<>();
-        List<Position> firefighterNewPositions = new ArrayList<>();
+        Set<FireTruck> firefighterNewPositions = new HashSet<>();
         for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
-            firefighterNewPositions.add(newFirefighterPosition);
+            firefighterNewPositions.add(new FireTruck(newFirefighterPosition));
             board.fireManager.extinguish(newFirefighterPosition);
-            //extinguish(newFirefighterPosition);
+            extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
-            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
-                    .filter(firePositions::contains)
-                    .toList();
-            for (Position firePosition : neighborFirePositions) {
+            List<Position> neighborFirePositions = neighbors(newFirefighterPosition);
+            for (Position firePosition : neighborFirePositions){
                board.fireManager.extinguish(firePosition);
-               //extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
         fireTrucks.clear();
-        firefighterNewPositions.forEach(position -> fireTrucks.add(new FireTruck(position)));
+        fireTrucks.addAll(firefighterNewPositions);
 
         return result;
     }

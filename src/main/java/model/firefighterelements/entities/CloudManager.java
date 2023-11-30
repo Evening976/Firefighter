@@ -28,19 +28,16 @@ public class CloudManager extends FireExtinguisher {
         for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
             cloudNewPosition.add(new Cloud(newCloudPosition));
-            //extinguish(newCloudPosition);
             board.fireManager.extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
-            List<Position> neighborFirePositions = neighbors(newCloudPosition).stream()
-                    .filter(firePositions::contains)
-                    .toList();
+            List<Position> neighborFirePositions = neighbors(newCloudPosition);
             for (Position firePosition : neighborFirePositions) {
                 board.fireManager.extinguish(firePosition);
-                //extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
+        clouds.clear();
         clouds = cloudNewPosition;
         return result;
     }

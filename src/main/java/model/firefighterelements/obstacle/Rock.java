@@ -21,7 +21,7 @@ public class Rock implements Obstacle {
     }
     @Override
     public boolean isObstacle(Position position) {
-        return (step != 0 && step % 4 == 0);
+        return (step != 0 && step % 4 != 0);
     }
 
 }

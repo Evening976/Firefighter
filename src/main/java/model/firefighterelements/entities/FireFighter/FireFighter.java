@@ -30,7 +30,7 @@ public abstract class FireFighter extends FireExtinguisher {
             firstMove.put(initialMove, initialMove);
         while (!toVisit.isEmpty()) {
             Position current = toVisit.poll();
-            if (board.isFire(current))
+            if (board.fireManager.getPositions().contains(current))
                 return firstMove.get(current);
             for (Position adjacent : neighbors(current)) {
                 if (seen.contains(adjacent) || !obstacleManagers.stream().allMatch(obstacleManager -> obstacleManager.accept(current))) continue;

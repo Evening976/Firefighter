@@ -40,17 +40,14 @@ public class FireFighterPersonManager extends FireFighter {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));
             board.fireManager.extinguish(newFirefighterPosition);
-            //extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
-            List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
-                    .filter(firePositions::contains)
-                    .toList();
+            List<Position> neighborFirePositions = neighbors(newFirefighterPosition);
             for (Position firePosition : neighborFirePositions) {
-                //extinguish(firePosition);
                 board.fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
+
         }
         fireFighterPerson.clear();
         fireFighterPerson.addAll(firefighterNewPositions);
