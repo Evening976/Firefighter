@@ -13,13 +13,13 @@ public class MountainManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> mountains;
     public MountainManager(int rowCount, int columnCount) {
-        initialCount = (int) (rowCount * columnCount * 0.1);
+        initialCount = (int) (rowCount * columnCount * 0.2);
         mountains = new HashSet<>();
         initializeElements(rowCount, columnCount);
     }
 
-    public Collection<Position> getPositions(){
-        Collection<Position> positions = new ArrayList<>();
+    public List<Position> getPositions(){
+        List<Position> positions = new ArrayList<>();
         for(Obstacle mountain: mountains)
             positions.add(mountain.getPosition());
         return positions;
@@ -41,22 +41,18 @@ public class MountainManager extends ObstacleManager {
         return !contains(position);
     }
 
-
     @Override
     public ModelElement getState(Position position) {
-        if(contains(position)) return FFModelElement.MOUNTAIN;
+        if(contains(position)) {return FFModelElement.MOUNTAIN;}
         return ModelElement.EMPTY;
     }
 
     @Override
-    public void setState(Collection<? extends ModelElement> state, Position position) {
-        List<Position> entityPositions = (List<Position>) getPositions();
-        for(;;){
-            if(!entityPositions.remove(position)) break;
-        }
+    public void setState(List<? extends ModelElement> state, Position position) {
+        mountains.removeIf(mountain -> mountain.getPosition().equals(position));
         for(ModelElement element: state){
             if(element.equals(FFModelElement.MOUNTAIN)){
-                entityPositions.add(position);
+                mountains.add(new Mountain(position));
             }
         }
     }

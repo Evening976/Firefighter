@@ -1,6 +1,7 @@
 package model;
 
 import app.SimulatorApplication;
+import general.model.GameElement;
 import general.model.entity.ModelElement;
 import general.model.entity.EntityManager;
 import general.model.obstacle.ObstacleManager;
@@ -62,20 +63,15 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   }
 
   public List<Position> updateToNextGeneration() {
+    rockManager.updateStep(step);
     List<Position> result = fireManager.update(this);
-
     result.addAll(fireTruckManager.update(this));
     result.addAll(fireFighterManager.update(this));
     result.addAll(cloudManager.update(this));
-    rockManager.updateStep(step);
 
     step++;
 
     return result;
-  }
-
-  public int getStep(){
-    return step;
   }
 
   @Override
@@ -93,28 +89,31 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   public List<FFModelElement> getState(Position position) {
     List<FFModelElement> result = new ArrayList<>();
 
-    for(EntityManager element : new EntityManager[]{fireTruckManager, fireManager, cloudManager, fireFighterManager}) {
-      ModelElement e = element.getState(position);
-      if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
-      else result.add(FFModelElement.EMPTY);
-    }
-
-    for(ObstacleManager om : new ObstacleManager[]{roadManager, mountainManager, rockManager}){
-        ModelElement e = om.getState(position);
-        if(e instanceof FFModelElement) result.add((FFModelElement) om.getState(position));
+    for(GameElement element: getGameElements()){
+        ModelElement e = element.getState(position);
+        if(e instanceof FFModelElement) result.add((FFModelElement) element.getState(position));
         else result.add(FFModelElement.EMPTY);
     }
 
     return result;
   }
 
+  List<GameElement> getGameElements(){
+    List<GameElement> result = new ArrayList<>();
+    result.add(mountainManager);
+    result.add(rockManager);
+    result.add(roadManager);
+    result.add(fireManager);
+    result.add(fireFighterManager);
+    result.add(fireTruckManager);
+    result.add(cloudManager);
+    return result;
+  }
+
   @Override
   public void setState(List<FFModelElement> state, Position position) {
-    for(EntityManager element : new EntityManager[]{fireTruckManager, fireManager, cloudManager, fireFighterManager}) {
+    for(GameElement element: getGameElements()){
         element.setState(state, position);
-    }
-    for(ObstacleManager obstacle : new ObstacleManager[]{roadManager, mountainManager, rockManager}){
-        obstacle.setState(state, position);
     }
   }
 
@@ -153,13 +152,13 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
 
   public void clearBoard(){
     step = 0;
+
     fireManager.initializeElements();
     fireFighterManager.initializeElements();
     fireTruckManager.initializeElements();
     cloudManager.initializeElements();
-
-    for(ObstacleManager obstacle : new ObstacleManager[]{roadManager, mountainManager, rockManager}){
-      obstacle.initializeElements(rowCount, columnCount);
-    }
+    roadManager.initializeElements(rowCount, columnCount);
+    mountainManager.initializeElements(rowCount, columnCount);
+    rockManager.initializeElements(rowCount, columnCount);
   }
 }

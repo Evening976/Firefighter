@@ -13,15 +13,17 @@ public class RoadManager extends ObstacleManager {
     int initialCount;
     Set<Obstacle> roads;
     public RoadManager(int rowCount, int columnCount) {
-        initialCount = (int) (rowCount*columnCount*0.1);
+        initialCount = (int) (rowCount*columnCount*0.2);
         roads = new HashSet<>();
         initializeElements(rowCount, columnCount);
     }
 
-    public boolean isObstacle(Position position){
-        for(Obstacle road: roads)
-            if(road.getPosition().equals(position))
+    public boolean isObstacle(Position position) {
+        for (Obstacle road : roads){
+            if (road.getPosition().equals(position)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -44,28 +46,25 @@ public class RoadManager extends ObstacleManager {
 
     @Override
     public ModelElement getState(Position position) {
-        if(isObstacle(position)) return FFModelElement.ROAD;
+        if(isObstacle(position)) {return FFModelElement.ROAD;}
         return ModelElement.EMPTY;
     }
 
-    public Collection<Position> getPositions(){
-        Collection<Position> positions = new ArrayList<>();
+    @Override
+    public void setState(List<? extends ModelElement> state, Position position) {
+        roads.removeIf(road -> road.getPosition().equals(position));
+        for(ModelElement element: state){
+            if(element.equals(FFModelElement.ROAD)){
+                roads.add(new Road(position));
+            }
+        }
+    }
+
+    public List<Position> getPositions(){
+        List<Position> positions = new ArrayList<>();
         for(Obstacle road: roads)
             positions.add(road.getPosition());
         return positions;
-    }
-
-    @Override
-    public void setState(Collection<? extends ModelElement> state, Position position) {
-        List<Position> entityPositions = (List<Position>) getPositions();
-        for(;;){
-            if(!entityPositions.remove(position)) break;
-        }
-        for(ModelElement element: state){
-            if(element.equals(FFModelElement.ROAD)){
-                entityPositions.add(position);
-            }
-        }
     }
 
     @Override

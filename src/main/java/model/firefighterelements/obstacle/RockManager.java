@@ -41,22 +41,19 @@ public class RockManager extends ObstacleManager {
         return ModelElement.EMPTY;
     }
 
-    public Collection<Position> getPositions(){
-        Collection<Position> positions = new ArrayList<>();
+    public List<Position> getPositions(){
+        List<Position> positions = new ArrayList<>();
         for(Obstacle rock: rocks)
             positions.add(rock.getPosition());
         return positions;
     }
 
     @Override
-    public void setState(Collection<? extends ModelElement> state, Position position) {
-        List<Position> entityPositions = (List<Position>) getPositions();
-        for(;;){
-            if(!entityPositions.remove(position)) break;
-        }
+    public void setState(List<? extends ModelElement> state, Position position) {
+        rocks.removeIf(rock -> rock.getPosition().equals(position));
         for(ModelElement element: state){
             if(element.equals(FFModelElement.ROCK)){
-                entityPositions.add(position);
+                rocks.add(new Rock(position));
             }
         }
     }

@@ -1,5 +1,6 @@
 package model.firefighterelements.entities.FireFighter;
 
+import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
@@ -30,16 +31,16 @@ public class FireTruckManager extends FireFighter {
         for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(newFirefighterPosition);
-            board.fireManager.extinguish(newFirefighterPosition);
-            //extinguish(newFirefighterPosition);
+            //board.fireManager.extinguish(newFirefighterPosition);
+            extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
             List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
-                    .filter(board::isFire)
+                    .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
-                //extinguish(firePosition);
+                //board.fireManager.extinguish(firePosition);
+                extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
@@ -51,8 +52,8 @@ public class FireTruckManager extends FireFighter {
     }
 
     @Override
-    public Collection<Position> getPositions() {
-        Collection<Position> positions = new ArrayList<>();
+    public List<Position> getPositions() {
+        List<Position> positions = new ArrayList<>();
         for (FireTruck fireTruck : fireTrucks) {
             positions.add(fireTruck.getPosition());
         }
@@ -63,6 +64,16 @@ public class FireTruckManager extends FireFighter {
     public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             fireTrucks.add(new FireTruck(Position.randomPosition(rowCount, columnCount)));
+        }
+    }
+
+    @Override
+    public void setState(List<? extends ModelElement> state, Position position) {
+        fireTrucks.removeIf(fireTruck -> fireTruck.getPosition().equals(position));
+        for(ModelElement element: state){
+            if(element.equals(FFModelElement.FIRETRUCK)){
+                fireTrucks.add(new FireTruck(position));
+            }
         }
     }
 }

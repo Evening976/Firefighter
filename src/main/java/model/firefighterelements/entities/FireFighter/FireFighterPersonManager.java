@@ -1,5 +1,6 @@
 package model.firefighterelements.entities.FireFighter;
 
+import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
@@ -19,8 +20,8 @@ public class FireFighterPersonManager extends FireFighter {
     }
 
     @Override
-    public Collection<Position> getPositions() {
-        Collection<Position> positions = new ArrayList<>();
+    public List<Position> getPositions() {
+        List<Position> positions = new ArrayList<>();
         for (FireFighterPerson fireFighterPerson : fireFighterPerson) {
             positions.add(fireFighterPerson.getPosition());
         }
@@ -38,7 +39,7 @@ public class FireFighterPersonManager extends FireFighter {
         for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));
-            board.fireManager.extinguish(newFirefighterPosition);
+            //board.fireManager.extinguish(newFirefighterPosition);
             extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
@@ -47,7 +48,7 @@ public class FireFighterPersonManager extends FireFighter {
                     .toList();
             for (Position firePosition : neighborFirePositions) {
                 extinguish(firePosition);
-                board.fireManager.extinguish(firePosition);
+                //board.fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
@@ -61,6 +62,16 @@ public class FireFighterPersonManager extends FireFighter {
     public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
             fireFighterPerson.add(new FireFighterPerson(Position.randomPosition(rowCount, columnCount)));
+        }
+    }
+
+    @Override
+    public void setState(List<? extends ModelElement> state, Position position) {
+        fireFighterPerson.removeIf(fireFighterPerson -> fireFighterPerson.getPosition().equals(position));
+        for(ModelElement element: state){
+            if(element.equals(FFModelElement.FIREFIGHTERPERSON)){
+                fireFighterPerson.add(new FireFighterPerson(position));
+            }
         }
     }
 }

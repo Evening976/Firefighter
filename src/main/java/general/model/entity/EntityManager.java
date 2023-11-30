@@ -32,18 +32,8 @@ public abstract class EntityManager implements GameElement {
 
     public abstract void initializeElements();
     public ModelElement getState(Position position){
-        if(getPositions().contains(position)) return tag;
+        if(getPositions().contains(position)) {return tag;}
         return ModelElement.EMPTY;
     }
-    public void setState(List< ? extends ModelElement> state, Position position){
-        List<Position> entityPositions = (List<Position>) getPositions();
-        for(;;){
-            if(!entityPositions.remove(position)) break;
-        }
-        for(ModelElement element: state){
-            if(element.equals(tag)){
-                entityPositions.add(position);
-            }
-        }
-    }
+    public abstract void setState(List< ? extends ModelElement> state, Position position);
 }

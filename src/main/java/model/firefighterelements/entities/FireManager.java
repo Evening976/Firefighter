@@ -1,5 +1,6 @@
 package model.firefighterelements.entities;
 
+import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
 import general.model.entity.EntityManager;
@@ -27,9 +28,19 @@ public class FireManager extends EntityManager {
         }
     }
 
+    @Override
+    public void setState(List<? extends ModelElement> state, Position position) {
+        fires.removeIf(fire -> fire.getPosition().equals(position));
+        for(ModelElement modelElement: state){
+            if(modelElement.equals(tag)){
+                fires.add(new Fire(position));
+            }
+        }
+    }
+
     public List<Position> update(FirefighterBoard board) {
         List<Position> result = new ArrayList<>();
-        if (board.getStep() % 2 == 0) {
+        if (board.stepNumber() % 2 == 0) {
             List<Position> newFirePositions = new ArrayList<>();
             for (Position fire : getPositions()) {
                 for (Position nextPosition : neighbors(fire)) {
@@ -48,20 +59,22 @@ public class FireManager extends EntityManager {
     }
 
     public void extinguish(Position position){
+        Set<Fire> firesNewPositions = new HashSet<>(fires);
         for(Fire fire: fires){
             if(fire.getPosition().equals(position)){
-                fires.remove(fire);
+                firesNewPositions.remove(fire);
                 System.out.println("Fire extinguished at " + position);
-                break;
             }
         }
+        fires = firesNewPositions;
     }
 
     @Override
-    public Collection<Position> getPositions() {
-        Collection<Position> positions = new HashSet<>();
-        for(Fire fire: fires)
+    public Set<Position> getPositions() {
+        Set<Position> positions = new HashSet<>();
+        for(Fire fire: fires) {
             positions.add(fire.getPosition());
+        }
         return positions;
     }
 }
