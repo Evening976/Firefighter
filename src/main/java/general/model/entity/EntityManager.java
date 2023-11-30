@@ -10,9 +10,7 @@ import java.util.List;
 public abstract class EntityManager implements GameElement {
     protected ModelElement tag;
     protected int rowCount;
-
     protected int columnCount;
-
     protected int initialCount;
 
     public EntityManager(int rowCount, int columnCount, int initialCount) {

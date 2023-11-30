@@ -66,6 +66,7 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     result.addAll(fireFighterManager.update(this));
     result.addAll(cloudManager.update(this));
 
+    printBoard();
     step++;
 
     return result;
@@ -116,9 +117,7 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
   public void printBoard(){
     for(int i = 0; i < rowCount; i++){
       for(int j = 0; j < columnCount; j++){
-        Position position = new Position(i, j);
-        String cell = getState(position).getValue().tag();
-        System.out.print(cell);
+        System.out.print(getState(new Position(i, j)).getValue().tag());
       }
       System.out.println();
     }

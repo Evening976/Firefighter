@@ -1,7 +1,8 @@
 package model;
 
+import javafx.scene.paint.Color;
 import model.firefighterelements.FFModelElement;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import util.Position;
 
 import java.util.List;
@@ -134,8 +135,8 @@ public class FirefighterBoardTest {
     @Test
     void testFireSpreadRock(){
         FirefighterBoard board = new FirefighterBoard(5, 5);
-        board.setState(List.of(FFModelElement.FIRE), new Position(3,3));
-        board.setState(List.of(FFModelElement.ROCK), new Position(3,2));
+        board.setState(List.of(new FFModelElement(Color.RED, "[F]")), new Position(3,3));
+        board.setState(List.of(new FFModelElement(Color.PURPLE, "[X]")), new Position(3,2));
         for (int i =0 ; i < 5; i++) {
             board.updateToNextGeneration();
             board.printBoard();
