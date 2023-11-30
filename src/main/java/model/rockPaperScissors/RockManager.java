@@ -46,17 +46,32 @@ public class RockManager extends RPSElement {
     public List<Position> update(RPSBoard board) {
         List<Position> result = new ArrayList<>();
         Set<Rock> newRocksPosition = new HashSet<>();
-        for (Position rock : getPositions()) {
-            for (Position nextPosition : neighbors(rock)) {
-                if (rocks.contains(new Rock(nextPosition))) continue;
-                if (!managers.stream().allMatch(manager -> manager.accept(nextPosition))) continue;
-                newRocksPosition.add(new Rock(nextPosition));
-                result.add(nextPosition);
-            }
+        Set<Position> positionsToRemove = new HashSet<>();
+
+        List<Position> shuffledPositions = new ArrayList<>(getPositions());
+        Collections.shuffle(shuffledPositions);
+
+        for (Position rock : shuffledPositions) {
+            Position nextPosition = chooseRandomNeighbor(neighbors(rock));
+
+            if (rocks.contains(new Rock(nextPosition))) continue;
+
+            boolean allManagersAccept = managers.stream().allMatch(manager -> manager.accept(nextPosition));
+            if (!allManagersAccept) continue;
+
+            newRocksPosition.add(new Rock(nextPosition));
+            result.add(nextPosition);
+
+            positionsToRemove.add(rock);
         }
+
         rocks.addAll(newRocksPosition);
+
+        rocks.removeIf(rock -> positionsToRemove.contains(rock.getPosition()));
+
         return result;
     }
+
 
     @Override
     public Set<Position> getPositions() {

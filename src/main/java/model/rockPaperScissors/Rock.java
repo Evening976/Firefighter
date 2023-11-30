@@ -4,10 +4,11 @@ import general.model.entities.Entity;
 import general.model.obstacles.Obstacle;
 import util.Position;
 
-public class Rock implements Obstacle {
+public class Rock implements RPSObstacle {
     Position p;
+
     public Rock(Position position) {
-        p = position;
+        this.p = position;
     }
 
     @Override
@@ -18,5 +19,9 @@ public class Rock implements Obstacle {
     @Override
     public boolean isObstacle(Position position) {
         return p.equals(position);
+    }
+
+    public boolean canConquer(Obstacle opponent) {
+        return opponent instanceof Scissors;
     }
 }

@@ -11,11 +11,11 @@ import model.RPSBoard;
 import java.util.*;
 
 public class ScissorsManager extends RPSElement {
-    Set<Scissors> scissors;
+    Set<Scissors> scissorsSet;
 
     public ScissorsManager(int initialCount, int rowCount, int columnCount) {
         super(initialCount, rowCount, columnCount);
-        scissors = new HashSet<>();
+        scissorsSet = new HashSet<>();
         tag = new RPSModelElement(Color.BLUE, "[S]");
         initializeElements();
     }
@@ -23,17 +23,17 @@ public class ScissorsManager extends RPSElement {
     @Override
     public void initializeElements() {
         for (int index = 0; index < initialCount; index++) {
-            scissors.add(new Scissors(Position.randomPosition(rowCount, columnCount)));
+            scissorsSet.add(new Scissors(Position.randomPosition(rowCount, columnCount)));
         }
     }
 
     @Override
     public Set<Obstacle> getObstacles() {
-        return new HashSet<>(scissors);
+        return new HashSet<>(scissorsSet);
     }
 
     public boolean accept(Position position) {
-        for(Obstacle obstacle: scissors) {
+        for(Obstacle obstacle: scissorsSet) {
             if(obstacle.getPosition().equals(position)) {
                 return false;
             }
@@ -43,23 +43,39 @@ public class ScissorsManager extends RPSElement {
 
     public List<Position> update(RPSBoard board) {
         List<Position> result = new ArrayList<>();
-        Set<Scissors> scissorsPosition = new HashSet<>();
-        for (Position scissor : getPositions()) {
-            for (Position nextPosition : neighbors(scissor)) {
-                if (getPositions().contains(nextPosition)) continue;
-                if (!managers.stream().allMatch(manager -> manager.accept(nextPosition))) continue;
-                scissorsPosition.add(new Scissors(nextPosition));
-                result.add(nextPosition);
-            }
+        Set<Scissors> newScissorsPosition = new HashSet<>();
+        Set<Position> positionsToRemove = new HashSet<>();
+
+        List<Position> shuffledPositions = new ArrayList<>(getPositions());
+        Collections.shuffle(shuffledPositions);
+
+        for (Position scissors : shuffledPositions) {
+            Position nextPosition = chooseRandomNeighbor(neighbors(scissors));
+
+            if (scissorsSet.contains(new Scissors(nextPosition))) continue;
+
+            boolean allManagersAccept = managers.stream().allMatch(manager -> manager.accept(nextPosition));
+            if (!allManagersAccept) continue;
+
+            newScissorsPosition.add(new Scissors(nextPosition));
+            result.add(nextPosition);
+
+            positionsToRemove.add(scissors);
         }
-        scissors.addAll(scissorsPosition);
+
+        scissorsSet.addAll(newScissorsPosition);
+
+        // Remove old positions
+        scissorsSet.removeIf(scissors -> positionsToRemove.contains(scissors.getPosition()));
+
         return result;
     }
+
 
     @Override
     public Set<Position> getPositions() {
         Set<Position> positions = new HashSet<>();
-        for (Obstacle scissor : scissors) {
+        for (Obstacle scissor : scissorsSet) {
             positions.add(scissor.getPosition());
         }
         return positions;
@@ -67,10 +83,10 @@ public class ScissorsManager extends RPSElement {
 
     @Override
     public void setState(List<? extends ModelElement> state, Position position) {
-        scissors.removeIf(scissor -> scissor.getPosition().equals(position));
+        scissorsSet.removeIf(scissor -> scissor.getPosition().equals(position));
         for (ModelElement modelElement : state) {
             if (modelElement.equals(tag)) {
-                scissors.add(new Scissors(position));
+                scissorsSet.add(new Scissors(position));
             }
         }
     }

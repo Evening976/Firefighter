@@ -2,6 +2,7 @@ package model;
 
 import general.model.GameElement;
 import general.model.entities.ModelElement;
+import model.rockPaperScissors.RPSObstacle;
 import javafx.util.Pair;
 import model.firefighterelements.FFModelElement;
 import model.rockPaperScissors.*;
@@ -50,10 +51,12 @@ public class RPSBoard implements Board<List<RPSModelElement>> {
         result.addAll(paperManager.update(this));
         result.addAll(scissorsManager.update(this));
 
+
         step++;
 
         return result;
     }
+
 
     @Override
     public void reset() {
@@ -84,6 +87,22 @@ public class RPSBoard implements Board<List<RPSModelElement>> {
         result.add(paperManager);
         result.add(scissorsManager);
         return result;
+    }
+
+    private RPSObstacle getConqueredObstacle(Position position) {
+        RPSObstacle rock = (RPSObstacle) rockManager.getObstacleAtPosition(position);
+        RPSObstacle paper = (RPSObstacle) paperManager.getObstacleAtPosition(position);
+        RPSObstacle scissors = (RPSObstacle) scissorsManager.getObstacleAtPosition(position);
+
+        if (rock != null && rock.canConquer(paperManager.getObstacleAtPosition(position))) {
+            return rock;
+        } else if (paper != null && paper.canConquer(scissorsManager.getObstacleAtPosition(position))) {
+            return paper;
+        } else if (scissors != null && scissors.canConquer(rockManager.getObstacleAtPosition(position))) {
+            return scissors;
+        }
+
+        return null;
     }
 
     public void setState(List<RPSModelElement> state, Position position) {

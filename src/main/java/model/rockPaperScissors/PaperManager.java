@@ -44,17 +44,34 @@ public class PaperManager extends RPSElement {
     public List<Position> update(RPSBoard board) {
         List<Position> result = new ArrayList<>();
         Set<Paper> newPapersPosition = new HashSet<>();
-        for (Position paper : getPositions()) {
-            for (Position nextPosition : neighbors(paper)) {
-                if (papers.contains(new Paper(nextPosition))) continue;
-                if (!managers.stream().allMatch(manager -> manager.accept(nextPosition))) continue;
-                newPapersPosition.add(new Paper(nextPosition));
-                result.add(nextPosition);
-            }
+        Set<Position> positionsToRemove = new HashSet<>();
+
+        List<Position> shuffledPositions = new ArrayList<>(getPositions());
+        Collections.shuffle(shuffledPositions);
+
+        for (Position paper : shuffledPositions) {
+            Position nextPosition = chooseRandomNeighbor(neighbors(paper));
+
+            if (papers.contains(new Paper(nextPosition))) continue;
+
+            boolean allManagersAccept = managers.stream().allMatch(manager -> manager.accept(nextPosition));
+            if (!allManagersAccept) continue;
+
+            newPapersPosition.add(new Paper(nextPosition));
+            result.add(nextPosition);
+
+            positionsToRemove.add(paper);
         }
+
         papers.addAll(newPapersPosition);
+
+        // Remove old positions
+        papers.removeIf(paper -> positionsToRemove.contains(paper.getPosition()));
+
         return result;
     }
+
+
 
     @Override
     public Set<Position> getPositions() {

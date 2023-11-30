@@ -10,4 +10,6 @@ public interface Obstacle {
     boolean equals(Object o);
     @Override
     int hashCode();
+
+
 }
