@@ -1,4 +1,4 @@
-package model.firefighterelements.entities.FireFighter;
+package model.firefighter.entities.FireFighter;
 
 import general.model.entities.Entity;
 import util.Position;

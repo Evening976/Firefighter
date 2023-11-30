@@ -4,7 +4,6 @@ import java.util.Set;
 
 import general.model.GameElement;
 import general.model.entities.ModelElement;
-import model.firefighterelements.FFModelElement;
 import util.Position;
 
 public abstract class ObstacleManager implements GameElement {

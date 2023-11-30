@@ -1,4 +1,4 @@
-package model.firefighterelements.obstacle;
+package model.firefighter.obstacle;
 
 import general.model.entities.ModelElement;
 import general.model.obstacles.Obstacle;

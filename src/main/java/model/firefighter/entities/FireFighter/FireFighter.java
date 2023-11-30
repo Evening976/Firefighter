@@ -1,8 +1,8 @@
-package model.firefighterelements.entities.FireFighter;
+package model.firefighter.entities.FireFighter;
 
 import general.model.entities.EntityManager;
 import general.model.obstacles.ObstacleManager;
-import model.firefighterelements.entities.FireManager;
+import model.firefighter.entities.FireManager;
 import util.Position;
 
 import java.util.*;

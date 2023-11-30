@@ -1,7 +1,6 @@
 package model;
 
 import javafx.scene.paint.Color;
-import model.firefighterelements.FFModelElement;
 import org.junit.Test;
 import util.Position;
 
@@ -101,8 +100,8 @@ public class FirefighterBoardTest {
         FirefighterBoard board = new FirefighterBoard(5, 5);
         Position position = new Position(1,2);
         assertThat(board.getState(position)).isEmpty();
-        board.setState(List.of(FFModelElement.FIRETRUCK), position);
-        assertThat(board.getState(position)).containsExactly(FFModelElement.FIRETRUCK);
+        board.setState(List.of(ModelElement.FIRETRUCK), position);
+        assertThat(board.getState(position)).containsExactly(ModelElement.FIRETRUCK);
     }
 
     @Test
