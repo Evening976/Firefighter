@@ -28,6 +28,14 @@ public class FireManager extends EntityManager {
     }
 
     @Override
+    public ModelElement getState(Position position) {
+        if(getPositions().contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
+    }
+
+    @Override
     public void setState(List<? extends ModelElement> state, Position position) {
         fires.removeIf(fire -> fire.getPosition().equals(position));
         for(ModelElement modelElement: state){
@@ -62,8 +70,6 @@ public class FireManager extends EntityManager {
         for(Fire fire: fires){
             if(fire.getPosition().equals(position)){
                 firesNewPositions.remove(fire);
-                firesNewPositions.removeAll(neighbors(fire.getPosition()));
-                System.out.println("Fire extinguished at " + position);
             }
         }
         fires.clear();

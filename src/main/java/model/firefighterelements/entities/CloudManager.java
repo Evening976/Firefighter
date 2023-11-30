@@ -20,7 +20,7 @@ public class CloudManager extends FireExtinguisher {
     }
 
     public List<Position> update(FirefighterBoard board){
-
+        this.firePositions = board.fireManager.getPositions();
         List<Position> result = new ArrayList<>();
         if (firePositions.isEmpty()) return result;
 
@@ -28,7 +28,7 @@ public class CloudManager extends FireExtinguisher {
         for (Position cloudPosition : getPositions()) {
             Position newCloudPosition = cloudRandomPosition(cloudPosition);
             cloudNewPosition.add(new Cloud(newCloudPosition));
-            extinguish(newCloudPosition);
+            //extinguish(newCloudPosition);
             board.fireManager.extinguish(newCloudPosition);
             result.add(cloudPosition);
             result.add(newCloudPosition);
@@ -37,7 +37,7 @@ public class CloudManager extends FireExtinguisher {
                     .toList();
             for (Position firePosition : neighborFirePositions) {
                 board.fireManager.extinguish(firePosition);
-                extinguish(firePosition);
+                //extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
@@ -84,6 +84,14 @@ public class CloudManager extends FireExtinguisher {
         for (int index = 0; index < initialCount; index++) {
             clouds.add(new Cloud(Position.randomPosition(rowCount, columnCount)));
         }
+    }
+
+    @Override
+    public ModelElement getState(Position position) {
+        if(getPositions().contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
     }
 
     @Override

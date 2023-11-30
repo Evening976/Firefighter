@@ -31,8 +31,7 @@ public class FireFighterPersonManager extends FireFighter {
 
     @Override
     public List<Position> update(FirefighterBoard board) {
-        System.out.println("local  " + firePositions);
-        System.out.println("global " + board.fireManager.getPositions());
+        this.firePositions = board.fireManager.getPositions();
 
         List<Position> result = new ArrayList<>();
         Set<FireFighterPerson> firefighterNewPositions = new HashSet<>();
@@ -64,6 +63,14 @@ public class FireFighterPersonManager extends FireFighter {
         for (int index = 0; index < initialCount; index++) {
             fireFighterPerson.add(new FireFighterPerson(Position.randomPosition(rowCount, columnCount)));
         }
+    }
+
+    @Override
+    public ModelElement getState(Position position) {
+        if(getPositions().contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
     }
 
     @Override

@@ -26,6 +26,7 @@ public class FireTruckManager extends FireFighter {
     }
     @Override
     public List<Position> update(FirefighterBoard board) {
+        this.firePositions = board.fireManager.getPositions();
         List<Position> result = new ArrayList<>();
         List<Position> firefighterNewPositions = new ArrayList<>();
         for (Position firefighterPosition : getPositions()) {
@@ -39,15 +40,14 @@ public class FireTruckManager extends FireFighter {
                     .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions) {
-                board.fireManager.extinguish(firePosition);
-                //extinguish(firePosition);
+               board.fireManager.extinguish(firePosition);
+               //extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }
         fireTrucks.clear();
-        for(Position position: firefighterNewPositions){
-            fireTrucks.add(new FireTruck(position));
-        }
+        firefighterNewPositions.forEach(position -> fireTrucks.add(new FireTruck(position)));
+
         return result;
     }
 
@@ -65,6 +65,14 @@ public class FireTruckManager extends FireFighter {
         for (int index = 0; index < initialCount; index++) {
             fireTrucks.add(new FireTruck(Position.randomPosition(rowCount, columnCount)));
         }
+    }
+
+    @Override
+    public ModelElement getState(Position position) {
+        if(getPositions().contains(position)) {
+            return tag;
+        }
+        return ModelElement.EMPTY;
     }
 
     @Override

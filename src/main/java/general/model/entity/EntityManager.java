@@ -31,9 +31,7 @@ public abstract class EntityManager implements GameElement {
     }
 
     public abstract void initializeElements();
-    public ModelElement getState(Position position){
-        if(getPositions().contains(position)) {return tag;}
-        return ModelElement.EMPTY;
-    }
+    public abstract ModelElement getState(Position position);
+
     public abstract void setState(List< ? extends ModelElement> state, Position position);
 }
