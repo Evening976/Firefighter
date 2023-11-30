@@ -42,7 +42,7 @@ public class Controller {
   @FXML
   private Grid<ViewElement> grid;
   private Timeline timeline;
-  private Board<List<FFModelElement>> board;
+  private Board<?> board;
 
   @FXML
   private void initialize() {
@@ -118,8 +118,7 @@ public class Controller {
     repaintGrid();
   }
 
-  public void initialize(int squareWidth, int squareHeight, int columnCount,
-                                int rowCount) {
+  public void initialize(int squareWidth, int squareHeight, int columnCount, int rowCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
     this.setModel(new FirefighterBoard(columnCount, rowCount));
     repaintGrid();
