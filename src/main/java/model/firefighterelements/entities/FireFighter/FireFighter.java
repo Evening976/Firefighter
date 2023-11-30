@@ -7,12 +7,12 @@ import util.Position;
 
 import java.util.*;
 
-public abstract class FireFighter extends FireExtinguisher {
+public abstract class FireFighter extends EntityManager {
 
     List<ObstacleManager> obstacleManagers;
 
     public FireFighter(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
-        super(initialCount, rowCount, columnCount);
+        super(rowCount, columnCount, initialCount);
         this.obstacleManagers = Arrays.asList(obstacleManagers);
     }
 

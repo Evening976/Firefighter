@@ -1,20 +1,20 @@
 package model.firefighterelements.entities;
 
+import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import javafx.scene.paint.Color;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.entities.FireFighter.FireExtinguisher;
 import util.Position;
 import util.RandomGenerator;
 
 import java.util.*;
 
-public class CloudManager extends FireExtinguisher {
+public class CloudManager extends EntityManager {
     Set<Cloud> clouds;
 
     public CloudManager(int initialCount, int rowCount, int columnCount) {
-        super(initialCount, rowCount, columnCount);
+        super(rowCount, columnCount, initialCount);
         this.tag = new FFModelElement(Color.CYAN, "[C]");
         clouds = new HashSet<>();
         initializeElements();
