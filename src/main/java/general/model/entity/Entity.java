@@ -2,6 +2,8 @@ package general.model.entity;
 
 import util.Position;
 
+import java.util.Objects;
+
 public abstract class Entity {
     Position position;
 
@@ -14,11 +16,14 @@ public abstract class Entity {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj == null || obj.getClass() != this.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Entity entity)) return false;
+        return Objects.equals(position, entity.position);
+    }
 
-        Entity entity = (Entity) obj;
-        return position != null ? position.equals(entity.position) : entity.position == null;
+    @Override
+    public int hashCode() {
+        return Objects.hash(position);
     }
 }

@@ -3,23 +3,19 @@ package model;
 import app.SimulatorApplication;
 import general.model.GameElement;
 import general.model.entity.ModelElement;
-import general.model.entity.EntityManager;
-import general.model.obstacle.ObstacleManager;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.entities.FireFighter.FireFighter;
 import model.firefighterelements.entities.CloudManager;
-import model.firefighterelements.entities.FireManager;
+import model.firefighterelements.entities.FireFighter.FireFighter;
 import model.firefighterelements.entities.FireFighter.FireFighterPersonManager;
 import model.firefighterelements.entities.FireFighter.FireTruckManager;
+import model.firefighterelements.entities.FireManager;
 import model.firefighterelements.obstacle.MountainManager;
 import model.firefighterelements.obstacle.RoadManager;
-import model.firefighterelements.obstacle.Rock;
 import model.firefighterelements.obstacle.RockManager;
 import util.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class FirefighterBoard implements Board<List<FFModelElement>> {
   private final int columnCount;
@@ -46,9 +42,9 @@ public class FirefighterBoard implements Board<List<FFModelElement>> {
     rockManager = new RockManager(rowCount, columnCount);
 
     fireManager = new FireManager(SimulatorApplication.INITIAL_FIRE_COUNT, rowCount, columnCount, mountainManager, rockManager, roadManager);
-    fireFighterManager = new FireFighterPersonManager((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
-    fireTruckManager = new FireTruckManager((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
-    cloudManager = new CloudManager((Set<Position>) fireManager.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
+    fireFighterManager = new FireFighterPersonManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIREFIGHTER_COUNT, rowCount, columnCount, mountainManager);
+    fireTruckManager = new FireTruckManager(fireManager.getPositions(), SimulatorApplication.INITIAL_FIRETRUCK_COUNT, rowCount, columnCount, mountainManager);
+    cloudManager = new CloudManager(fireManager.getPositions(), SimulatorApplication.INITIAL_CLOUD_COUNT, rowCount, columnCount);
   }
 
 

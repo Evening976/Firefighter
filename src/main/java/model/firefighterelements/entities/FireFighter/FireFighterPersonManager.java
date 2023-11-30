@@ -4,11 +4,12 @@ import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.entities.Cloud;
 import util.Position;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FireFighterPersonManager extends FireFighter {
     Set<FireFighterPerson> fireFighterPerson;
@@ -39,16 +40,16 @@ public class FireFighterPersonManager extends FireFighter {
         for (Position firefighterPosition : getPositions()) {
             Position newFirefighterPosition = neighborClosestToFire(firefighterPosition, board);
             firefighterNewPositions.add(new FireFighterPerson(newFirefighterPosition));
-            //board.fireManager.extinguish(newFirefighterPosition);
-            extinguish(newFirefighterPosition);
+            board.fireManager.extinguish(newFirefighterPosition);
+            //extinguish(newFirefighterPosition);
             result.add(firefighterPosition);
             result.add(newFirefighterPosition);
             List<Position> neighborFirePositions = neighbors(newFirefighterPosition).stream()
                     .filter(firePositions::contains)
                     .toList();
             for (Position firePosition : neighborFirePositions) {
-                extinguish(firePosition);
-                //board.fireManager.extinguish(firePosition);
+                //extinguish(firePosition);
+                board.fireManager.extinguish(firePosition);
             }
             result.addAll(neighborFirePositions);
         }

@@ -1,11 +1,10 @@
 package model.firefighterelements.entities;
 
+import general.model.entity.EntityManager;
 import general.model.entity.ModelElement;
 import general.model.obstacle.ObstacleManager;
 import model.FirefighterBoard;
-import general.model.entity.EntityManager;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.obstacle.Mountain;
 import util.Position;
 
 import java.util.*;
@@ -63,9 +62,11 @@ public class FireManager extends EntityManager {
         for(Fire fire: fires){
             if(fire.getPosition().equals(position)){
                 firesNewPositions.remove(fire);
+                firesNewPositions.removeAll(neighbors(fire.getPosition()));
                 System.out.println("Fire extinguished at " + position);
             }
         }
+        fires.clear();
         fires = firesNewPositions;
     }
 

@@ -7,4 +7,5 @@ public class Fire extends Entity {
     public Fire(Position position) {
         super(position);
     }
+
 }
