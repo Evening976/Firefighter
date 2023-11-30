@@ -33,3 +33,5 @@ fabric.properties
 
 
 !/build.gradle
+/build/
+/.gradle/
