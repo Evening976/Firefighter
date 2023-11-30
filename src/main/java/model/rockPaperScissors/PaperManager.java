@@ -65,7 +65,6 @@ public class PaperManager extends RPSElement {
 
         papers.addAll(newPapersPosition);
 
-        // Remove old positions
         papers.removeIf(paper -> positionsToRemove.contains(paper.getPosition()));
 
         return result;

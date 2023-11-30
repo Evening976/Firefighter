@@ -65,7 +65,6 @@ public class ScissorsManager extends RPSElement {
 
         scissorsSet.addAll(newScissorsPosition);
 
-        // Remove old positions
         scissorsSet.removeIf(scissors -> positionsToRemove.contains(scissors.getPosition()));
 
         return result;
