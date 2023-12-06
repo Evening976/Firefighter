@@ -1,3 +1,9 @@
+Christopher SLAYBI
+
+Quentin LEFEVRE
+
+Projet programmation : proto simulator d'automate cellulaire
+
 
 Le projet semblait initialement accessible, mais au fil du 
 développement, notamment lors de l'optimisation et du respect 
