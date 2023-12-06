@@ -1,4 +1,4 @@
-package model.firefighterelements.entities;
+package model.firefighter.entities;
 
 import general.model.entities.EntityManager;
 import general.model.entities.ModelElement;

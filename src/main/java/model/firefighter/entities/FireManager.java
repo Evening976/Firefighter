@@ -1,4 +1,4 @@
-package model.firefighterelements.entities;
+package model.firefighter.entities;
 
 import general.model.entities.EntityManager;
 import general.model.entities.ModelElement;
@@ -14,8 +14,8 @@ public class FireManager extends EntityManager {
     List<ObstacleManager> obstacleManagers;
     public FireManager(int initialCount, int rowCount, int columnCount, ObstacleManager... obstacleManagers){
         super(rowCount, columnCount, initialCount);
+        this.tag = new FFModelElement(Color.RED, "[F]");
         fires = new HashSet<>();
-        tag = new FFModelElement(Color.RED, "[F]");
         this.obstacleManagers = Arrays.asList(obstacleManagers);
         initializeElements();
     }

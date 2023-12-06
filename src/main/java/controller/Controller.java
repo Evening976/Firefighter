@@ -15,6 +15,7 @@ import javafx.util.Pair;
 import model.Board;
 import model.FirefighterBoard;
 import model.RPSBoard;
+import model.plague.PlagueBoard;
 import util.Position;
 import view.Grid;
 import view.ViewElement;
@@ -116,7 +117,7 @@ public class Controller {
 
   public void initialize(int squareWidth, int squareHeight, int columnCount, int rowCount) {
     grid.setDimensions(columnCount, rowCount, squareWidth, squareHeight);
-    this.setModel(new RPSBoard(rowCount, columnCount));
+    this.setModel(new FirefighterBoard(rowCount, columnCount));
     repaintGrid();
   }
 

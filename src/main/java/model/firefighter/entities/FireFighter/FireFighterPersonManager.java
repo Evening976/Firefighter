@@ -1,10 +1,10 @@
-package model.firefighterelements.entities.FireFighter;
+package model.firefighter.entities.FireFighter;
 
 import general.model.entities.ModelElement;
 import general.model.obstacles.ObstacleManager;
 import javafx.scene.paint.Color;
+import model.firefighter.entities.FireManager;
 import model.firefighterelements.FFModelElement;
-import model.firefighterelements.entities.FireManager;
 import util.Position;
 
 import java.util.ArrayList;
